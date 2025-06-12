@@ -14,9 +14,10 @@ h1, h2, h3 {
 a {
   color: #5AF0FF;
   text-decoration: none;
+  text-shadow: 0 0 1px #5AF0FF;
 }
 a:hover {
-  text-shadow: 0 0 10px #FF2959;
+  text-shadow: 0 0 4px #FF2959, 0 0 8px #FF2959;
 }
 small {
   display: block;
