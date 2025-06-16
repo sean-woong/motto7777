@@ -1,13 +1,12 @@
-// 1) Intro GIF 5초 후 숨기고 본문 fade-in
+// script.js
 window.addEventListener('DOMContentLoaded', ()=>{
   setTimeout(()=>{
     document.getElementById('intro').style.display = 'none';
     document.getElementById('mainContent').style.opacity = 1;
     initScrollEffects();
-  }, 5000);
+  }, 3000);  // 5초 → 3초로 변경
 });
 
-// 2) 스크롤 트리거 & 오디오 재생
 function initScrollEffects(){
   const sections = document.querySelectorAll('.section');
   const sfx = document.getElementById('sfx');
