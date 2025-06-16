@@ -1,12 +1,26 @@
+/* 기본 리셋 */
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{background:#090909;color:#fff;font-family:'Helvetica Neue',sans-serif;overflow-x:hidden;height:100%;}
-.intro,.section{min-height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:2rem;}
-.intro video{max-width:360px;}
+
+/* intro GIF */
+.intro {
+  position: fixed; top:0; left:0;
+  width:100vw; height:100vh;
+  overflow:hidden; z-index:100;
+  display:flex; justify-content:center; align-items:center;
+}
+.intro-gif {
+  width:100%; height:100%; object-fit:cover;
+}
+
+/* 본문 섹션 공통 */
+.section, .intro {min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:2rem;}
 .fade-up{opacity:0;transform:translateY(20px);transition:opacity .6s ease-out, transform .6s ease-out;}
 .delay{transition-delay:.3s;} .delay2{transition-delay:.6s;}
 .slide-in{opacity:0;transform:translateX(-20px);transition:opacity .6s ease-out, transform .6s ease-out;}
 @keyframes typewriter{from{width:0;} to{width:100%;}}
 .typewriter{overflow:hidden;white-space:nowrap;border-right:.1em solid #fff;font-size:1.2rem;animation:typewriter 3s steps(30) 1;}
+
 @keyframes hueBlurGlitch {
   0%   { filter: hue-rotate(0deg) blur(0px); transform: skew(0deg); }
   25%  { filter: hue-rotate(90deg) blur(1px); transform: skew(-1deg); }
@@ -14,6 +28,10 @@ html,body{background:#090909;color:#fff;font-family:'Helvetica Neue',sans-serif;
   75%  { filter: hue-rotate(270deg) blur(1px); transform: skew(1deg); }
   100% { filter: hue-rotate(360deg) blur(0px); transform: skew(0deg); }
 }
+
+/* 이미지 글리치 + 배경 레이어 */
 .glitch-img{max-width:80%;filter:url(#glitch);animation:hueBlurGlitch 2s infinite ease-in-out alternate;box-shadow:0 0 12px rgba(0,255,150,0.15);}
 .bg-glitch{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;background:rgba(0,255,150,0.02);animation:hueBlurGlitch 4s infinite ease-in-out alternate;z-index:0;}
+
+/* 본문 노출 스타일 */
 .main-active .fade-up, .main-active .slide-in, .main-active .typewriter{opacity:1;transform:translate(0,0);}
