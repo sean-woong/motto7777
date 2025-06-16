@@ -1,9 +1,13 @@
-document.getElementById('logoVideo').addEventListener('ended', ()=>{
-  document.getElementById('intro').style.display='none';
-  const main = document.getElementById('mainContent');
-  main.style.opacity = 1;
-  initScrollEffects();
+// 1) Intro GIF 5초 후 숨기고 본문 fade-in
+window.addEventListener('DOMContentLoaded', ()=>{
+  setTimeout(()=>{
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('mainContent').style.opacity = 1;
+    initScrollEffects();
+  }, 5000);
 });
+
+// 2) 스크롤 트리거 & 오디오 재생
 function initScrollEffects(){
   const sections = document.querySelectorAll('.section');
   const sfx = document.getElementById('sfx');
@@ -15,6 +19,6 @@ function initScrollEffects(){
         if(src){ sfx.src = src; sfx.play(); }
       }
     });
-  },{threshold:0.4});
+  }, { threshold: 0.4 });
   sections.forEach(s=>obs.observe(s));
 }
