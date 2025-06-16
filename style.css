@@ -35,3 +35,30 @@ html,body{background:#090909;color:#fff;font-family:'Helvetica Neue',sans-serif;
 
 /* 본문 노출 스타일 */
 .main-active .fade-up, .main-active .slide-in, .main-active .typewriter{opacity:1;transform:translate(0,0);}
+/* Gallery grid */
+.gallery {
+  padding: 3rem 1rem;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.image-card {
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+.image-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.image-card:hover img {
+  transform: scale(1.1);
+}
+.image-card:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
