@@ -1,0 +1,67 @@
+:root{ --bg:#000; --fg:#fff; --muted:#a0a0a0; --accent:#00ff99; }
+*{box-sizing:border-box} html,body{height:100%}
+body{ margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--fg); overflow-x:hidden }
+
+/* Intro + full GIF bg */
+#intro{ position:fixed; inset:0; display:grid; place-items:center; background:#000; z-index:50; overflow:hidden }
+#intro .intro-inner{ position:relative; z-index:1; text-align:center }
+.logo{ font-size:56px; letter-spacing:.08em; opacity:.9; margin-bottom:12px }
+.glitch-btn{ appearance:none; border:1px solid var(--fg); background:transparent; color:var(--fg);
+  padding:14px 26px; font-size:18px; letter-spacing:.12em; cursor:pointer; position:relative; overflow:hidden; transition:transform .12s ease }
+.glitch-btn:hover{ transform:scale(1.03) }
+.glitch-btn::after{ content:attr(data-alt); position:absolute; inset:0; display:grid; place-items:center;
+  color:var(--accent); mix-blend:screen; opacity:0 }
+.glitch-btn:hover::after{ opacity:1; animation:glitch 1s steps(6) infinite }
+.hint{ color:var(--muted); margin-top:10px; font-size:12px }
+#intro .intro-bg{ position:absolute; inset:0; background:url('../assets/images/ani_motto.gif') center/cover no-repeat; filter:contrast(1.05) saturate(1.07); opacity:.92 }
+#intro::after{ content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 60%, rgba(0,0,0,.25) 0%, rgba(0,0,0,.55) 70%) }
+
+@keyframes glitch{
+  0%{ clip-path:inset(0 0 80% 0) } 20%{ clip-path:inset(15% 0 55% 0) transform:translateX(2px) }
+  40%{ clip-path:inset(40% 0 30% 0) transform:translateX(-2px) } 60%{ clip-path:inset(20% 0 50% 0) }
+  80%{ clip-path:inset(70% 0 5% 0) } 100%{ clip-path:inset(0 0 80% 0) }
+}
+
+/* Stage */
+#stage{ position:relative; min-height:100vh }
+.portal{ position:absolute; width:min(22vw,320px); aspect-ratio:1/1; background:#111 center/cover no-repeat; border:1px solid #333; transition:.18s ease; }
+.portal:hover{ transform:scale(1.06) rotate(.2deg); filter:hue-rotate(-6deg) saturate(1.15);
+  box-shadow:0 0 18px rgba(0,255,153,.25), 0 0 2px #0f0 inset }
+.portal .label{ position:absolute; left:8px; bottom:8px; font-size:12px; letter-spacing:.08em; background:rgba(0,0,0,.45); padding:4px 6px; border:1px solid #2a2a2a }
+.portal.placeholder{ background:repeating-linear-gradient(45deg,#0e0e0e 0 8px,#111 8px 16px); border:1px dashed #2c2c2c }
+
+/* DOSN egg */
+#dosn{ position:fixed; left:12px; bottom:10px; color:#8cf5d9; text-decoration:none; opacity:0; pointer-events:none; transition:.2s; filter:drop-shadow(0 0 6px rgba(0,255,153,.35)) }
+#dosn.show{ opacity:.85; pointer-events:auto } #dosn:hover{ transform:scale(1.05) }
+
+/* Audio UI */
+#audio-ui{ position:fixed; right:12px; top:12px; display:flex; gap:10px; align-items:center; z-index:10 }
+#audio-ui button{ background:transparent; color:var(--fg); border:1px solid #444; padding:6px 10px; cursor:pointer }
+#audio-ui #vol{ width:120px }
+
+/* Now Playing */
+#nowPlaying{ position:fixed; right:12px; bottom:10px; font-size:12px; color:#ddd; letter-spacing:.05em;
+  padding:6px 10px; border:1px solid #333; background:rgba(0,0,0,.35); transition:filter .2s ease }
+#nowPlaying:hover{ filter:hue-rotate(-8deg) saturate(1.2) }
+
+/* Platforms */
+#platforms{ position:fixed; left:12px; top:12px; display:flex; gap:10px; align-items:center; z-index:10 }
+.plat{ display:flex; align-items:center; gap:6px; color:#bbb; text-decoration:none; border:1px solid #333; padding:6px 8px; transition:.2s }
+.plat:hover{ color:#fff; filter:drop-shadow(0 0 10px rgba(0,255,153,.45)) }
+
+/* Teaser modal */
+#teaserModal[hidden]{ display:none }
+#teaserModal .modal-bg{ position:fixed; inset:0; background:rgba(0,0,0,.65) }
+#teaserModal .modal{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); width:min(90vw,920px); background:#000; border:1px solid #333; padding:10px }
+#teaserModal .close{ position:absolute; right:6px; top:6px; background:transparent; color:#fff; border:1px solid #444; cursor:pointer }
+
+/* Character page */
+body.character{ padding:12px 12px 40px }
+.char-header{ display:flex; align-items:center; gap:12px }
+.back{ color:#7fffd4; text-decoration:none; border:1px solid #2a2a2a; padding:4px 8px }
+.char-hero{ margin:16px 0; display:grid; place-items:center }
+.char-hero img{ width:min(92vw,900px); border:1px solid #2a2a2a }
+.char-note{ color:#cfcfcf; letter-spacing:.03em; text-align:center; margin-top:10px }
+.char-foot{ margin-top:20px; text-align:center; color:#8a8a8a }
+
+@media (max-width:640px){ .portal{ width:42vw } }

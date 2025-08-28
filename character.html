@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MOTTO – Character</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="character">
+  <header class="char-header">
+    <a class="back" href="index.html">← Back</a>
+    <h1 id="charTitle">MOTTO</h1>
+  </header>
+
+  <section class="char-hero">
+    <img id="charImg" alt="character art"/>
+  </section>
+
+  <section class="char-note" id="charNote"></section>
+
+  <footer class="char-foot">
+    <div class="small">Visual by Sean Woong · Sound by Haz Haus</div>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const id = (params.get('id')||'dealer').toLowerCase();
+    const meta = {
+      dealer:{name:'DEALER', img:'assets/images/dealer.jpg', note:'Code, chance, neon luck.'},
+      skull:{name:'SKULL', img:'assets/images/skull.jpg', note:'Memory loss, electric ritual.'},
+      rockstar:{name:'ROCKSTAR', img:'assets/images/rockstar.jpg', note:'Shock & roar on digital stage.'},
+      drag:{name:'DRAG', img:'assets/images/drag.jpg', note:'Riddle & chrome glamour.'},
+      military:{name:'MILITARY', img:'assets/images/military.jpg', note:'Will, order, cold honor.'},
+      motorcycle:{name:'MOTORCYCLE', img:'assets/images/motorcycle.jpg', note:'Speed cult, asphalt halo.'},
+      boxer:{name:'BOXER', img:'assets/images/boxer.jpg', note:'Resistance, grit, glory.'},
+    };
+    const m = meta[id] || meta.dealer;
+    document.getElementById('charTitle').textContent = m.name;
+    document.getElementById('charImg').src = m.img;
+    document.getElementById('charImg').alt = m.name;
+    document.getElementById('charNote').textContent = m.note;
+  </script>
+</body>
+</html>
