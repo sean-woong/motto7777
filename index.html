@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOTTO 7777</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script defer src="js/app.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- ★ 여기 딱 1줄만 있어야 함: js/app.js?v=... 캐시버스터 -->
+  <script defer src="js/app.js?v=20250829a"></script>
 </head>
 <body>
-  <!-- Intro Section -->
+  <!-- Intro -->
   <div id="intro" class="intro">
     <h1>MOTTO</h1>
     <button id="enterBtn">ENTER</button>
     <p class="subtext">headphones recommended</p>
   </div>
 
-  <!-- Main Section (처음엔 숨김) -->
+  <!-- Main (처음엔 숨김) -->
   <div id="main" style="display:none;">
     <div class="links">
       <a id="spBtn" href="#" target="_blank">Spotify</a>
       <a id="ytBtn" href="#" target="_blank">YouTube</a>
     </div>
 
-    <!-- 캐릭터 그리드 -->
+    <!-- 캐릭터 그리드 (배치용) -->
     <div class="grid">
       <div class="char" style="background-image:url('assets/images/dealer.jpg')">DEALER</div>
       <div class="char" style="background-image:url('assets/images/skull.jpg')">SKULL</div>
@@ -33,7 +34,7 @@
       <div class="char" style="background-image:url('assets/images/boxer.jpg')">BOXER</div>
     </div>
 
-    <!-- 포털/이스터에그 -->
+    <!-- 랜덤 포털 + DOSN -->
     <div id="stage"></div>
     <div id="dosn" class="dosn">DOSN</div>
   </div>
