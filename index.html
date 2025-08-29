@@ -1,60 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MOTTO 7777</title>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Intro Section -->
+  <div id="intro" class="intro">
+    <h1>MOTTO</h1>
+    <button id="enterBtn">ENTER</button>
+    <p class="subtext">headphones recommended</p>
+  </div>
 
-  <!-- Intro -->
-  <div id="intro">
-    <div class="intro-bg"></div>
-    <div class="intro-inner">
-      <div class="logo">MOTTO</div>
-      <button id="enterBtn" class="glitch-btn" data-alt="ENTER / WAKE">MOTTO!</button>
-      <div class="hint">headphones recommended</div>
+  <!-- Main Section -->
+  <div id="main" class="hidden">
+    <div class="links">
+      <a href="https://spotify.com" target="_blank">Spotify</a>
+      <a href="https://youtube.com" target="_blank">YouTube</a>
+      <!-- SoundCloud는 필요 없다고 했으니까 뺌 -->
+    </div>
+
+    <!-- 캐릭터 그리드 -->
+    <div class="grid">
+      <div class="char" style="background-image:url('assets/images/dealer.JPG')">DEALER</div>
+      <div class="char" style="background-image:url('assets/images/skull.JPG')">SKULL</div>
+      <div class="char" style="background-image:url('assets/images/rockstar.JPG')">ROCKSTAR</div>
+      <div class="char" style="background-image:url('assets/images/drag.JPG')">DRAG</div>
+      <div class="char" style="background-image:url('assets/images/military.JPG')">MILITARY</div>
+      <div class="char" style="background-image:url('assets/images/motorcycle.JPG')">MOTORCYCLE</div>
+      <div class="char" style="background-image:url('assets/images/boxer.JPG')">BOXER</div>
     </div>
   </div>
-
-  <!-- Global UI -->
-  <div id="audio-ui" hidden>
-    <button id="muteBtn" title="mute/unmute" aria-label="mute">🔊</button>
-    <input id="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
-  </div>
-
-  <div id="nowPlaying" hidden>Now Playing: —</div>
-
-  <div id="platforms">
-    <a class="plat" id="spBtn" href="#" target="_blank" aria-label="Spotify" title="Spotify">
-      <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
-      <span>Spotify</span>
-    </a>
-    <a class="plat" id="ytBtn" href="#" target="_blank" aria-label="YouTube" title="YouTube">
-      <svg viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="6" width="18" height="12" rx="2" fill="currentColor"/></svg>
-      <span>YouTube</span>
-    </a>
-    <a class="plat" id="scBtn" href="#" target="_blank" aria-label="SoundCloud" title="SoundCloud">
-      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 16h16a4 4 0 0 0-4-4 6 6 0 0 0-6-6 8 8 0 0 0-6 6v4z" fill="currentColor"/></svg>
-      <span>SoundCloud</span>
-    </a>
-  </div>
-
-  <!-- Teaser (optional) -->
-  <div id="teaserModal" hidden>
-    <div class="modal-bg" data-close></div>
-    <div class="modal">
-      <video id="teaserVideo" controls playsinline src="assets/video/teaser.mp4"></video>
-      <button class="close" data-close>×</button>
-    </div>
-  </div>
-
-  <!-- Stage: random portals -->
-  <main id="stage" aria-label="MOTTO portals"></main>
-
-  <!-- DOSN Easter egg -->
-  <a id="dosn" href="https://youtube.com/@dosnOS" target="_blank" rel="noopener">DOSN</a>
 
   <script src="js/app.js"></script>
 </body>
