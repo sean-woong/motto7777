@@ -176,8 +176,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (enterBtn) {
     enterBtn.addEventListener("click", () => {
-      intro.style.display = "none";   // 인트로 숨김
-      main.style.display = "block";   // 메인 표시
+      console.log("ENTER clicked"); // 확인용
+      intro.style.display = "none";   // intro 숨김
+      main.style.display = "block";   // main 표시
     });
   }
 });
+
