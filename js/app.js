@@ -97,13 +97,11 @@ function placeDOSN(){
 }
 
 // Boot
-spawnPortals(); 
-placeDOSN();
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM loaded, now safe to run JS");
+  console.log("DOM Loaded, JS ready!");
 
-  const spBtn = document.getElementById('spBtn');
-  const ytBtn = document.getElementById('ytBtn');
+  const spBtn = document.getElementById("spBtn");
+  const ytBtn = document.getElementById("ytBtn");
   const enterBtn = document.getElementById("enterBtn");
   const intro = document.getElementById("intro");
   const main = document.getElementById("main");
@@ -113,8 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (enterBtn) {
     enterBtn.addEventListener("click", () => {
+      console.log("ENTER clicked!");
       intro.style.display = "none";
       main.style.display = "block";
     });
   }
+
+  spawnPortals();
+  placeDOSN();
 });
