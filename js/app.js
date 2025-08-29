@@ -42,7 +42,6 @@ const muteBtn   = document.getElementById('muteBtn');
 // 링크 부착
 document.getElementById('spBtn').href = SPOTIFY_URL;
 document.getElementById('ytBtn').href = YOUTUBE_URL;
-document.getElementById('scBtn').href = SOUNDCLOUD_URL;
 
 // Intro 액션
 enterBtn?.addEventListener('click', async () => {
@@ -168,7 +167,7 @@ spawnPortals(); placeDOSN();
 document.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && document.getElementById('intro')) enterBtn.click(); });
 if(ENABLE_AUDIO){ document.getElementById('audio-ui').hidden=false; document.getElementById('nowPlaying').hidden=false; }
 
-// Intro → Main 전환
+// Intro → Main 전환 (에러 방지 버전)
 document.addEventListener("DOMContentLoaded", () => {
   const enterBtn = document.getElementById("enterBtn");
   const intro = document.getElementById("intro");
@@ -176,10 +175,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (enterBtn) {
     enterBtn.addEventListener("click", () => {
-      console.log("ENTER clicked"); // 확인용
-      intro.style.display = "none";   // intro 숨김
-      main.style.display = "block";   // main 표시
+      console.log("ENTER clicked ✅"); // 확인용
+      if (intro) intro.style.display = "none";   // intro 숨김
+      if (main) main.style.display = "block";    // main 표시
     });
+  } else {
+    console.warn("ENTER button not found");
   }
 });
-
