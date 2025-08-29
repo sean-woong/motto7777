@@ -176,8 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (enterBtn) {
     enterBtn.addEventListener("click", () => {
-      intro.style.display = "none";   // 인트로 숨기기
-      main.style.display = "block";   // 메인 보이기
+      intro.style.display = "none";   // 인트로 숨김
+      main.style.display = "block";   // 메인 표시
     });
   }
 });
