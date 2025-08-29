@@ -167,3 +167,17 @@ if(!ENABLE_TEASER && teaserModal){ teaserModal.remove(); }
 spawnPortals(); placeDOSN();
 document.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && document.getElementById('intro')) enterBtn.click(); });
 if(ENABLE_AUDIO){ document.getElementById('audio-ui').hidden=false; document.getElementById('nowPlaying').hidden=false; }
+
+// Intro → Main 전환
+document.addEventListener("DOMContentLoaded", () => {
+  const enterBtn = document.getElementById("enterBtn");
+  const intro = document.getElementById("intro");
+  const main = document.getElementById("main");
+
+  if (enterBtn) {
+    enterBtn.addEventListener("click", () => {
+      intro.style.display = "none";   // 인트로 숨기기
+      main.style.display = "block";   // 메인 보이기
+    });
+  }
+});
