@@ -13,7 +13,10 @@
   <div id="intro" class="intro">
     <h1>MOTTO</h1>
     <!-- 버튼에 직접 onClick 연결 (백업 라인) -->
-    <button id="enterBtn" onclick="window.__m_enter && window.__m_enter()">ENTER</button>
+   <button id="enterBtn"
+  onclick="(function(){var i=document.getElementById('intro'),m=document.getElementById('main');if(i&&m){i.style.display='none';m.style.display='block';console.log('ENTER (inline)');}})()">
+  ENTER
+</button>
     <p class="subtext">headphones recommended</p>
   </div>
 

@@ -1,3 +1,7 @@
+if (window.__MOTTO_INIT__) {
+  console.log('MOTTO already initialized — skipping duplicate load.');
+} else {
+  window.__MOTTO_INIT__ = true;
 /* MOTTO app.js — minimal, failsafe */
 
 const ENABLE_AUDIO = false;
@@ -87,3 +91,4 @@ document.addEventListener('DOMContentLoaded', () => {
   placeDOSN();
   window.addEventListener('resize', spawnPortals);
 });
+} // ← 가드 닫기
