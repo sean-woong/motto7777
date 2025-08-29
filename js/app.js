@@ -97,16 +97,21 @@ function placeDOSN(){
 
 // Boot
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM Loaded, JS ready!");
+  console.log("DOM Loaded, JS ready!"); // 페이지 로드 확인용
+
+  const enterBtn = document.getElementById("enterBtn");
+  const intro = document.getElementById("intro");
+  const main = document.getElementById("main");
 
   if (enterBtn) {
     enterBtn.addEventListener("click", () => {
-      console.log("ENTER clicked!");
-      intro.style.display = "none";
-      document.getElementById("main").style.display = "block";
+      console.log("✅ ENTER 눌림, intro → main 실행 중...");
+      intro.style.display = "none";   // intro 숨기기
+      main.style.display = "block";   // main 표시
     });
   }
 
   spawnPortals();
   placeDOSN();
 });
+
