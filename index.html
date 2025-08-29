@@ -5,25 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOTTO 7777</title>
   <link rel="stylesheet" href="css/style.css" />
-  <!-- ★ 여기 딱 1줄만 있어야 함: js/app.js?v=... 캐시버스터 -->
-  <script defer src="js/app.js?v=20250829a"></script>
+  <!-- JS는 반드시 한 번만! -->
+  <script defer src="js/app.js"></script>
 </head>
 <body>
   <!-- Intro -->
   <div id="intro" class="intro">
     <h1>MOTTO</h1>
-    <button id="enterBtn">ENTER</button>
+    <!-- 버튼에 직접 onClick 연결 (백업 라인) -->
+    <button id="enterBtn" onclick="window.__m_enter && window.__m_enter()">ENTER</button>
     <p class="subtext">headphones recommended</p>
   </div>
 
-  <!-- Main (처음엔 숨김) -->
+  <!-- Main (초기 숨김) -->
   <div id="main" style="display:none;">
     <div class="links">
       <a id="spBtn" href="#" target="_blank">Spotify</a>
       <a id="ytBtn" href="#" target="_blank">YouTube</a>
     </div>
 
-    <!-- 캐릭터 그리드 (배치용) -->
+    <!-- 캐릭터 그리드(임시) -->
     <div class="grid">
       <div class="char" style="background-image:url('assets/images/dealer.jpg')">DEALER</div>
       <div class="char" style="background-image:url('assets/images/skull.jpg')">SKULL</div>
@@ -34,7 +35,6 @@
       <div class="char" style="background-image:url('assets/images/boxer.jpg')">BOXER</div>
     </div>
 
-    <!-- 랜덤 포털 + DOSN -->
     <div id="stage"></div>
     <div id="dosn" class="dosn">DOSN</div>
   </div>
