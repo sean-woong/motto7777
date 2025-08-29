@@ -1,4 +1,3 @@
-
 // ===== DEV TOGGLES =====
 const ENABLE_AUDIO  = false;
 const ENABLE_8BIT   = false;
@@ -100,3 +99,22 @@ function placeDOSN(){
 // Boot
 spawnPortals(); 
 placeDOSN();
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM loaded, now safe to run JS");
+
+  const spBtn = document.getElementById('spBtn');
+  const ytBtn = document.getElementById('ytBtn');
+  const enterBtn = document.getElementById("enterBtn");
+  const intro = document.getElementById("intro");
+  const main = document.getElementById("main");
+
+  if (spBtn) spBtn.href = "https://spotify.com";
+  if (ytBtn) ytBtn.href = "https://youtube.com";
+
+  if (enterBtn) {
+    enterBtn.addEventListener("click", () => {
+      intro.style.display = "none";
+      main.style.display = "block";
+    });
+  }
+});
