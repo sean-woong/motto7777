@@ -69,3 +69,7 @@ body.character{ padding:12px 12px 40px }
 /* fix: intro overlay blocks clicks */
 #intro::after { pointer-events: none; z-index: 0; }
 #intro > *    { position: relative; z-index: 1; }
+
+/* fix: intro overlay blocks clicks */
+#intro::after, #intro .intro-bg { pointer-events: none; }
+#intro > * { position: relative; z-index: 1; }
