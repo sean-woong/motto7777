@@ -65,3 +65,7 @@ body.character{ padding:12px 12px 40px }
 .char-foot{ margin-top:20px; text-align:center; color:#8a8a8a }
 
 @media (max-width:640px){ .portal{ width:42vw } }
+
+/* fix: intro overlay blocks clicks */
+#intro::after { pointer-events: none; z-index: 0; }
+#intro > *    { position: relative; z-index: 1; }
