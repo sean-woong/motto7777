@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MOTTO 7777</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+
+  <!-- Intro -->
+  <div id="intro" class="intro">
+    <div class="intro-inner">
+      <img src="assets/images/motto_profile.gif" alt="MOTTO" class="intro-logo" />
+      <button id="enterBtn" class="btn">ENTER</button>
+      <p class="hint">headphones recommended</p>
+    </div>
+  </div>
+
+  <!-- Intro Clip -->
+  <div id="introClip" class="intro-clip" hidden>
+    <img src="assets/images/ani_motto.gif" alt="intro clip" loading="lazy" />
+  </div>
+
+  <!-- Header Nav -->
+  <header class="nav">
+    <a href="#" id="homeBtn" class="brand">MOTTO</a>
+    <nav class="links">
+      <a id="immBtn"  class="plat" data-ico="⭐" href="#">IMMORTALS</a>
+      <a id="arcBtn"  class="plat" data-ico="🖼" href="#">ARCHIVE</a>
+      <a id="spBtn"   class="plat" data-ico="🎧" href="#" target="_blank" rel="noopener">Spotify</a>
+      <a id="ytBtn"   class="plat" data-ico="▶︎" href="#" target="_blank" rel="noopener">YouTube</a>
+      <a id="twBtn"   class="plat" data-ico="✖︎" href="https://x.com/motto_7777" target="_blank" rel="noopener">X</a>
+      <a id="igBtn"   class="plat disabled" data-ico="📷" href="#">Instagram</a>
+      <a id="ttBtn"   class="plat disabled" data-ico="🎵" href="#">TikTok</a>
+      <a id="shopBtn" class="plat" data-ico="🛒" href="#" target="_blank" rel="noopener">Shop</a>
+    </nav>
+  </header>
+
+  <!-- Audio UI -->
+  <div id="audio-ui" class="audio-ui" hidden>
+    <button id="prevBtn" title="Previous Track">⏮</button>
+    <button id="playBtn" title="Play/Pause">⏯</button>
+    <button id="nextBtn" title="Next Track">⏭</button>
+    <input id="vol" type="range" min="0" max="1" step="0.01" value="0.9" title="Volume" />
+    <button id="muteBtn" title="Mute/Unmute">🔊</button>
+  </div>
+  <div id="nowPlaying" class="now" hidden>Now Playing: —</div>
+
+  <!-- Stage -->
+  <main id="stage" class="stage" aria-live="polite"></main>
+
+  <!-- Eggs -->
+  <a id="egg1" class="egg" href="https://www.youtube.com/@dosnOS"   target="_blank" rel="noopener" aria-label="Visit DOSN YouTube channel">DOSN</a>
+  <a id="egg2" class="egg" href="https://www.youtube.com/@hazhaus" target="_blank" rel="noopener" aria-label="Visit HazHaus YouTube channel">HazHaus</a>
+
+  <!-- Character Modal -->
+  <div id="charModal" class="modal" hidden>
+    <div class="modal-bg" data-close></div>
+    <div class="modal-card char-card">
+      <button class="modal-close" data-close>✕</button>
+      <div class="char-legend" id="charLegend"></div>
+      <div class="char-hero">
+        <video id="charHero" playsinline muted loop autoplay controls
+               style="max-width:100%;max-height:66vh;object-fit:contain;border:1px solid #2a2a2a"></video>
+      </div>
+      <div class="char-bar">
+        <div id="charCaption" class="char-note"></div>
+        <button id="charAuto" class="char-auto" aria-pressed="true" title="Auto slide thumbnails">AUTO ON</button>
+      </div>
+      <div id="charStrip" class="char-strip"></div>
+    </div>
+  </div>
+
+  <!-- Immortals Modal -->
+  <div id="immModal" class="modal" hidden>
+    <div class="modal-bg" data-close></div>
+    <div class="modal-card" style="width:min(96vw,1200px);padding:12px">
+      <button class="modal-close" data-close>✕</button>
+      <h3 style="margin:0 0 10px">IMMORTALS</h3>
+      <div id="immGrid" class="imm-grid"></div>
+    </div>
+  </div>
+
+  <!-- Immortals Detail Modal -->
+  <div id="immDetailModal" class="modal" hidden>
+    <div class="modal-bg" data-close></div>
+    <div class="modal-card" style="width:min(96vw,1100px);padding:12px">
+      <button class="modal-close" data-close>✕</button>
+      <div id="immLegend" class="imm-legend"></div>
+      <h3 id="immTitle" style="margin:6px 0 8px"></h3>
+      <div class="imm-hero">
+        <video id="immVideo" playsinline muted loop autoplay controls style="width:100%;max-height:66vh;object-fit:contain;border:1px solid #2a2a2a"></video>
+      </div>
+      <p id="immDesc" class="imm-desc"></p>
+      <div class="imm-nav">
+        <button id="immPrev">◀</button>
+        <span id="immIndex" class="imm-index"></span>
+        <button id="immNext">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Archive Modal -->
+  <div id="archiveModal" class="modal" hidden>
+    <div class="modal-bg" data-close></div>
+    <div class="modal-card" style="width:min(96vw,1100px);padding:12px">
+      <button class="modal-close" data-close>✕</button>
+      <h3 style="margin:0 0 10px">ARCHIVE</h3>
+      <div id="archiveGrid" class="archive-grid"></div>
+    </div>
+  </div>
+
+</body>
+</html>
