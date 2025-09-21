@@ -125,7 +125,7 @@ const DOM = {
   immNext: document.getElementById('immNext'),
   immIndex: document.getElementById('immIndex'),
   arcModal: document.getElementById('archiveModal'),
-  arcGrid: document.getElementById('archiveGrid')
+  arcGrid: document.getElementById('arcGrid')
 };
 
 // ====== Link Setup ======
@@ -175,31 +175,35 @@ function debounce(fn, ms) {
 
 // ====== Intro → Main ======
 DOM.enterBtn?.addEventListener('click', () => {
+  console.log("ENTER 버튼 클릭됨 ✅");
   DOM.intro.style.display = 'none';
   DOM.introClip.hidden = false;
 
-  // 3초 후 강제로 메인 진입
   setTimeout(() => {
+    console.log("bootMain 실행 직전 ✅");
     DOM.introClip.hidden = true;
     try {
       bootMain();
+      console.log("bootMain 실행 완료 ✅");
     } catch (err) {
       console.error("bootMain 실행 오류:", err);
-      bootMain(); // 강제 재시도
     }
   }, 3000);
 });
 
 // ====== Boot Main ======
 function bootMain() {
+  console.log("Booting main stage ✅");
   spawnPortals();
-  placeEggs();
-  if (SHOW_LEGEND_PINS) spawnLegendPins();
-  if (ENABLE_AUDIO) {
-    DOM.audioUI.hidden = false;
-    DOM.nowUI.hidden = false;
-    startOST();
-  }
+  requestAnimationFrame(() => {
+    placeEggs();
+    if (SHOW_LEGEND_PINS) spawnLegendPins();
+    if (ENABLE_AUDIO) {
+      DOM.audioUI.hidden = false;
+      DOM.nowUI.hidden = false;
+      startOST();
+    }
+  });
 }
 
 // ====== Portals ======
@@ -217,8 +221,14 @@ function spawnPortals() {
     el.setAttribute('aria-label', `${p.label} 캐릭터 모달 열기`);
 
     const probe = new Image();
-    probe.onload = () => el.style.backgroundImage = `url(${p.img})`;
-    probe.onerror = () => el.classList.add('placeholder');
+    probe.onload = () => {
+      el.style.backgroundImage = `url(${p.img})`;
+      console.log(`${p.label} GIF 로드 성공 ✅`);
+    };
+    probe.onerror = () => {
+      el.classList.add('placeholder');
+      console.error(`${p.label} GIF 로드 실패: ${p.img} 확인 필요 ❌`);
+    };
     probe.src = p.img;
 
     const w = Math.min(vw * 0.22, 320), h = w;
@@ -229,8 +239,12 @@ function spawnPortals() {
     while (tries < 40 && !placedOK) {
       x = Math.random() * (vw - padX * 2 - w) + padX;
       y = Math.random() * (vh - padY * 2 - h) + padY;
-      placedOK = placed.every(r => overlapRatio(x, y, w, h, r.x, r.y, r.w, r.h) < 0.5);
+      placedOK = placed.every(r => overlapRatio(x, y, w, h, r.x, r.y, r.w, r.h) < 0.3); // 겹침 비율 0.5 → 0.3
       tries++;
+    }
+    if (!placedOK) {
+      x = padX + (placed.length * (w + 20)) % (vw - w - padX * 2); // 대체 배치
+      y = padY + Math.floor((placed.length * (h + 20)) / (vw - w - padX * 2)) * (h + 20);
     }
     el.style.left = `${x}px`; el.style.top = `${y}px`;
     placed.push({ x, y, w, h });
@@ -301,7 +315,6 @@ async function spawnLegendPins(resize = false) {
 }
 
 // ====== Character Modal ======
-// ====== Character Modal ======
 let _charAutoTimer = null;
 
 function openCharModal(id) {
@@ -344,6 +357,7 @@ function openCharModal(id) {
   setAutoBtn(true);
   startCharAuto(id);
   DOM.charModal.hidden = false;
+  DOM.charModal.focus(); // 모달에 포커스 추가
 }
 
 function playCharClip(id, idx) {
@@ -490,8 +504,15 @@ DOM.arcModal?.addEventListener('click', (e) => { if (e.target.hasAttribute('data
 let A = null, queue = [], now = -1, playing = false;
 
 function startOST() {
-  if (!OST_TRACKS.length) { return; }
-  A = new Audio(); A.preload = 'auto'; A.crossOrigin = 'anonymous';
+  if (!OST_TRACKS.length) return;
+  if (A) {
+    A.pause();
+    A.src = '';
+    A = null;
+  }
+  A = new Audio();
+  A.preload = 'auto';
+  A.crossOrigin = 'anonymous';
   A.volume = parseFloat(DOM.vol.value);
   A.addEventListener('ended', nextTrack);
 
@@ -504,7 +525,7 @@ function startOST() {
   localStorage.setItem('motto_first_visit', '1');
   if (first) {
     const idx = queue.findIndex(t => (t.title || '').toLowerCase() === 'motto');
-    if (idx > 0) { [queue[0], queue[idx]] = [queue[idx], queue[0]]; }
+    if (idx > 0) [queue[0], queue[idx]] = [queue[idx], queue[0]];
   }
   now = -1;
   nextTrack();
@@ -544,7 +565,7 @@ function togglePlay() {
 }
 function updatePlayBtn() { DOM.playBtn.textContent = playing ? '⏸' : '▶︎'; }
 function updateNow(meta) {
-  const p = PORTALS.find(pp => pp.id === (meta.who || '')); 
+  const p = PORTALS.find(pp => pp.id === (meta.who || ''));
   const icon = p?.emo || '♪';
   DOM.nowUI.textContent = `Now Playing: [${icon} ${meta.title || ''}]`;
 }
@@ -556,7 +577,8 @@ function trackEvent(category, action, label) {
 DOM.homeBtn?.addEventListener('click', (e) => {
   e.preventDefault();
   [...document.querySelectorAll('.modal')].forEach(m => m.hidden = true);
-  spawnPortals(); if (SHOW_LEGEND_PINS) spawnLegendPins();
+  spawnPortals();
+  if (SHOW_LEGEND_PINS) spawnLegendPins();
 });
 
 DOM.immBtn?.addEventListener('click', (e) => { e.preventDefault(); openImmortals(); });
@@ -571,4 +593,3 @@ document.addEventListener('keydown', (e) => {
     if (!DOM.arcModal.hidden) DOM.arcModal.hidden = true;
   }
 });
-
