@@ -1,15 +1,15 @@
 // ====== DEV TOGGLES ======
-const ENABLE_AUDIO     = true;   // ENTER 후 OST 자동 시작
-const SHOW_LEGEND_PINS = true;   // 메인에 Legend 지름길 핀
-const LEGEND_PIN_COUNT = 1;      // 한 번에 몇 개 표시할지
+const ENABLE_AUDIO = true;
+const SHOW_LEGEND_PINS = true;
+const LEGEND_PIN_COUNT = 1;
 
 // ====== External Links ======
-const SPOTIFY_URL  = '#';
-const YOUTUBE_URL  = '#';
-const SHOP_URL     = '#';
-const TWITTER_URL  = 'https://x.com/motto_7777';
-const IG_URL       = '#';
-const TT_URL       = '#';
+const SPOTIFY_URL = '#';
+const YOUTUBE_URL = '#';
+const SHOP_URL = '#';
+const TWITTER_URL = 'https://x.com/motto_7777';
+const IG_URL = '#';
+const TT_URL = '#';
 
 // ====== Data Sources ======
 const IMM_LIST = [
@@ -28,24 +28,24 @@ const IMM_LIST = [
 
 // ====== Portals ======
 const PORTALS = [
-  { id: 'dealer',     label: 'DEALER',     img: 'assets/images/dealer.gif',     emo: '🎲' },
-  { id: 'skull',      label: 'SKULL',      img: 'assets/images/skull.gif',      emo: '💀' },
-  { id: 'rockstar',   label: 'ROCKSTAR',   img: 'assets/images/rockstar.gif',   emo: '🎸' },
-  { id: 'drag',       label: 'DRAG',       img: 'assets/images/drag.gif',       emo: '👑' },
-  { id: 'military',   label: 'MILITARY',   img: 'assets/images/military.gif',   emo: '🪖' },
+  { id: 'dealer', label: 'DEALER', img: 'assets/images/dealer.gif', emo: '🎲' },
+  { id: 'skull', label: 'SKULL', img: 'assets/images/skull.gif', emo: '💀' },
+  { id: 'rockstar', label: 'ROCKSTAR', img: 'assets/images/rockstar.gif', emo: '🎸' },
+  { id: 'drag', label: 'DRAG', img: 'assets/images/drag.gif', emo: '👑' },
+  { id: 'military', label: 'MILITARY', img: 'assets/images/military.gif', emo: '🪖' },
   { id: 'motorcycle', label: 'MOTORCYCLE', img: 'assets/images/motorcycle.gif', emo: '🏍️' },
-  { id: 'boxer',      label: 'BOXER',      img: 'assets/images/boxer.gif',      emo: '🥊' },
+  { id: 'boxer', label: 'BOXER', img: 'assets/images/boxer.gif', emo: '🥊' },
 ];
 
 // ====== Character Hero Videos ======
 const CHAR_HERO = {
-  dealer:     'assets/video/dealer.mp4',
-  skull:      'assets/video/skull.mp4',
-  rockstar:   'assets/video/rockstar.mp4',
-  drag:       'assets/video/drag.mp4',
-  military:   'assets/video/military.mp4',
+  dealer: 'assets/video/dealer.mp4',
+  skull: 'assets/video/skull.mp4',
+  rockstar: 'assets/video/rockstar.mp4',
+  drag: 'assets/video/drag.mp4',
+  military: 'assets/video/military.mp4',
   motorcycle: 'assets/video/motorcycle.mp4',
-  boxer:      'assets/video/boxer.mp4'
+  boxer: 'assets/video/boxer.mp4'
 };
 
 // ====== Character Clips ======
@@ -61,23 +61,23 @@ const CHAR_CLIPS = {
 
 // ====== Legend Descriptions ======
 const LEGEND_DESC = {
-  dealer:     { en: "Dealer — Loop Glitch · Fumes bleed.",   ko: "딜러 — 루프 글리치 · 연기가 스며든다." },
-  skull:      { en: "Skull — Fragment Protocol · Sparks ignite.", ko: "스컬 — 프래그먼트 프로토콜 · 스파크가 튄다." },
-  rockstar:   { en: "Rockstar — Stall Stage · Smile stalls.", ko: "록스타 — 스톨 스테이지 · 미소가 멈춘다." },
-  drag:       { en: "Drag — Recode Glam · Everything screams.", ko: "드랙 — 리코드 글램 · 모든 것이 비명한다." },
-  military:   { en: "Military — Reload Combat · Target locked.", ko: "밀리터리 — 리로드 컴뱃 · 조준이 고정된다." },
-  boxer:      { en: "Boxer — Loop Fight · Bell rings.",      ko: "복서 — 루프 파이트 · 종이 울린다." },
+  dealer: { en: "Dealer — Loop Glitch · Fumes bleed.", ko: "딜러 — 루프 글리치 · 연기가 스며든다." },
+  skull: { en: "Skull — Fragment Protocol · Sparks ignite.", ko: "스컬 — 프래그먼트 프로토콜 · 스파크가 튄다." },
+  rockstar: { en: "Rockstar — Stall Stage · Smile stalls.", ko: "록스타 — 스톨 스테이지 · 미소가 멈춘다." },
+  drag: { en: "Drag — Recode Glam · Everything screams.", ko: "드랙 — 리코드 글램 · 모든 것이 비명한다." },
+  military: { en: "Military — Reload Combat · Target locked.", ko: "밀리터리 — 리로드 컴뱃 · 조준이 고정된다." },
+  boxer: { en: "Boxer — Loop Fight · Bell rings.", ko: "복서 — 루프 파이트 · 종이 울린다." },
   motorcycle: { en: "Motorcycle — Skid Speed · Veins pulse.", ko: "모터사이클 — 스키드 스피드 · 맥박이 뛴다." }
 };
 
 // ====== OST Tracks ======
 const OST_TRACKS = [
-  { title: 'Doomsday',        url: 'assets/audio/doomsday.mp3',        who: 'military' },
-  { title: 'Motto',           url: 'assets/audio/motto.mp3',           who: 'motorcycle' },
-  { title: 'Drag',            url: 'assets/audio/drag.mp3',            who: 'drag' },
-  { title: '7777 (Get Lo)',   url: 'assets/audio/7777_getlo.mp3',      who: 'boxer' },
-  { title: 'DNA Ferrari',     url: 'assets/audio/dna_ferrari.mp3',     who: 'rockstar' },
-  { title: 'Break',           url: 'assets/audio/break.mp3',           who: 'dealer' },
+  { title: 'Doomsday', url: 'assets/audio/doomsday.mp3', who: 'military' },
+  { title: 'Motto', url: 'assets/audio/motto.mp3', who: 'motorcycle' },
+  { title: 'Drag', url: 'assets/audio/drag.mp3', who: 'drag' },
+  { title: '7777 (Get Lo)', url: 'assets/audio/7777_getlo.mp3', who: 'boxer' },
+  { title: 'DNA Ferrari', url: 'assets/audio/dna_ferrari.mp3', who: 'rockstar' },
+  { title: 'Break', url: 'assets/audio/break.mp3', who: 'dealer' },
   { title: 'Close Encounter', url: 'assets/audio/close_encounter.mp3', who: 'skull' }
 ];
 
@@ -174,12 +174,19 @@ function debounce(fn, ms) {
 }
 
 // ====== Intro → Main ======
-DOM.enterBtn?.addEventListener('click', async () => {
+DOM.enterBtn?.addEventListener('click', () => {
   DOM.intro.style.display = 'none';
   DOM.introClip.hidden = false;
+
+  // 3초 후 강제로 메인 진입
   setTimeout(() => {
     DOM.introClip.hidden = true;
-    bootMain();
+    try {
+      bootMain();
+    } catch (err) {
+      console.error("bootMain 실행 오류:", err);
+      bootMain(); // 강제 재시도
+    }
   }, 3000);
 });
 
@@ -189,7 +196,8 @@ function bootMain() {
   placeEggs();
   if (SHOW_LEGEND_PINS) spawnLegendPins();
   if (ENABLE_AUDIO) {
-    DOM.audioUI.hidden = false; DOM.nowUI.hidden = false;
+    DOM.audioUI.hidden = false;
+    DOM.nowUI.hidden = false;
     startOST();
   }
 }
