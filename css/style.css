@@ -174,3 +174,29 @@ body {
   .portal { width: 42vw; }
   .audio-ui #vol { width: 90px; }
 }
+#charModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000; /* 포털 위로 표시 */
+  display: none; /* hidden 속성 반영 */
+}
+#charModal[hidden] {
+  display: none;
+}
+.portal {
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  display: block;
+  border: 1px solid #2a2a2a; /* 디버깅용 경계선 */
+}
+.portal.placeholder {
+  background-color: #333; /* 로드 실패 시 회색 박스 */
+}
+.intro-clip[hidden] {
+  display: none !important;
+}
