@@ -28,25 +28,56 @@ const IMM_LIST = [
 
 // ====== Portals ======
 const PORTALS = [
-  { id: 'dealer', label: 'DEALER', img: 'assets/images/dealer.gif', emo: '🎲' },
-  { id: 'skull', label: 'SKULL', img: 'assets/images/skull.gif', emo: '💀' },
-  { id: 'rockstar', label: 'ROCKSTAR', img: 'assets/images/rockstar.gif', emo: '🎸' },
-  { id: 'drag', label: 'DRAG', img: 'assets/images/drag.gif', emo: '👑' },
-  { id: 'military', label: 'MILITARY', img: 'assets/images/military.gif', emo: '🪖' },
-  { id: 'motorcycle', label: 'MOTORCYCLE', img: 'assets/images/motorcycle.gif', emo: '🏍️' },
-  { id: 'boxer', label: 'BOXER', img: 'assets/images/boxer.gif', emo: '🥊' },
+  {
+    id: 'dealer',
+    label: 'DEALER',
+    img: 'assets/images/dealer.gif',
+    video: 'assets/video/dealer.mp4',
+    emo: '🎲'
+  },
+  {
+    id: 'skull',
+    label: 'SKULL',
+    img: 'assets/images/skull.gif',
+    video: 'assets/video/skull.mp4',
+    emo: '💀'
+  },
+  {
+    id: 'rockstar',
+    label: 'ROCKSTAR',
+    img: 'assets/images/rockstar.gif',
+    video: 'assets/video/rockstar.mp4',
+    emo: '🎸'
+  },
+  {
+    id: 'drag',
+    label: 'DRAG',
+    img: 'assets/images/drag.gif',
+    video: 'assets/video/drag.mp4',
+    emo: '👑'
+  },
+  {
+    id: 'military',
+    label: 'MILITARY',
+    img: 'assets/images/military.gif',
+    video: 'assets/video/military.mp4',
+    emo: '🪖'
+  },
+  {
+    id: 'motorcycle',
+    label: 'MOTORCYCLE',
+    img: 'assets/images/motorcycle.gif',
+    video: 'assets/video/motorcycle.mp4',
+    emo: '🏍️'
+  },
+  {
+    id: 'boxer',
+    label: 'BOXER',
+    img: 'assets/images/boxer.gif',
+    video: 'assets/video/boxer.mp4',
+    emo: '🥊'
+  }
 ];
-
-// ====== Character Hero Videos ======
-const CHAR_HERO = {
-  dealer: 'assets/video/dealer.mp4',
-  skull: 'assets/video/skull.mp4',
-  rockstar: 'assets/video/rockstar.mp4',
-  drag: 'assets/video/drag.mp4',
-  military: 'assets/video/military.mp4',
-  motorcycle: 'assets/video/motorcycle.mp4',
-  boxer: 'assets/video/boxer.mp4'
-};
 
 // ====== Character Clips ======
 const CHAR_CLIPS = {
@@ -58,6 +89,26 @@ const CHAR_CLIPS = {
   motorcycle: [],
   boxer: []
 };
+
+function getPortalById(id) {
+  return PORTALS.find(p => p.id === id);
+}
+
+function deriveVideoPath(id) {
+  const portal = getPortalById(id);
+  if (!portal) {
+    return `assets/video/${id}.mp4`;
+  }
+  if (portal.video) {
+    return portal.video;
+  }
+  if (portal.img) {
+    return portal.img
+      .replace('/images/', '/video/')
+      .replace(/\.gif$/i, '.mp4');
+  }
+  return `assets/video/${id}.mp4`;
+}
 
 // ====== Legend Descriptions ======
 const LEGEND_DESC = {
@@ -217,12 +268,19 @@ function spawnPortals() {
     el.href = '#';
     el.className = 'portal';
     el.dataset.id = p.id;
+    const heroSrc = deriveVideoPath(p.id);
+    if (heroSrc) {
+      el.dataset.video = heroSrc;
+    }
     el.setAttribute('tabindex', '0');
     el.setAttribute('aria-label', `${p.label} 캐릭터 모달 열기`);
 
     const probe = new Image();
     probe.onload = () => {
       el.style.backgroundImage = `url(${p.img})`;
+      if (heroSrc) {
+        el.dataset.video = heroSrc;
+      }
       console.log(`${p.label} GIF 로드 성공 ✅`);
     };
     probe.onerror = () => {
@@ -327,11 +385,14 @@ function openCharModal(id) {
     DOM.charLegend.style.display = 'none';
   }
 
+  const portalEl = DOM.stage?.querySelector(`.portal[data-id="${id}"]`);
+  const heroSrc = portalEl?.dataset.video || deriveVideoPath(id);
   DOM.charHero.loop = true;
-  DOM.charHero.src = CHAR_HERO[id] || '';
+  DOM.charHero.src = heroSrc || '';
   DOM.charHero.currentTime = 0;
   DOM.charHero.onerror = () => {
-    DOM.charHero.replaceWith(document.createElement('div')).textContent = '비디오를 불러올 수 없습니다';
+    console.warn('비디오를 불러올 수 없습니다:', heroSrc);
+    DOM.charCaption.textContent = `${id.toUpperCase()} — VIDEO NOT FOUND`;
   };
   DOM.charHero.play().catch(() => {});
 
