@@ -48,6 +48,10 @@ const CHAR_HERO = {
   boxer: 'assets/video/boxer.mp4'
 };
 
+const CHAR_HERO_FALLBACK = {
+  motorcycle: 'assets/video/motocycle.mp4'
+};
+
 // ====== Character Clips ======
 const CHAR_CLIPS = {
   dealer: [],
@@ -328,12 +332,33 @@ function openCharModal(id) {
   }
 
   DOM.charHero.loop = true;
-  DOM.charHero.src = CHAR_HERO[id] || '';
-  DOM.charHero.currentTime = 0;
-  DOM.charHero.onerror = () => {
-    DOM.charHero.replaceWith(document.createElement('div')).textContent = '비디오를 불러올 수 없습니다';
-  };
-  DOM.charHero.play().catch(() => {});
+  DOM.charHero.muted = true;
+  const heroSources = [CHAR_HERO[id], CHAR_HERO_FALLBACK[id]].filter(Boolean);
+  DOM.charHero.onerror = null;
+  if (!heroSources.length) {
+    DOM.charHero.removeAttribute('src');
+    DOM.charHero.load();
+  } else {
+    let heroIdx = 0;
+    const loadHero = (src) => {
+      DOM.charHero.src = src;
+      DOM.charHero.currentTime = 0;
+      DOM.charHero.load();
+      DOM.charHero.play().catch(() => {});
+    };
+    DOM.charHero.onerror = () => {
+      const nextIdx = heroIdx + 1;
+      if (nextIdx < heroSources.length) {
+        heroIdx = nextIdx;
+        console.warn(`주요 비디오 로드 실패, 대체 시도: ${heroSources[heroIdx]}`);
+        loadHero(heroSources[heroIdx]);
+        return;
+      }
+      console.error(`비디오 로드 실패: ${DOM.charHero.src}`);
+      DOM.charCaption.textContent = '비디오를 불러올 수 없습니다';
+    };
+    loadHero(heroSources[heroIdx]);
+  }
 
   DOM.charStrip.innerHTML = '';
   const clips = CHAR_CLIPS[id] || [];
@@ -357,6 +382,9 @@ function openCharModal(id) {
   setAutoBtn(true);
   startCharAuto(id);
   DOM.charModal.hidden = false;
+  if (!DOM.charModal.hasAttribute('tabindex')) {
+    DOM.charModal.setAttribute('tabindex', '-1');
+  }
   DOM.charModal.focus(); // 모달에 포커스 추가
 }
 
