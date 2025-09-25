@@ -96,17 +96,13 @@ function getPortalById(id) {
 
 function deriveVideoPath(id) {
   const portal = getPortalById(id);
-  if (!portal) {
-    return `assets/video/${id}.mp4`;
-  }
-  if (portal.video) {
-    return portal.video;
-  }
-  if (portal.img) {
+
+ 
     return portal.img
       .replace('/images/', '/video/')
       .replace(/\.gif$/i, '.mp4');
   }
+
   return `assets/video/${id}.mp4`;
 }
 
@@ -278,9 +274,7 @@ function spawnPortals() {
     const probe = new Image();
     probe.onload = () => {
       el.style.backgroundImage = `url(${p.img})`;
-      if (heroSrc) {
-        el.dataset.video = heroSrc;
-      }
+
       console.log(`${p.label} GIF 로드 성공 ✅`);
     };
     probe.onerror = () => {
@@ -385,8 +379,7 @@ function openCharModal(id) {
     DOM.charLegend.style.display = 'none';
   }
 
-  const portalEl = DOM.stage?.querySelector(`.portal[data-id="${id}"]`);
-  const heroSrc = portalEl?.dataset.video || deriveVideoPath(id);
+
   DOM.charHero.loop = true;
   DOM.charHero.src = heroSrc || '';
   DOM.charHero.currentTime = 0;
