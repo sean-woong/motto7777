@@ -98,7 +98,15 @@ body {
 }
 
 /* Audio UI + Now */
-.audio-ui { position: fixed; right: 12px; top: 12px; display: flex; gap: 10px; align-items: center; z-index: 25; }
+.audio-ui {
+  position: fixed;
+  right: 12px;
+  top: calc(56px + 12px);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  z-index: 25;
+}
 .audio-ui button { background: transparent; color: var(--fg); border: 1px solid #444; padding: 6px 10px; cursor: pointer; }
 .audio-ui #vol { width: 120px; }
 .now {
@@ -227,6 +235,10 @@ body {
 @media (max-width: 640px) {
   .portal { width: 42vw; }
   .audio-ui #vol { width: 90px; }
+  .audio-ui {
+    top: auto;
+    bottom: 70px;
+  }
 }
 #charModal {
   position: fixed;
