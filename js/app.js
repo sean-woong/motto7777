@@ -14,15 +14,81 @@ const TT_URL = '#';
 // ====== Data Sources ======
 const IMM_LIST = [
   {
-    id: "imm_01",
-    title: "Immortals #1 — Skull #19",
-    desc: "Skull #19 — Fragment Protocol · Fuel ignites. 연료가 점화된다.",
+    id: "imm_dealer",
+    title: "Immortals #01 — Dealer Protocol",
+    desc: "Dealer remixes the loop until neon fumes bloom. 딜러가 루프를 비틀어 네온이 피어난다.",
+    archetype: "dealer",
+    thumb: "assets/images/dealer.gif",
+    video: "assets/video/dealer.mp4",
+    legend: true,
+    tags: ["dealer", "glitch", "loop"],
+    created_date: "2024-03-07"
+  },
+  {
+    id: "imm_skull",
+    title: "Immortals #02 — Skull Fragment",
+    desc: "Shards orbit Skull while the protocol recalibrates. 조각이 스컬을 맴돌며 프로토콜이 재정렬된다.",
     archetype: "skull",
     thumb: "assets/images/skull.gif",
     video: "assets/video/skull.mp4",
     legend: true,
-    tags: ["cyberpunk", "animation"],
-    created_date: "2025-09-01"
+    tags: ["skull", "fragment", "pulse"],
+    created_date: "2024-04-18"
+  },
+  {
+    id: "imm_rockstar",
+    title: "Immortals #03 — Rockstar Stall",
+    desc: "Amp feedback freezes the grin mid-frame. 앰프 피드백이 미소를 정지시킨다.",
+    archetype: "rockstar",
+    thumb: "assets/images/rockstar.gif",
+    video: "assets/video/rockstar.mp4",
+    legend: false,
+    tags: ["rock", "feedback", "stage"],
+    created_date: "2024-05-26"
+  },
+  {
+    id: "imm_drag",
+    title: "Immortals #04 — Drag Recode",
+    desc: "Glitter tears through the timeline. 글리터가 타임라인을 가른다.",
+    archetype: "drag",
+    thumb: "assets/images/drag.gif",
+    video: "assets/video/drag.mp4",
+    legend: false,
+    tags: ["glam", "remix", "neon"],
+    created_date: "2024-06-22"
+  },
+  {
+    id: "imm_military",
+    title: "Immortals #05 — Military Reload",
+    desc: "The visor locks as sirens fade. 바이저가 잠기고 사이렌이 멀어진다.",
+    archetype: "military",
+    thumb: "assets/images/military.gif",
+    video: "assets/video/military.mp4",
+    legend: false,
+    tags: ["combat", "precision", "signal"],
+    created_date: "2024-07-19"
+  },
+  {
+    id: "imm_motorcycle",
+    title: "Immortals #06 — Motorcycle Skid",
+    desc: "Tires spark while the city blurs. 타이어가 불꽃을 튀기며 도시가 흐릿해진다.",
+    archetype: "motorcycle",
+    thumb: "assets/images/motorcycle.gif",
+    video: "assets/video/motorcycle.mp4",
+    legend: false,
+    tags: ["speed", "neon", "highway"],
+    created_date: "2024-08-10"
+  },
+  {
+    id: "imm_boxer",
+    title: "Immortals #07 — Boxer Loop",
+    desc: "Sweat ignites beneath the ring lights. 링 조명이 땀을 번쩍이게 한다.",
+    archetype: "boxer",
+    thumb: "assets/images/boxer.gif",
+    video: "assets/video/boxer.mp4",
+    legend: false,
+    tags: ["fight", "momentum", "pulse"],
+    created_date: "2024-09-05"
   }
 ];
 
@@ -34,7 +100,7 @@ const PORTALS = [
   { id: 'drag', label: 'DRAG', img: 'assets/images/drag.gif', emo: '👑' },
   { id: 'military', label: 'MILITARY', img: 'assets/images/military.gif', emo: '🪖' },
   { id: 'motorcycle', label: 'MOTORCYCLE', img: 'assets/images/motorcycle.gif', emo: '🏍️' },
-  { id: 'boxer', label: 'BOXER', img: 'assets/images/boxer.gif', emo: '🥊' },
+  { id: 'boxer', label: 'BOXER', img: 'assets/images/boxer.gif', emo: '🥊' }
 ];
 
 // ====== Character Hero Videos ======
@@ -59,6 +125,40 @@ const CHAR_CLIPS = {
   boxer: []
 };
 
+function getPortalById(id) {
+  return PORTALS.find(p => p.id === id);
+}
+
+function deriveVideoPath(id) {
+  const portal = getPortalById(id);
+  if (!portal) {
+    return CHAR_HERO[id] || `assets/video/${id}.mp4`;
+  }
+  if (portal.img) {
+    return portal.img
+      .replace('/images/', '/video/')
+      .replace(/\.gif$/i, '.mp4');
+  }
+  return CHAR_HERO[id] || `assets/video/${id}.mp4`;
+}
+
+function formatTagList(tags, opts = {}) {
+  if (!Array.isArray(tags) || !tags.length) return '';
+  const { hash = false, joiner = ' · ' } = opts;
+  const cleaned = tags
+    .map((tag) => (tag || '').toString().trim())
+    .filter(Boolean)
+    .map((tag) => `${hash ? '#' : ''}${tag.toUpperCase()}`);
+  return cleaned.join(joiner);
+}
+
+function formatDateLabel(dateStr) {
+  if (!dateStr) return '';
+  const dt = new Date(dateStr);
+  if (Number.isNaN(dt.getTime())) return dateStr;
+  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(dt);
+}
+
 // ====== Legend Descriptions ======
 const LEGEND_DESC = {
   dealer: { en: "Dealer — Loop Glitch · Fumes bleed.", ko: "딜러 — 루프 글리치 · 연기가 스며든다." },
@@ -82,7 +182,13 @@ const OST_TRACKS = [
 ];
 
 // ====== Archive Files ======
-const ARCHIVE_FILES = [];
+const ARCHIVE_FILES = [
+  { src: 'assets/archive/KIA.mp4', title: 'KIA — Performance Snippet' },
+  { src: 'assets/archive/List.jpg', title: 'Immortals Checklist' },
+  { src: 'assets/archive/Logo_motto%203.jpg', title: 'MOTTO Logo Treatments' },
+  { src: 'assets/archive/Track_list%202.jpg', title: 'Track List Draft' },
+  { src: 'assets/archive/track_list.jpg', title: 'Track List Final' }
+];
 
 // ====== DOM Cache ======
 const DOM = {
@@ -120,12 +226,15 @@ const DOM = {
   immLegend: document.getElementById('immLegend'),
   immTitle: document.getElementById('immTitle'),
   immVideo: document.getElementById('immVideo'),
+  immMeta: document.getElementById('immMeta'),
+  immTags: document.getElementById('immTags'),
+  immDate: document.getElementById('immDate'),
   immDesc: document.getElementById('immDesc'),
   immPrev: document.getElementById('immPrev'),
   immNext: document.getElementById('immNext'),
   immIndex: document.getElementById('immIndex'),
   arcModal: document.getElementById('archiveModal'),
-  arcGrid: document.getElementById('arcGrid')
+  arcGrid: document.getElementById('archiveGrid')
 };
 
 // ====== Link Setup ======
@@ -217,12 +326,19 @@ function spawnPortals() {
     el.href = '#';
     el.className = 'portal';
     el.dataset.id = p.id;
+    const heroSrc = deriveVideoPath(p.id);
+    if (heroSrc) {
+      el.dataset.video = heroSrc;
+    }
     el.setAttribute('tabindex', '0');
     el.setAttribute('aria-label', `${p.label} 캐릭터 모달 열기`);
 
     const probe = new Image();
     probe.onload = () => {
       el.style.backgroundImage = `url(${p.img})`;
+      if (heroSrc) {
+        el.dataset.video = heroSrc;
+      }
       console.log(`${p.label} GIF 로드 성공 ✅`);
     };
     probe.onerror = () => {
@@ -327,11 +443,14 @@ function openCharModal(id) {
     DOM.charLegend.style.display = 'none';
   }
 
+  const portalEl = DOM.stage?.querySelector(`.portal[data-id="${id}"]`);
+  const heroSrc = portalEl?.dataset.video || deriveVideoPath(id);
   DOM.charHero.loop = true;
-  DOM.charHero.src = CHAR_HERO[id] || '';
+  DOM.charHero.src = heroSrc || '';
   DOM.charHero.currentTime = 0;
   DOM.charHero.onerror = () => {
-    DOM.charHero.replaceWith(document.createElement('div')).textContent = '비디오를 불러올 수 없습니다';
+    console.warn('비디오를 불러올 수 없습니다:', heroSrc);
+    DOM.charCaption.textContent = `${id.toUpperCase()} — VIDEO NOT FOUND`;
   };
   DOM.charHero.play().catch(() => {});
 
@@ -444,7 +563,16 @@ function renderImmGrid(list) {
     const cell = document.createElement('div');
     cell.className = 'imm-cell';
     const thumb = item.thumb || '';
-    cell.innerHTML = `<img src="${thumb}" alt="${item.title || ''}" loading="lazy">`;
+    const overlayTags = formatTagList(item.tags);
+    cell.innerHTML = `
+      <img src="${thumb}" alt="${item.title || ''}" loading="lazy">
+      <div class="imm-info">
+        <strong>${item.title || ''}</strong>
+        ${overlayTags ? `<span>${overlayTags}</span>` : ''}
+      </div>`;
+    if (item.title) {
+      cell.setAttribute('aria-label', item.title);
+    }
     cell.onclick = () => {
       IMM_VIEW = list.slice();
       openImmDetailByIndex(idx);
@@ -459,15 +587,32 @@ function openImmDetailByIndex(i) {
   const it = IMM_VIEW[IMM_CUR];
   DOM.immTitle.textContent = it.title || '';
   DOM.immDesc.textContent = it.desc || '';
+  if (DOM.immTags) {
+    const tagsText = formatTagList(it.tags, { hash: true, joiner: ' ' });
+    DOM.immTags.textContent = tagsText;
+    DOM.immTags.hidden = !tagsText;
+  }
+  if (DOM.immDate) {
+    const dateText = formatDateLabel(it.created_date);
+    DOM.immDate.textContent = dateText ? `Released ${dateText}` : '';
+    DOM.immDate.hidden = !dateText;
+  }
+  if (DOM.immMeta) {
+    const metaVisible = Boolean((DOM.immTags && !DOM.immTags.hidden) || (DOM.immDate && !DOM.immDate.hidden));
+    DOM.immMeta.hidden = !metaVisible;
+  }
   const lg = LEGEND_DESC[(it.archetype || '').toLowerCase()];
   if (lg) { DOM.immLegend.innerHTML = `<div class="en">${lg.en}</div><div class="ko">${lg.ko}</div>`; DOM.immLegend.style.display = 'block'; }
   else { DOM.immLegend.style.display = 'none'; }
-  DOM.immVideo.src = it.video || '';
-  DOM.immVideo.currentTime = 0;
-  DOM.immVideo.onerror = () => {
-    DOM.immVideo.replaceWith(document.createElement('div')).textContent = '비디오를 불러올 수 없습니다';
-  };
-  DOM.immVideo.play().catch(() => {});
+  if (DOM.immVideo) {
+    DOM.immVideo.hidden = false;
+    DOM.immVideo.src = it.video || '';
+    DOM.immVideo.currentTime = 0;
+    DOM.immVideo.onerror = () => {
+      console.warn('Immortal video missing:', it.video);
+    };
+    DOM.immVideo.play().catch(() => {});
+  }
   DOM.immIndex.textContent = `${IMM_CUR + 1} / ${IMM_VIEW.length}`;
   DOM.immDModal.hidden = false;
 }
@@ -479,19 +624,28 @@ DOM.immDModal?.addEventListener('click', (e) => { if (e.target.hasAttribute('dat
 
 // ====== Archive ======
 function openArchive() {
+  if (!DOM.arcGrid) return;
   DOM.arcGrid.innerHTML = '';
   if (!ARCHIVE_FILES.length) {
     const empty = document.createElement('div');
     empty.style.color = '#9aa0a6'; empty.textContent = 'No archive yet.';
     DOM.arcGrid.appendChild(empty);
   } else {
-    ARCHIVE_FILES.forEach(src => {
+    ARCHIVE_FILES.forEach(entry => {
+      const item = typeof entry === 'string' ? { src: entry } : entry;
+      const src = item.src;
+      if (!src) return;
       const isVideo = /\.mp4$/i.test(src);
       const cell = document.createElement('div');
       cell.className = 'cell';
-      cell.innerHTML = isVideo
+      const media = isVideo
         ? `<video src="${src}" muted loop playsinline loading="lazy"></video>`
-        : `<img src="${src}" alt="" loading="lazy">`;
+        : `<img src="${src}" alt="${item.title || ''}" loading="lazy">`;
+      const caption = item.title ? `<div class="caption">${item.title}</div>` : '';
+      cell.innerHTML = `${media}${caption}`;
+      if (item.title) {
+        cell.setAttribute('aria-label', item.title);
+      }
       cell.onclick = () => window.open(src, '_blank', 'noopener');
       DOM.arcGrid.appendChild(cell);
     });
