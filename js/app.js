@@ -156,7 +156,11 @@ function formatDateLabel(dateStr) {
   if (!dateStr) return '';
   const dt = new Date(dateStr);
   if (Number.isNaN(dt.getTime())) return dateStr;
-  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(dt);
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit'
+  }).format(dt);
 }
 
 // ====== Legend Descriptions ======
