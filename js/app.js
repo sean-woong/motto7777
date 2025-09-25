@@ -34,7 +34,7 @@ const PORTALS = [
   { id: 'drag', label: 'DRAG', img: 'assets/images/drag.gif', emo: '👑' },
   { id: 'military', label: 'MILITARY', img: 'assets/images/military.gif', emo: '🪖' },
   { id: 'motorcycle', label: 'MOTORCYCLE', img: 'assets/images/motorcycle.gif', emo: '🏍️' },
-  { id: 'boxer', label: 'BOXER', img: 'assets/images/boxer.gif', emo: '🥊' },
+  { id: 'boxer', label: 'BOXER', img: 'assets/images/boxer.gif', emo: '🥊' }
 ];
 
 // ====== Character Hero Videos ======
@@ -58,6 +58,23 @@ const CHAR_CLIPS = {
   motorcycle: [],
   boxer: []
 };
+
+function getPortalById(id) {
+  return PORTALS.find(p => p.id === id);
+}
+
+function deriveVideoPath(id) {
+  const portal = getPortalById(id);
+  if (!portal) {
+    return CHAR_HERO[id] || `assets/video/${id}.mp4`;
+  }
+  if (portal.img) {
+    return portal.img
+      .replace('/images/', '/video/')
+      .replace(/\.gif$/i, '.mp4');
+  }
+  return CHAR_HERO[id] || `assets/video/${id}.mp4`;
+}
 
 // ====== Legend Descriptions ======
 const LEGEND_DESC = {
@@ -217,12 +234,19 @@ function spawnPortals() {
     el.href = '#';
     el.className = 'portal';
     el.dataset.id = p.id;
+    const heroSrc = deriveVideoPath(p.id);
+    if (heroSrc) {
+      el.dataset.video = heroSrc;
+    }
     el.setAttribute('tabindex', '0');
     el.setAttribute('aria-label', `${p.label} 캐릭터 모달 열기`);
 
     const probe = new Image();
     probe.onload = () => {
       el.style.backgroundImage = `url(${p.img})`;
+      if (heroSrc) {
+        el.dataset.video = heroSrc;
+      }
       console.log(`${p.label} GIF 로드 성공 ✅`);
     };
     probe.onerror = () => {
@@ -327,11 +351,14 @@ function openCharModal(id) {
     DOM.charLegend.style.display = 'none';
   }
 
+  const portalEl = DOM.stage?.querySelector(`.portal[data-id="${id}"]`);
+  const heroSrc = portalEl?.dataset.video || deriveVideoPath(id);
   DOM.charHero.loop = true;
-  DOM.charHero.src = CHAR_HERO[id] || '';
+  DOM.charHero.src = heroSrc || '';
   DOM.charHero.currentTime = 0;
   DOM.charHero.onerror = () => {
-    DOM.charHero.replaceWith(document.createElement('div')).textContent = '비디오를 불러올 수 없습니다';
+    console.warn('비디오를 불러올 수 없습니다:', heroSrc);
+    DOM.charCaption.textContent = `${id.toUpperCase()} — VIDEO NOT FOUND`;
   };
   DOM.charHero.play().catch(() => {});
 
