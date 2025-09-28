@@ -1,6 +1,6 @@
 // ====== DEV TOGGLES ======
 const ENABLE_AUDIO = true;
-const SHOW_LEGEND_PINS = true;
+const SHOW_LEGEND_PINS = false;
 const LEGEND_PIN_COUNT = 1;
 
 // ====== External Links ======
@@ -100,7 +100,8 @@ const PORTALS = [
   { id: 'drag', label: 'DRAG', img: 'assets/images/drag.gif', emo: '👑' },
   { id: 'military', label: 'MILITARY', img: 'assets/images/military.gif', emo: '🪖' },
   { id: 'motorcycle', label: 'MOTORCYCLE', img: 'assets/images/motorcycle.gif', emo: '🏍️' },
-  { id: 'boxer', label: 'BOXER', img: 'assets/images/boxer.gif', emo: '🥊' }
+  { id: 'boxer', label: 'BOXER', img: 'assets/images/boxer.gif', emo: '🥊' },
+  { id: 'kia', label: 'KIA', img: 'assets/images/KIA.gif', emo: '🚗' }
 ];
 
 // ====== Character Hero Videos ======
@@ -111,7 +112,8 @@ const CHAR_HERO = {
   drag: 'assets/video/drag.mp4',
   military: 'assets/video/military.mp4',
   motorcycle: 'assets/video/motorcycle.mp4',
-  boxer: 'assets/video/boxer.mp4'
+  boxer: 'assets/video/boxer.mp4',
+  kia: 'assets/video/KIA.mp4'
 };
 
 // ====== Character Clips ======
@@ -122,7 +124,8 @@ const CHAR_CLIPS = {
   drag: [],
   military: [],
   motorcycle: [],
-  boxer: []
+  boxer: [],
+  kia: []
 };
 
 function getPortalById(id) {
@@ -171,7 +174,8 @@ const LEGEND_DESC = {
   drag: { en: "Drag — Recode Glam · Everything screams.", ko: "드랙 — 리코드 글램 · 모든 것이 비명한다." },
   military: { en: "Military — Reload Combat · Target locked.", ko: "밀리터리 — 리로드 컴뱃 · 조준이 고정된다." },
   boxer: { en: "Boxer — Loop Fight · Bell rings.", ko: "복서 — 루프 파이트 · 종이 울린다." },
-  motorcycle: { en: "Motorcycle — Skid Speed · Veins pulse.", ko: "모터사이클 — 스키드 스피드 · 맥박이 뛴다." }
+  motorcycle: { en: "Motorcycle — Skid Speed · Veins pulse.", ko: "모터사이클 — 스키드 스피드 · 맥박이 뛴다." },
+  kia: { en: "KIA — Memory Drive · Neon traces linger.", ko: "기아 — 메모리 드라이브 · 네온 잔상이 남는다." }
 };
 
 // ====== OST Tracks ======
@@ -204,6 +208,7 @@ const DOM = {
   egg2: document.getElementById('egg2'),
   audioUI: document.getElementById('audio-ui'),
   nowUI: document.getElementById('nowPlaying'),
+  nowText: document.getElementById('nowText'),
   vol: document.getElementById('vol'),
   muteBtn: document.getElementById('muteBtn'),
   prevBtn: document.getElementById('prevBtn'),
@@ -319,17 +324,18 @@ function bootMain() {
   });
 }
 
-// ====== Portals ======
 function spawnPortals() {
   DOM.stage.innerHTML = '';
-  const vw = window.innerWidth, vh = window.innerHeight;
-  const placed = [];
+  if (!PORTALS.length) return;
 
-  PORTALS.forEach(p => {
+  const frag = document.createDocumentFragment();
+
+  PORTALS.forEach((p, idx) => {
     const el = document.createElement('a');
     el.href = '#';
     el.className = 'portal';
     el.dataset.id = p.id;
+
     const heroSrc = deriveVideoPath(p.id);
     if (heroSrc) {
       el.dataset.video = heroSrc;
@@ -351,26 +357,10 @@ function spawnPortals() {
     };
     probe.src = p.img;
 
-    const w = Math.min(vw * 0.22, 320), h = w;
-    el.style.width = `${w}px`; el.style.height = `${h}px`;
-
-    const padX = Math.min(120, vw * (vw < 640 ? 0.05 : 0.1)), padY = Math.min(100, vh * (vh < 640 ? 0.08 : 0.12));
-    let tries = 0, placedOK = false, x = 0, y = 0;
-    while (tries < 40 && !placedOK) {
-      x = Math.random() * (vw - padX * 2 - w) + padX;
-      y = Math.random() * (vh - padY * 2 - h) + padY;
-      placedOK = placed.every(r => overlapRatio(x, y, w, h, r.x, r.y, r.w, r.h) < 0.3); // 겹침 비율 0.5 → 0.3
-      tries++;
-    }
-    if (!placedOK) {
-      x = padX + (placed.length * (w + 20)) % (vw - w - padX * 2); // 대체 배치
-      y = padY + Math.floor((placed.length * (h + 20)) / (vw - w - padX * 2)) * (h + 20);
-    }
-    el.style.left = `${x}px`; el.style.top = `${y}px`;
-    placed.push({ x, y, w, h });
-
     const lb = document.createElement('div');
-    lb.className = 'label'; lb.textContent = p.label; el.appendChild(lb);
+    lb.className = 'label';
+    lb.textContent = p.label;
+    el.appendChild(lb);
 
     el.addEventListener('click', (e) => {
       e.preventDefault();
@@ -378,22 +368,22 @@ function spawnPortals() {
       openCharModal(p.id);
     });
 
-    DOM.stage.appendChild(el);
+    frag.appendChild(el);
+  });
+
+  DOM.stage.appendChild(frag);
+  const portals = DOM.stage.querySelectorAll('.portal');
+  requestAnimationFrame(() => {
+    portals.forEach((node, idx) => {
+      node.style.setProperty('--portal-delay', `${idx * 0.08}s`);
+      node.classList.add('portal-enter');
+    });
   });
 }
 window.addEventListener('resize', debounce(() => {
   spawnPortals();
   if (SHOW_LEGEND_PINS) spawnLegendPins(true);
 }, 200));
-
-function overlapRatio(x1, y1, w1, h1, x2, y2, w2, h2) {
-  const xOverlap = Math.max(0, Math.min(x1 + w1, x2 + w2) - Math.max(x1, x2));
-  const yOverlap = Math.max(0, Math.min(y1 + h1, y2 + h2) - Math.max(y1, y2));
-  const inter = xOverlap * yOverlap;
-  const area1 = w1 * h1, area2 = w2 * h2;
-  const base = Math.min(area1, area2) || 1;
-  return inter / base;
-}
 
 // ====== Legend Pins ======
 let IMM_VIEW = [], IMM_CUR = -1;
@@ -695,8 +685,9 @@ function startOST() {
   DOM.muteBtn.onclick = () => {
     if (!A) return;
     A.muted = !A.muted;
-    DOM.muteBtn.textContent = A.muted ? '🔇' : '🔊';
+    updateMuteBtn();
   };
+  updateMuteBtn();
 }
 
 function loadTrack(i) {
@@ -708,7 +699,7 @@ function loadTrack(i) {
     playing = true; updateNow(meta); updatePlayBtn();
   }).catch(() => {
     playing = false; updatePlayBtn();
-    DOM.nowUI.textContent = '탭하여 오디오 시작';
+    setNowLabel('탭하여 오디오 시작');
     DOM.nowUI.onclick = () => loadTrack(now);
   });
 }
@@ -721,11 +712,30 @@ function togglePlay() {
   else { A.play().then(() => playing = true).catch(() => playing = false); }
   updatePlayBtn();
 }
-function updatePlayBtn() { DOM.playBtn.textContent = playing ? '⏸' : '▶︎'; }
+function updatePlayBtn() {
+  const icon = playing ? '⏸' : '▶︎';
+  const span = DOM.playBtn?.querySelector('span');
+  if (span) span.textContent = icon;
+  if (DOM.playBtn) DOM.playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+}
+function updateMuteBtn() {
+  const muted = Boolean(A && A.muted);
+  const span = DOM.muteBtn?.querySelector('span');
+  if (span) span.textContent = muted ? '🔇' : '🔊';
+  if (DOM.muteBtn) DOM.muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+}
+function setNowLabel(text) {
+  if (!DOM.nowText) return;
+  DOM.nowText.textContent = text;
+  DOM.nowText.style.animation = 'none';
+  void DOM.nowText.offsetWidth;
+  DOM.nowText.style.animation = '';
+}
 function updateNow(meta) {
   const p = PORTALS.find(pp => pp.id === (meta.who || ''));
   const icon = p?.emo || '♪';
-  DOM.nowUI.textContent = `Now Playing: [${icon} ${meta.title || ''}]`;
+  setNowLabel(`Now Playing: [${icon} ${meta.title || ''}]`);
+  if (DOM.nowUI) DOM.nowUI.onclick = null;
 }
 
 function trackEvent(category, action, label) {
