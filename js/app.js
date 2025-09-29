@@ -841,9 +841,7 @@ function setNowLabel(text) {
   DOM.nowText.style.animation = '';
 }
 function updateNow(meta) {
-  const p = PORTALS.find(pp => pp.id === (meta.who || ''));
-  const icon = p?.emo || '♪';
-  setNowLabel(`Now Playing: [${icon} ${meta.title || ''}]`);
+  setNowLabel(`Now Playing: ${meta.title || ''}`);
   if (DOM.nowUI) DOM.nowUI.onclick = null;
 }
 
