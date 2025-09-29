@@ -246,7 +246,10 @@ const DOM = {
   immNext: document.getElementById('immNext'),
   immIndex: document.getElementById('immIndex'),
   arcModal: document.getElementById('archiveModal'),
-  arcGrid: document.getElementById('archiveGrid')
+  arcGrid: document.getElementById('archiveGrid'),
+  arcDetail: document.getElementById('archiveDetail'),
+  arcDetailMedia: document.getElementById('archiveDetailMedia'),
+  arcDetailCaption: document.getElementById('archiveDetailCaption')
 };
 
 const MODALS = [DOM.charModal, DOM.immModal, DOM.immDModal, DOM.arcModal];
@@ -723,6 +726,7 @@ DOM.immDModal?.addEventListener('click', (e) => {
 // ====== Archive ======
 function openArchive() {
   if (!DOM.arcGrid) return;
+  closeArchiveDetail();
   DOM.arcGrid.innerHTML = '';
   if (!ARCHIVE_FILES.length) {
     const empty = document.createElement('div');
@@ -744,15 +748,24 @@ function openArchive() {
       if (item.title) {
         cell.setAttribute('aria-label', item.title);
       }
-      cell.onclick = () => window.open(src, '_blank', 'noopener');
+      cell.onclick = () => openArchiveDetail(item);
       DOM.arcGrid.appendChild(cell);
     });
   }
+  if (DOM.arcDetail) {
+    DOM.arcDetail.classList.add('hidden');
+  }
+  DOM.arcGrid.classList.remove('hidden');
   activateModal(DOM.arcModal);
   updateBackdropState();
 }
 DOM.arcModal?.addEventListener('click', (e) => {
   if (e.target.hasAttribute('data-close')) {
+    if (e.target.classList.contains('modal-close') && DOM.arcDetail && !DOM.arcDetail.classList.contains('hidden')) {
+      closeArchiveDetail();
+      return;
+    }
+    closeArchiveDetail();
     deactivateModal(DOM.arcModal);
   }
 });
@@ -851,6 +864,7 @@ function trackEvent(category, action, label) {
 
 DOM.homeBtn?.addEventListener('click', (e) => {
   e.preventDefault();
+  closeArchiveDetail();
   document.querySelectorAll('.modal').forEach(mod => deactivateModal(mod));
   spawnPortals();
   if (SHOW_LEGEND_PINS) spawnLegendPins();
@@ -863,9 +877,42 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && DOM.intro && DOM.intro.style.display !== 'none') { DOM.enterBtn?.click(); }
   if (e.key === 'Escape') {
     let closed = false;
+    if (DOM.arcDetail && !DOM.arcDetail.classList.contains('hidden')) { closeArchiveDetail(); closed = true; }
     if (isModalActive(DOM.immDModal)) { DOM.immVideo.pause(); deactivateModal(DOM.immDModal); closed = true; }
     if (isModalActive(DOM.immModal)) { deactivateModal(DOM.immModal); closed = true; }
     if (isModalActive(DOM.arcModal)) { deactivateModal(DOM.arcModal); closed = true; }
     if (isModalActive(DOM.charModal)) { closeCharModal(); closed = true; }
   }
 });
+function openArchiveDetail(entry) {
+  if (!DOM.arcDetail || !DOM.arcDetailMedia) return;
+  const item = typeof entry === 'string' ? { src: entry } : entry;
+  const src = item?.src;
+  if (!src) return;
+  const isVideo = /\.mp4$/i.test(src);
+  const mediaMarkup = isVideo
+    ? `<video src="${src}" controls autoplay playsinline loop style="width:100%;max-height:70vh;object-fit:contain;background:#000;"></video>`
+    : `<img src="${src}" alt="${item.title || ''}" loading="lazy" style="width:100%;max-height:70vh;object-fit:contain;background:#000;"/>`;
+  DOM.arcDetailMedia.innerHTML = mediaMarkup;
+  if (DOM.arcDetailCaption) {
+    DOM.arcDetailCaption.textContent = item.title || '';
+    DOM.arcDetailCaption.classList.toggle('hidden', !item.title);
+  }
+  DOM.arcGrid?.classList.add('hidden');
+  DOM.arcDetail.classList.remove('hidden');
+}
+
+function closeArchiveDetail() {
+  if (!DOM.arcDetail) return;
+  const video = DOM.arcDetail.querySelector('video');
+  if (video) video.pause();
+  if (DOM.arcDetailMedia) {
+    DOM.arcDetailMedia.innerHTML = '';
+  }
+  if (DOM.arcDetailCaption) {
+    DOM.arcDetailCaption.textContent = '';
+    DOM.arcDetailCaption.classList.remove('hidden');
+  }
+  DOM.arcDetail.classList.add('hidden');
+  DOM.arcGrid?.classList.remove('hidden');
+}
