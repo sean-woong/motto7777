@@ -2,6 +2,9 @@
 const ENABLE_AUDIO = true;
 const SHOW_LEGEND_PINS = false;
 const LEGEND_PIN_COUNT = 1;
+const DUR_SHORT = 120;
+const DUR_MEDIUM = 240;
+const DUR_LONG = 480;
 
 // ====== External Links ======
 const SPOTIFY_URL = '#';
@@ -246,6 +249,60 @@ const DOM = {
   arcGrid: document.getElementById('archiveGrid')
 };
 
+const MODALS = [DOM.charModal, DOM.immModal, DOM.immDModal, DOM.arcModal];
+
+MODALS.forEach((el) => {
+  if (!el) return;
+  if (el.hasAttribute('hidden')) el.removeAttribute('hidden');
+  el.classList.add('hidden');
+  el.classList.remove('active');
+});
+
+function activateModal(el) {
+  if (!el) return;
+  if (el._hideTimer) {
+    clearTimeout(el._hideTimer);
+    el._hideTimer = null;
+  }
+  el.classList.remove('hidden');
+  requestAnimationFrame(() => el.classList.add('active'));
+}
+
+function deactivateModal(el) {
+  if (!el) return;
+  const wasActive = el.classList.contains('active');
+  el.classList.remove('active');
+  if (el._hideTimer) {
+    clearTimeout(el._hideTimer);
+    el._hideTimer = null;
+  }
+  if (wasActive) {
+    el._hideTimer = setTimeout(() => {
+      el.classList.add('hidden');
+      el._hideTimer = null;
+      updateBackdropState();
+    }, DUR_MEDIUM);
+  } else {
+    el.classList.add('hidden');
+    updateBackdropState();
+  }
+}
+
+function isModalActive(el) {
+  if (!el) return false;
+  if (el.classList.contains('active')) return true;
+  return !el.classList.contains('hidden');
+}
+
+function updateBackdropState() {
+  const anyOpen = MODALS.some(isModalActive);
+  document.body.classList.toggle('modal-open', anyOpen);
+  const hideStage = (!DOM.immModal?.classList.contains('hidden')) || (!DOM.arcModal?.classList.contains('hidden'));
+  if (DOM.stage) {
+    DOM.stage.classList.toggle('hidden', hideStage);
+  }
+}
+
 // ====== Link Setup ======
 if (DOM.spBtn) DOM.spBtn.href = SPOTIFY_URL;
 if (DOM.ytBtn) DOM.ytBtn.href = YOUTUBE_URL;
@@ -259,29 +316,6 @@ if (IG_URL === '#') DOM.igBtn?.classList.add('disabled');
 if (TT_URL === '#') DOM.ttBtn?.classList.add('disabled');
 if (SHOP_URL === '#') DOM.shopBtn?.classList.add('disabled');
 
-// ====== Easter Eggs ======
-function placeEggs() {
-  const vw = window.innerWidth, vh = window.innerHeight;
-  const pad = 14, w = 120, h = 20;
-  let x1, y1, x2, y2, tries = 0, placedOK = false;
-  while (tries < 20 && !placedOK) {
-    x1 = Math.random() * (vw - 160) + pad;
-    y1 = Math.random() * (vh - 100) + pad;
-    x2 = Math.random() * (vw - 160) + pad;
-    y2 = Math.random() * (vh - 100) + pad;
-    placedOK = Math.abs(x1 - x2) > w || Math.abs(y1 - y2) > h;
-    tries++;
-  }
-  if (!placedOK) {
-    x1 = pad; y1 = pad;
-    x2 = vw - 120 - pad; y2 = pad;
-  }
-  DOM.egg1.style.left = `${Math.round(x1)}px`; DOM.egg1.style.bottom = `${Math.round(y1)}px`;
-  DOM.egg2.style.right = `${Math.round(vw - x2)}px`; DOM.egg2.style.bottom = `${Math.round(y2)}px`;
-  DOM.egg1.classList.add('show');
-  DOM.egg2.classList.add('show');
-}
-
 // ====== Debounce ======
 function debounce(fn, ms) {
   let timer;
@@ -294,19 +328,44 @@ function debounce(fn, ms) {
 // ====== Intro → Main ======
 DOM.enterBtn?.addEventListener('click', () => {
   console.log("ENTER 버튼 클릭됨 ✅");
-  DOM.intro.style.display = 'none';
-  DOM.introClip.hidden = false;
+  DOM.enterBtn.disabled = true;
+  DOM.enterBtn.setAttribute('aria-busy', 'true');
 
-  setTimeout(() => {
+  const finalizeBoot = () => {
     console.log("bootMain 실행 직전 ✅");
-    DOM.introClip.hidden = true;
     try {
       bootMain();
       console.log("bootMain 실행 완료 ✅");
     } catch (err) {
       console.error("bootMain 실행 오류:", err);
     }
-  }, 3000);
+  };
+
+  if (DOM.intro) {
+    DOM.intro.classList.add('intro--exit');
+  }
+
+  setTimeout(() => {
+    if (DOM.intro) {
+      DOM.intro.style.display = 'none';
+    }
+
+    if (DOM.introClip) {
+      DOM.introClip.hidden = false;
+      requestAnimationFrame(() => DOM.introClip.classList.add('intro-clip--active'));
+
+      const clipVisibleMs = 2200;
+      setTimeout(() => {
+        DOM.introClip.classList.remove('intro-clip--active');
+        setTimeout(() => {
+          DOM.introClip.hidden = true;
+          finalizeBoot();
+        }, DUR_LONG);
+      }, clipVisibleMs);
+    } else {
+      finalizeBoot();
+    }
+  }, DUR_LONG);
 });
 
 // ====== Boot Main ======
@@ -314,7 +373,6 @@ function bootMain() {
   console.log("Booting main stage ✅");
   spawnPortals();
   requestAnimationFrame(() => {
-    placeEggs();
     if (SHOW_LEGEND_PINS) spawnLegendPins();
     if (ENABLE_AUDIO) {
       DOM.audioUI.hidden = false;
@@ -324,7 +382,14 @@ function bootMain() {
   });
 }
 
+let portalObserver = null;
+
 function spawnPortals() {
+  if (portalObserver) {
+    portalObserver.disconnect();
+    portalObserver = null;
+  }
+
   DOM.stage.innerHTML = '';
   if (!PORTALS.length) return;
 
@@ -335,6 +400,7 @@ function spawnPortals() {
     el.href = '#';
     el.className = 'portal';
     el.dataset.id = p.id;
+    el.dataset.index = String(idx);
 
     const heroSrc = deriveVideoPath(p.id);
     if (heroSrc) {
@@ -373,12 +439,29 @@ function spawnPortals() {
 
   DOM.stage.appendChild(frag);
   const portals = DOM.stage.querySelectorAll('.portal');
-  requestAnimationFrame(() => {
-    portals.forEach((node, idx) => {
-      node.style.setProperty('--portal-delay', `${idx * 0.08}s`);
-      node.classList.add('portal-enter');
-    });
-  });
+  observePortals(portals);
+}
+
+function ensurePortalObserver() {
+  if (!portalObserver) {
+    portalObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const node = entry.target;
+          const idx = Number(node.dataset.index || '0');
+          node.style.setProperty('--portal-delay', `${(idx * 0.06).toFixed(2)}s`);
+          node.classList.add('portal-enter');
+          portalObserver?.unobserve(node);
+        }
+      });
+    }, { threshold: 0.35, rootMargin: '0px 0px -10% 0px' });
+  }
+  return portalObserver;
+}
+
+function observePortals(nodes) {
+  const observer = ensurePortalObserver();
+  nodes.forEach(node => observer.observe(node));
 }
 window.addEventListener('resize', debounce(() => {
   spawnPortals();
@@ -469,8 +552,9 @@ function openCharModal(id) {
   DOM.charCaption.textContent = id ? id.toUpperCase() + ' — LOOP' : '';
   setAutoBtn(true);
   startCharAuto(id);
-  DOM.charModal.hidden = false;
+  activateModal(DOM.charModal);
   DOM.charModal.focus(); // 모달에 포커스 추가
+  updateBackdropState();
 }
 
 function playCharClip(id, idx) {
@@ -533,15 +617,21 @@ function getOpenCharId() {
 }
 
 DOM.charModal?.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) closeCharModal(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !DOM.charModal.hidden) closeCharModal(); });
-function closeCharModal() { stopCharAuto(); DOM.charModal.hidden = true; DOM.charHero.pause(); DOM.charHero.src = ''; }
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isModalActive(DOM.charModal)) closeCharModal(); });
+function closeCharModal() {
+  stopCharAuto();
+  deactivateModal(DOM.charModal);
+  DOM.charHero.pause();
+  DOM.charHero.src = '';
+}
 
 // ====== Immortals ======
 async function openImmortals() {
   DOM.immModal.classList.add('modal-loading');
   renderImmGrid(IMM_LIST);
   DOM.immModal.classList.remove('modal-loading');
-  DOM.immModal.hidden = false;
+  activateModal(DOM.immModal);
+  updateBackdropState();
 }
 
 function renderImmGrid(list) {
@@ -608,13 +698,27 @@ function openImmDetailByIndex(i) {
     DOM.immVideo.play().catch(() => {});
   }
   DOM.immIndex.textContent = `${IMM_CUR + 1} / ${IMM_VIEW.length}`;
-  DOM.immDModal.hidden = false;
+  activateModal(DOM.immDModal);
+  updateBackdropState();
 }
 
 DOM.immPrev?.addEventListener('click', () => openImmDetailByIndex(IMM_CUR - 1));
 DOM.immNext?.addEventListener('click', () => openImmDetailByIndex(IMM_CUR + 1));
-DOM.immModal?.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) DOM.immModal.hidden = true; });
-DOM.immDModal?.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) { DOM.immVideo.pause(); DOM.immDModal.hidden = true; } });
+DOM.immModal?.addEventListener('click', (e) => {
+  if (e.target.hasAttribute('data-close')) {
+    deactivateModal(DOM.immModal);
+    if (isModalActive(DOM.immDModal)) {
+      DOM.immVideo.pause();
+      deactivateModal(DOM.immDModal);
+    }
+  }
+});
+DOM.immDModal?.addEventListener('click', (e) => {
+  if (e.target.hasAttribute('data-close')) {
+    DOM.immVideo.pause();
+    deactivateModal(DOM.immDModal);
+  }
+});
 
 // ====== Archive ======
 function openArchive() {
@@ -644,9 +748,14 @@ function openArchive() {
       DOM.arcGrid.appendChild(cell);
     });
   }
-  DOM.arcModal.hidden = false;
+  activateModal(DOM.arcModal);
+  updateBackdropState();
 }
-DOM.arcModal?.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) DOM.arcModal.hidden = true; });
+DOM.arcModal?.addEventListener('click', (e) => {
+  if (e.target.hasAttribute('data-close')) {
+    deactivateModal(DOM.arcModal);
+  }
+});
 
 // ====== Audio ======
 let A = null, queue = [], now = -1, playing = false;
@@ -744,7 +853,7 @@ function trackEvent(category, action, label) {
 
 DOM.homeBtn?.addEventListener('click', (e) => {
   e.preventDefault();
-  [...document.querySelectorAll('.modal')].forEach(m => m.hidden = true);
+  document.querySelectorAll('.modal').forEach(mod => deactivateModal(mod));
   spawnPortals();
   if (SHOW_LEGEND_PINS) spawnLegendPins();
 });
@@ -755,9 +864,10 @@ DOM.arcBtn?.addEventListener('click', (e) => { e.preventDefault(); openArchive()
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && DOM.intro && DOM.intro.style.display !== 'none') { DOM.enterBtn?.click(); }
   if (e.key === 'Escape') {
-    if (!DOM.charModal.hidden) closeCharModal();
-    if (!DOM.immModal.hidden) DOM.immModal.hidden = true;
-    if (!DOM.immDModal.hidden) { DOM.immVideo.pause(); DOM.immDModal.hidden = true; }
-    if (!DOM.arcModal.hidden) DOM.arcModal.hidden = true;
+    let closed = false;
+    if (isModalActive(DOM.immDModal)) { DOM.immVideo.pause(); deactivateModal(DOM.immDModal); closed = true; }
+    if (isModalActive(DOM.immModal)) { deactivateModal(DOM.immModal); closed = true; }
+    if (isModalActive(DOM.arcModal)) { deactivateModal(DOM.arcModal); closed = true; }
+    if (isModalActive(DOM.charModal)) { closeCharModal(); closed = true; }
   }
 });
