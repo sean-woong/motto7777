@@ -210,7 +210,6 @@ const DOM = {
   egg1: document.getElementById('egg1'),
   egg2: document.getElementById('egg2'),
   audioUI: document.getElementById('audio-ui'),
-  nowUI: document.getElementById('nowPlaying'),
   nowText: document.getElementById('nowText'),
   vol: document.getElementById('vol'),
   muteBtn: document.getElementById('muteBtn'),
@@ -379,7 +378,6 @@ function bootMain() {
     if (SHOW_LEGEND_PINS) spawnLegendPins();
     if (ENABLE_AUDIO) {
       DOM.audioUI.hidden = false;
-      DOM.nowUI.hidden = false;
       startOST();
     }
   });
@@ -772,9 +770,11 @@ DOM.arcModal?.addEventListener('click', (e) => {
 
 // ====== Audio ======
 let A = null, queue = [], now = -1, playing = false;
+let pendingPlayHandler = null;
 
 function startOST() {
   if (!OST_TRACKS.length) return;
+  clearPendingPlayback();
   if (A) {
     A.pause();
     A.src = '';
@@ -812,6 +812,25 @@ function startOST() {
   updateMuteBtn();
 }
 
+function clearPendingPlayback() {
+  if (pendingPlayHandler && DOM.audioUI) {
+    DOM.audioUI.removeEventListener('click', pendingPlayHandler);
+    pendingPlayHandler = null;
+  }
+  DOM.audioUI?.classList.remove('pending');
+}
+
+function setPendingPlayback() {
+  if (!DOM.audioUI) return;
+  clearPendingPlayback();
+  DOM.audioUI.classList.add('pending');
+  pendingPlayHandler = () => {
+    clearPendingPlayback();
+    loadTrack(now);
+  };
+  DOM.audioUI.addEventListener('click', pendingPlayHandler, { once: true });
+}
+
 function loadTrack(i) {
   now = (i + queue.length) % queue.length;
   const meta = queue[now];
@@ -822,7 +841,7 @@ function loadTrack(i) {
   }).catch(() => {
     playing = false; updatePlayBtn();
     setNowLabel('탭하여 오디오 시작');
-    DOM.nowUI.onclick = () => loadTrack(now);
+    setPendingPlayback();
   });
 }
 
@@ -848,14 +867,19 @@ function updateMuteBtn() {
 }
 function setNowLabel(text) {
   if (!DOM.nowText) return;
+  DOM.nowText.classList.remove('marquee');
   DOM.nowText.textContent = text;
-  DOM.nowText.style.animation = 'none';
   void DOM.nowText.offsetWidth;
-  DOM.nowText.style.animation = '';
+  requestAnimationFrame(() => {
+    if (!DOM.nowText) return;
+    if (DOM.nowText.scrollWidth > DOM.nowText.clientWidth + 2) {
+      DOM.nowText.classList.add('marquee');
+    }
+  });
 }
 function updateNow(meta) {
-  setNowLabel(`Now Playing: ${meta.title || ''}`);
-  if (DOM.nowUI) DOM.nowUI.onclick = null;
+  clearPendingPlayback();
+  setNowLabel(meta.title || '—');
 }
 
 function trackEvent(category, action, label) {
