@@ -299,7 +299,7 @@ function isModalActive(el) {
 function updateBackdropState() {
   const anyOpen = MODALS.some(isModalActive);
   document.body.classList.toggle('modal-open', anyOpen);
-  const hideStage = (!DOM.immModal?.classList.contains('hidden')) || (!DOM.arcModal?.classList.contains('hidden'));
+  const hideStage = [DOM.immModal, DOM.immDModal, DOM.arcModal].some(isModalActive);
   if (DOM.stage) {
     DOM.stage.classList.toggle('hidden', hideStage);
   }
