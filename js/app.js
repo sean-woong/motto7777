@@ -905,9 +905,23 @@ function nextTrack() { loadTrack(now + 1); }
 function prevTrack() { loadTrack(now - 1); }
 function togglePlay() {
   if (!A) return;
-  if (playing) { A.pause(); playing = false; }
-  else { A.play().then(() => playing = true).catch(() => playing = false); }
+  if (playing) {
+    A.pause();
+    playing = false;
+    updatePlayBtn();
+    return;
+  }
+
+  playing = true;
   updatePlayBtn();
+  A.play().then(() => {
+    playing = true;
+    updatePlayBtn();
+  }).catch(() => {
+    playing = false;
+    updatePlayBtn();
+    setPendingPlayback();
+  });
 }
 function updatePlayBtn() {
   const icon = playing ? '⏸' : '▶︎';
