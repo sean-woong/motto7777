@@ -945,11 +945,7 @@ body {
   display: none !important;
 }
 .modal-open .stage,
-.modal-open .audio-ui,
 .modal-open .egg {
   filter: blur(4px) saturate(.85);
   pointer-events: none;
-}
-.modal-open .audio-ui {
-  opacity: .65;
 }
