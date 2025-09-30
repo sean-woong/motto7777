@@ -28,7 +28,7 @@
     <a href="#" id="homeBtn" class="brand">
       <span class="sr-only">MOTTO Home</span>
       <span class="brand-word" data-text="motto">motto</span>
-      <span class="brand-tag">7777</span>
+      <span class="brand-tag" aria-label="7777 in Japanese">ナナナナ</span>
     </a>
     <nav class="links">
       <a id="immBtn"  class="link-glitch nav-link" href="#">IMMORTALS</a>
@@ -48,17 +48,17 @@
 
   <!-- Audio UI -->
   <div id="audio-ui" class="audio-ui" hidden>
-    <div class="audio-meta" aria-live="polite">
+    <div class="player-left" aria-live="polite">
       <span id="nowText" class="audio-title">—</span>
     </div>
-    <div class="audio-controls">
+    <div class="player-center">
       <button id="prevBtn" class="audio-btn" title="Previous Track" aria-label="Previous Track"><span aria-hidden="true">⏮</span></button>
       <button id="playBtn" class="audio-btn audio-btn--primary" title="Play/Pause" aria-label="Play or Pause"><span aria-hidden="true">▶︎</span></button>
       <button id="nextBtn" class="audio-btn" title="Next Track" aria-label="Next Track"><span aria-hidden="true">⏭</span></button>
-      <div class="audio-vol">
-        <input id="vol" type="range" min="0" max="1" step="0.01" value="0.9" title="Volume" />
-        <button id="muteBtn" class="audio-btn audio-btn--mute" title="Mute/Unmute" aria-label="Mute or Unmute"><span aria-hidden="true">🔊</span></button>
-      </div>
+    </div>
+    <div class="player-right">
+      <input id="vol" class="audio-range" type="range" min="0" max="1" step="0.01" value="0.9" title="Volume" />
+      <button id="muteBtn" class="audio-btn audio-btn--mute" title="Mute/Unmute" aria-label="Mute or Unmute"><span aria-hidden="true">🔊</span></button>
     </div>
   </div>
 
