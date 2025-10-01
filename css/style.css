@@ -351,123 +351,6 @@ body {
   }
 }
 
-@media (max-width: 768px) {
-  .nav {
-    left: 0;
-    right: 0;
-    top: clamp(12px, 4vw, 20px);
-    padding: 0 clamp(16px, 6vw, 24px);
-    gap: clamp(12px, 4vw, 18px);
-  }
-  .links {
-    flex-direction: row;
-    gap: clamp(14px, 4vw, 22px);
-    width: 100%;
-    max-width: none;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    margin-right: -8px;
-  }
-  .links::-webkit-scrollbar { display: none; }
-  .links { scrollbar-width: none; }
-  .nav-eggs {
-    display: contents;
-  }
-  .egg {
-    position: fixed;
-    bottom: clamp(16px, 6vw, 24px);
-    font-size: 11px;
-    z-index: 35;
-  }
-  #egg1 { left: clamp(14px, 6vw, 24px); }
-  #egg2 { right: clamp(14px, 6vw, 24px); }
-  .audio-ui {
-    right: clamp(12px, 6vw, 24px);
-    width: min(88vw, 440px);
-    padding: clamp(10px, 4vw, 14px) clamp(16px, 6vw, 22px);
-    gap: clamp(12px, 4vw, 18px);
-  }
-  .player-left {
-    flex: 1 1 clamp(200px, 48vw, 320px);
-    max-width: clamp(200px, 52vw, 340px);
-  }
-  .audio-title {
-    font-size: 10px;
-    letter-spacing: .22em;
-  }
-  .player-center > .audio-btn {
-    width: clamp(34px, 12vw, 46px);
-    height: clamp(34px, 12vw, 46px);
-  }
-  .audio-btn--primary {
-    width: clamp(40px, 14vw, 52px);
-    height: clamp(40px, 14vw, 52px);
-  }
-  .player-right {
-    flex: 0 1 clamp(150px, 42vw, 220px);
-    gap: clamp(10px, 3vw, 16px);
-  }
-  .audio-range {
-    width: clamp(120px, 46vw, 220px);
-  }
-}
-@media (max-width: 640px) {
-  .stage {
-    grid-template-columns: 1fr;
-    max-width: min(520px, 94vw);
-    gap: clamp(22px, 7vw, 32px);
-    padding: clamp(62px, 20vw, 110px) clamp(14px, 7vw, 24px) clamp(120px, 20vw, 160px) clamp(16px, 7vw, 24px);
-  }
-  .intro-logo {
-    width: min(62vw, 220px);
-    margin-bottom: 12px;
-  }
-  .intro-clip {
-    padding: clamp(16px, 12vw, 28px);
-  }
-  .intro-clip img {
-    width: min(82vw, 320px);
-    max-height: 70vh;
-  }
-  .audio-ui {
-    top: auto;
-    bottom: clamp(16px, 6vw, 28px);
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: calc(100% - clamp(34px, 15vw, 90px));
-    max-width: none;
-    padding: clamp(12px, 6vw, 16px) clamp(16px, 8vw, 22px);
-    gap: clamp(14px, 6vw, 22px);
-    border-radius: 24px;
-  }
-  .player-left {
-    display: none;
-  }
-  .player-center {
-    flex: 1 1 auto;
-    gap: clamp(16px, 8vw, 26px);
-  }
-  .player-center > .audio-btn {
-    width: clamp(44px, 22vw, 62px);
-    height: clamp(44px, 22vw, 62px);
-  }
-  .audio-btn--primary {
-    width: clamp(50px, 26vw, 72px);
-    height: clamp(50px, 26vw, 72px);
-  }
-  .player-right {
-    flex: 0 0 auto;
-    gap: clamp(12px, 6vw, 22px);
-  }
-  .audio-range {
-    width: clamp(150px, 60vw, 260px);
-  }
-  .hint {
-    font-size: 11px;
-  }
-}
-
 /* Portal / Legend pin */
 .portal {
   position: relative;
@@ -742,6 +625,161 @@ body {
   background: var(--color-primary);
   border: 2px solid #fff;
   box-shadow: 0 0 10px rgba(255,0,170,.55);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav {
+    left: 0;
+    right: 0;
+    top: clamp(12px, 4vw, 20px);
+    padding: 0 clamp(16px, 6vw, 24px);
+    gap: clamp(12px, 4vw, 18px);
+    align-items: stretch;
+  }
+  .brand {
+    align-items: flex-start;
+  }
+  .brand-word {
+    font-size: clamp(32px, 14vw, 52px);
+  }
+  .brand-tag {
+    font-size: clamp(12px, 4vw, 18px);
+  }
+  .brand::before,
+  .brand::after {
+    display: none;
+  }
+  .links {
+    flex-direction: row;
+    gap: clamp(14px, 4vw, 22px);
+    width: 100%;
+    max-width: none;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-right: -8px;
+  }
+  .link-glitch {
+    letter-spacing: .12em;
+  }
+  .links::-webkit-scrollbar { display: none; }
+  .links { scrollbar-width: none; }
+  .nav-eggs {
+    display: contents;
+  }
+  .egg {
+    position: fixed;
+    bottom: clamp(16px, 6vw, 24px);
+    font-size: 11px;
+    z-index: 35;
+  }
+  #egg1 { left: clamp(14px, 6vw, 24px); }
+  #egg2 { right: clamp(14px, 6vw, 24px); }
+  .stage {
+    padding: clamp(150px, 28vw, 210px) clamp(16px, 7vw, 28px) clamp(160px, 32vw, 220px);
+  }
+  .audio-ui {
+    right: clamp(12px, 6vw, 24px);
+    width: min(88vw, 440px);
+    padding: clamp(10px, 4vw, 14px) clamp(16px, 6vw, 22px);
+    gap: clamp(12px, 4vw, 18px);
+  }
+  .player-left {
+    flex: 1 1 clamp(200px, 48vw, 320px);
+    max-width: clamp(200px, 52vw, 340px);
+  }
+  .audio-title {
+    font-size: 10px;
+    letter-spacing: .22em;
+  }
+  .player-center > .audio-btn {
+    width: clamp(34px, 12vw, 46px);
+    height: clamp(34px, 12vw, 46px);
+  }
+  .audio-btn--primary {
+    width: clamp(40px, 14vw, 52px);
+    height: clamp(40px, 14vw, 52px);
+  }
+  .player-right {
+    flex: 0 1 clamp(150px, 42vw, 220px);
+    gap: clamp(10px, 3vw, 16px);
+  }
+  .audio-range {
+    width: clamp(120px, 46vw, 220px);
+  }
+}
+
+@media (max-width: 640px) {
+  .stage {
+    grid-template-columns: 1fr;
+    max-width: min(520px, 94vw);
+    gap: clamp(22px, 7vw, 32px);
+    padding: clamp(170px, 34vw, 230px) clamp(16px, 8vw, 26px) clamp(170px, 36vw, 240px);
+  }
+  .intro-logo {
+    width: min(62vw, 220px);
+    margin-bottom: 12px;
+  }
+  .intro-clip {
+    padding: clamp(16px, 12vw, 28px);
+  }
+  .intro-clip img {
+    width: min(82vw, 320px);
+    max-height: 70vh;
+  }
+  .audio-ui {
+    top: auto;
+    bottom: clamp(16px, 6vw, 28px);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: calc(100% - clamp(34px, 15vw, 90px));
+    max-width: none;
+    padding: clamp(12px, 6vw, 16px) clamp(16px, 8vw, 22px);
+    gap: clamp(14px, 6vw, 22px);
+    border-radius: 24px;
+  }
+  .player-left {
+    display: none;
+  }
+  .player-center {
+    flex: 1 1 auto;
+    gap: clamp(16px, 8vw, 26px);
+  }
+  .player-center > .audio-btn {
+    width: clamp(44px, 22vw, 62px);
+    height: clamp(44px, 22vw, 62px);
+  }
+  .audio-btn--primary {
+    width: clamp(50px, 26vw, 72px);
+    height: clamp(50px, 26vw, 72px);
+  }
+  .player-right {
+    flex: 0 0 auto;
+    gap: clamp(12px, 6vw, 22px);
+  }
+  .audio-range {
+    width: clamp(150px, 60vw, 260px);
+  }
+  .hint {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-word {
+    font-size: clamp(26px, 20vw, 38px);
+  }
+  .brand-tag {
+    font-size: clamp(11px, 5vw, 16px);
+    letter-spacing: .26em;
+  }
+  .stage {
+    padding-top: clamp(190px, 44vw, 260px);
+  }
+  .audio-ui {
+    width: calc(100% - clamp(24px, 12vw, 60px));
+  }
 }
 
 @keyframes marqueeScroll {
