@@ -89,6 +89,15 @@
     <div class="modal-card" style="width:min(96vw,1200px);padding:12px">
       <button class="modal-close" data-close>✕</button>
       <h3 style="margin:0 0 10px">IMMORTALS</h3>
+      <div class="imm-controls">
+        <label class="imm-search">
+          <span class="sr-only">Search Immortals</span>
+          <input id="immSearch" type="search" placeholder="Search by title, tag, or archetype" autocomplete="off" spellcheck="false" />
+        </label>
+        <button id="immClearFilters" class="imm-clear" type="button" hidden>Clear</button>
+        <span id="immCount" class="imm-count" aria-live="polite"></span>
+      </div>
+      <div id="immTagFilters" class="imm-tag-filters" role="group" aria-label="Filter Immortals by tag"></div>
       <div id="immGrid" class="imm-grid"></div>
     </div>
   </div>
