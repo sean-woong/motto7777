@@ -45,7 +45,7 @@ const IMM_LIST = [
     archetype: "rockstar",
     thumb: "assets/images/rockstar.gif",
     video: "assets/video/rockstar.mp4",
-    legend: false,
+    legend: true,
     tags: ["rock", "feedback", "stage"],
     created_date: "2024-05-26"
   },
@@ -56,7 +56,7 @@ const IMM_LIST = [
     archetype: "drag",
     thumb: "assets/images/drag.gif",
     video: "assets/video/drag.mp4",
-    legend: false,
+    legend: true,
     tags: ["glam", "remix", "neon"],
     created_date: "2024-06-22"
   },
@@ -67,7 +67,7 @@ const IMM_LIST = [
     archetype: "military",
     thumb: "assets/images/military.gif",
     video: "assets/video/military.mp4",
-    legend: false,
+    legend: true,
     tags: ["combat", "precision", "signal"],
     created_date: "2024-07-19"
   },
@@ -78,7 +78,7 @@ const IMM_LIST = [
     archetype: "motorcycle",
     thumb: "assets/images/motorcycle.gif",
     video: "assets/video/motorcycle.mp4",
-    legend: false,
+    legend: true,
     tags: ["speed", "neon", "highway"],
     created_date: "2024-08-10"
   },
@@ -89,11 +89,77 @@ const IMM_LIST = [
     archetype: "boxer",
     thumb: "assets/images/boxer.gif",
     video: "assets/video/boxer.mp4",
-    legend: false,
+    legend: true,
     tags: ["fight", "momentum", "pulse"],
     created_date: "2024-09-05"
   }
-];
+].map(normalizeImmItem);
+
+const IMM_TAG_OPTIONS = deriveImmTagOptions(IMM_LIST);
+
+let IMM_ACTIVE_FILTERS = { tags: [] };
+
+function normalizeImmItem(item = {}) {
+  const clone = { ...item };
+  const tags = Array.isArray(clone.tags) ? clone.tags.slice() : [];
+  const normalizedTags = [];
+  const seen = new Set();
+
+  tags.forEach((tag) => {
+    const clean = (tag || '').toString().trim();
+    if (!clean) return;
+    const key = clean.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    normalizedTags.push(clean);
+  });
+
+  if (clone.legend === true && !seen.has('legend')) {
+    seen.add('legend');
+    normalizedTags.push('legend');
+  }
+
+  clone.legend = clone.legend === true;
+  clone.tags = normalizedTags;
+  return clone;
+}
+
+function deriveImmTagOptions(list = []) {
+  const tagSet = new Set();
+  list.forEach((item) => {
+    const tags = Array.isArray(item?.tags) ? item.tags : [];
+    tags.forEach((tag) => {
+      const clean = (tag || '').toString().trim();
+      if (!clean) return;
+      tagSet.add(clean.toLowerCase());
+    });
+  });
+  return Array.from(tagSet).sort();
+}
+
+function applyImmortalFilters(items = [], filters = IMM_ACTIVE_FILTERS) {
+  const normalizedItems = items.map(normalizeImmItem);
+  const tagFilters = Array.isArray(filters?.tags)
+    ? filters.tags.map(tag => (tag || '').toString().trim().toLowerCase()).filter(Boolean)
+    : [];
+
+  if (!tagFilters.length) {
+    return normalizedItems;
+  }
+
+  const required = new Set(tagFilters);
+  if (!required.size) {
+    return normalizedItems;
+  }
+
+  return normalizedItems.filter((item) => {
+    const tags = Array.isArray(item?.tags)
+      ? item.tags.map(tag => (tag || '').toString().trim().toLowerCase())
+      : [];
+    if (!tags.length) return false;
+    return [...required].every(tag => tags.includes(tag));
+  });
+}
 
 // ====== Portals ======
 const PORTALS = [
@@ -673,21 +739,23 @@ function closeCharModal() {
 let _immDetailShouldReopenImmModal = false;
 async function openImmortals() {
   DOM.immModal.classList.add('modal-loading');
-  renderImmGrid(IMM_LIST);
+  const filtered = applyImmortalFilters(IMM_LIST, IMM_ACTIVE_FILTERS);
+  renderImmGrid(filtered);
   DOM.immModal.classList.remove('modal-loading');
   openModal(DOM.immModal);
 }
 
 function renderImmGrid(list) {
   DOM.immGrid.innerHTML = '';
-  if (!Array.isArray(list) || !list.length) {
+  const normalizedList = Array.isArray(list) ? list.map(normalizeImmItem) : [];
+  if (!normalizedList.length) {
     const empty = document.createElement('div');
     empty.style.color = '#9aa0a6';
     empty.textContent = 'No items yet.';
     DOM.immGrid.appendChild(empty);
     return;
   }
-  list.forEach((item, idx) => {
+  normalizedList.forEach((item, idx) => {
     const cell = document.createElement('div');
     cell.className = 'imm-cell';
     const thumb = item.thumb || '';
@@ -702,7 +770,7 @@ function renderImmGrid(list) {
       cell.setAttribute('aria-label', item.title);
     }
     cell.onclick = () => {
-      IMM_VIEW = list.slice();
+      IMM_VIEW = normalizedList.slice();
       openImmDetailByIndex(idx);
     };
     DOM.immGrid.appendChild(cell);
