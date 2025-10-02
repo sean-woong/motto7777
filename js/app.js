@@ -95,6 +95,21 @@ const IMM_LIST = [
   }
 ];
 
+const IMM_TAG_OPTIONS = (() => {
+  const tagMap = new Map();
+  IMM_LIST.forEach((item) => {
+    (item.tags || []).forEach((tag) => {
+      const cleaned = (tag || '').toString().trim();
+      if (!cleaned) return;
+      const key = cleaned.toLowerCase();
+      if (!tagMap.has(key)) {
+        tagMap.set(key, cleaned);
+      }
+    });
+  });
+  return Array.from(tagMap.entries()).map(([key, label]) => ({ key, label }));
+})();
+
 // ====== Portals ======
 const PORTALS = [
   { id: 'dealer', label: 'DEALER', img: 'assets/images/dealer.gif', emo: '🎲' },
@@ -234,6 +249,10 @@ const DOM = {
   immModal: document.getElementById('immModal'),
   immGrid: document.getElementById('immGrid'),
   immDModal: document.getElementById('immDetailModal'),
+  immSearch: document.getElementById('immSearch'),
+  immTagFilters: document.getElementById('immTagFilters'),
+  immCount: document.getElementById('immCount'),
+  immClearFilters: document.getElementById('immClearFilters'),
   immLegend: document.getElementById('immLegend'),
   immTitle: document.getElementById('immTitle'),
   immVideo: document.getElementById('immVideo'),
@@ -671,25 +690,165 @@ function closeCharModal() {
 
 // ====== Immortals ======
 let _immDetailShouldReopenImmModal = false;
-async function openImmortals() {
-  DOM.immModal.classList.add('modal-loading');
-  renderImmGrid(IMM_LIST);
-  DOM.immModal.classList.remove('modal-loading');
-  openModal(DOM.immModal);
+let _immFiltersInitialized = false;
+let IMM_FILTER_TEXT = '';
+const IMM_FILTER_TAGS = new Set();
+const IMM_TAG_BUTTONS = new Map();
+
+function normalizeImmTag(tag) {
+  return (tag || '').toString().trim().toLowerCase();
 }
 
-function renderImmGrid(list) {
+function isImmFilterActive() {
+  return Boolean(IMM_FILTER_TEXT.trim()) || IMM_FILTER_TAGS.size > 0;
+}
+
+function updateImmFilterUI() {
+  if (DOM.immSearch && DOM.immSearch.value !== IMM_FILTER_TEXT) {
+    DOM.immSearch.value = IMM_FILTER_TEXT;
+  }
+
+  IMM_TAG_BUTTONS.forEach((btn, key) => {
+    const active = IMM_FILTER_TAGS.has(key);
+    btn.classList.toggle('is-active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+
+  if (DOM.immClearFilters) {
+    const hasFilters = isImmFilterActive();
+    DOM.immClearFilters.hidden = !hasFilters;
+    DOM.immClearFilters.disabled = !hasFilters;
+  }
+}
+
+function updateImmCount(current, total) {
+  if (!DOM.immCount) return;
+  const hasFilters = isImmFilterActive();
+  if (total === 0 && !hasFilters) {
+    DOM.immCount.textContent = 'No Immortals yet';
+    return;
+  }
+  const prefix = hasFilters ? `Showing ${current} of ${total}` : `Showing ${current}`;
+  const suffix = current === 1 ? ' IMMORTAL' : ' IMMORTALS';
+  DOM.immCount.textContent = `${prefix}${suffix}`;
+}
+
+function ensureImmFilterControls() {
+  if (_immFiltersInitialized) return;
+
+  if (DOM.immSearch) {
+    DOM.immSearch.addEventListener('input', () => {
+      IMM_FILTER_TEXT = DOM.immSearch.value;
+      applyImmortalFilters();
+    });
+  }
+
+  if (DOM.immTagFilters && IMM_TAG_OPTIONS.length) {
+    DOM.immTagFilters.innerHTML = '';
+    IMM_TAG_OPTIONS.forEach(({ key, label }) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'imm-tag-btn';
+      btn.dataset.tag = key;
+      btn.setAttribute('aria-pressed', 'false');
+      btn.textContent = `#${label.toUpperCase()}`;
+      btn.addEventListener('click', () => {
+        if (IMM_FILTER_TAGS.has(key)) {
+          IMM_FILTER_TAGS.delete(key);
+        } else {
+          IMM_FILTER_TAGS.add(key);
+        }
+        applyImmortalFilters();
+      });
+      DOM.immTagFilters.appendChild(btn);
+      IMM_TAG_BUTTONS.set(key, btn);
+    });
+  } else if (DOM.immTagFilters) {
+    DOM.immTagFilters.hidden = true;
+  }
+
+  DOM.immClearFilters?.addEventListener('click', () => {
+    if (!isImmFilterActive()) return;
+    IMM_FILTER_TEXT = '';
+    IMM_FILTER_TAGS.clear();
+    applyImmortalFilters();
+  });
+
+  _immFiltersInitialized = true;
+  updateImmFilterUI();
+}
+
+async function openImmortals() {
+  DOM.immModal.classList.add('modal-loading');
+  ensureImmFilterControls();
+  const filtered = applyImmortalFilters();
+  DOM.immModal.classList.remove('modal-loading');
+  openModal(DOM.immModal);
+  setTimeout(() => {
+    if (isModalActive(DOM.immModal)) {
+      DOM.immSearch?.focus({ preventScroll: true });
+    }
+  }, DUR_SHORT);
+  return filtered;
+}
+
+function applyImmortalFilters() {
+  const filtersActive = isImmFilterActive();
+  const needle = IMM_FILTER_TEXT.trim().toLowerCase();
+
+  const filtered = IMM_LIST.filter((item) => {
+    if (!item) return false;
+
+    if (needle) {
+      const haystack = [
+        item.title,
+        item.desc,
+        item.archetype,
+        (item.tags || []).join(' ')
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (!haystack.includes(needle)) {
+        return false;
+      }
+    }
+
+    if (IMM_FILTER_TAGS.size) {
+      const tagSet = new Set((item.tags || []).map(normalizeImmTag));
+      for (const activeTag of IMM_FILTER_TAGS) {
+        if (!tagSet.has(activeTag)) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  });
+
+  renderImmGrid(filtered, {
+    emptyText: filtersActive
+      ? 'No Immortals match the current filters. Try a different search or clear filters.'
+      : 'No items yet.'
+  });
+
+  updateImmCount(filtered.length, IMM_LIST.length);
+  updateImmFilterUI();
+  return filtered;
+}
+
+function renderImmGrid(list, opts = {}) {
   DOM.immGrid.innerHTML = '';
+  const emptyText = opts.emptyText || 'No items yet.';
   if (!Array.isArray(list) || !list.length) {
     const empty = document.createElement('div');
-    empty.style.color = '#9aa0a6';
-    empty.textContent = 'No items yet.';
+    empty.className = 'imm-empty';
+    empty.textContent = emptyText;
     DOM.immGrid.appendChild(empty);
     return;
   }
   list.forEach((item, idx) => {
     const cell = document.createElement('div');
     cell.className = 'imm-cell';
+    cell.setAttribute('role', 'button');
+    cell.setAttribute('tabindex', '0');
     const thumb = item.thumb || '';
     const overlayTags = formatTagList(item.tags);
     cell.innerHTML = `
@@ -705,6 +864,12 @@ function renderImmGrid(list) {
       IMM_VIEW = list.slice();
       openImmDetailByIndex(idx);
     };
+    cell.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        cell.click();
+      }
+    });
     DOM.immGrid.appendChild(cell);
   });
 }

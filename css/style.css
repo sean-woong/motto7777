@@ -881,7 +881,114 @@ body {
 .char-thumb:hover { outline: 1px solid rgba(255, 0, 170, .35); filter: saturate(1.1); }
 
 /* Immortals */
+.imm-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.imm-search {
+  flex: 1 1 220px;
+  position: relative;
+}
+.imm-search input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--color-line);
+  background: rgba(8, 8, 8, .85);
+  color: var(--color-fg);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: border-color var(--dur-short) var(--ease-standard),
+              box-shadow var(--dur-short) var(--ease-standard),
+              background var(--dur-short) var(--ease-standard);
+}
+.imm-search input::placeholder {
+  color: rgba(154, 160, 166, .8);
+  letter-spacing: .08em;
+}
+.imm-search input:focus-visible {
+  outline: none;
+  border-color: rgba(0, 191, 255, .55);
+  box-shadow: 0 0 0 2px rgba(0, 191, 255, .2);
+  background: rgba(14, 16, 18, .95);
+}
+.imm-clear {
+  appearance: none;
+  border: 1px solid var(--color-line);
+  background: transparent;
+  color: var(--color-muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: color var(--dur-short) var(--ease-standard),
+              border-color var(--dur-short) var(--ease-standard),
+              box-shadow var(--dur-short) var(--ease-standard);
+}
+.imm-clear:hover,
+.imm-clear:focus-visible {
+  color: var(--color-secondary);
+  border-color: rgba(0, 191, 255, .65);
+  box-shadow: 0 0 12px rgba(0, 191, 255, .3);
+  outline: none;
+}
+.imm-clear[hidden] { display: none; }
+.imm-count {
+  margin-left: auto;
+  color: var(--color-muted);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.imm-tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.imm-tag-btn {
+  appearance: none;
+  border: 1px solid var(--color-line);
+  background: rgba(8, 8, 8, .6);
+  color: var(--color-muted);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: color var(--dur-short) var(--ease-standard),
+              border-color var(--dur-short) var(--ease-standard),
+              box-shadow var(--dur-short) var(--ease-standard),
+              background var(--dur-short) var(--ease-standard);
+}
+.imm-tag-btn:hover,
+.imm-tag-btn:focus-visible {
+  color: var(--color-secondary);
+  border-color: rgba(0, 191, 255, .6);
+  box-shadow: 0 0 14px rgba(0, 191, 255, .35);
+  outline: none;
+}
+.imm-tag-btn.is-active,
+.imm-tag-btn[aria-pressed="true"] {
+  color: var(--color-primary);
+  border-color: rgba(255, 0, 170, .7);
+  background: rgba(255, 0, 170, .12);
+  box-shadow: 0 0 16px rgba(255, 0, 170, .32);
+}
 .imm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.imm-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 24px 12px;
+}
 .imm-cell {
   position: relative;
   border: 1px solid var(--color-line);
