@@ -24,6 +24,8 @@ const IMM_LIST = [
     thumb: "assets/images/dealer.gif",
     video: "assets/video/dealer.mp4",
     legend: true,
+    legend_en: "Dealer — Loop Glitch · Fumes bleed.",
+    legend_ko: "딜러 — 루프 글리치 · 연기가 스며든다.",
     tags: ["dealer", "glitch", "loop"],
     created_date: "2024-03-07"
   },
@@ -35,6 +37,8 @@ const IMM_LIST = [
     thumb: "assets/images/skull.gif",
     video: "assets/video/skull.mp4",
     legend: true,
+    legend_en: "Skull — Fragment Protocol · Sparks ignite.",
+    legend_ko: "스컬 — 프래그먼트 프로토콜 · 스파크가 튄다.",
     tags: ["skull", "fragment", "pulse"],
     created_date: "2024-04-18"
   },
@@ -46,6 +50,8 @@ const IMM_LIST = [
     thumb: "assets/images/rockstar.gif",
     video: "assets/video/rockstar.mp4",
     legend: false,
+    legend_en: "Rockstar — Stall Stage · Smile stalls.",
+    legend_ko: "록스타 — 스톨 스테이지 · 미소가 멈춘다.",
     tags: ["rock", "feedback", "stage"],
     created_date: "2024-05-26"
   },
@@ -57,6 +63,8 @@ const IMM_LIST = [
     thumb: "assets/images/drag.gif",
     video: "assets/video/drag.mp4",
     legend: false,
+    legend_en: "Drag — Recode Glam · Everything screams.",
+    legend_ko: "드랙 — 리코드 글램 · 모든 것이 비명한다.",
     tags: ["glam", "remix", "neon"],
     created_date: "2024-06-22"
   },
@@ -68,6 +76,8 @@ const IMM_LIST = [
     thumb: "assets/images/military.gif",
     video: "assets/video/military.mp4",
     legend: false,
+    legend_en: "Military — Reload Combat · Target locked.",
+    legend_ko: "밀리터리 — 리로드 컴뱃 · 조준이 고정된다.",
     tags: ["combat", "precision", "signal"],
     created_date: "2024-07-19"
   },
@@ -79,6 +89,8 @@ const IMM_LIST = [
     thumb: "assets/images/motorcycle.gif",
     video: "assets/video/motorcycle.mp4",
     legend: false,
+    legend_en: "Motorcycle — Skid Speed · Veins pulse.",
+    legend_ko: "모터사이클 — 스키드 스피드 · 맥박이 뛴다.",
     tags: ["speed", "neon", "highway"],
     created_date: "2024-08-10"
   },
@@ -90,6 +102,8 @@ const IMM_LIST = [
     thumb: "assets/images/boxer.gif",
     video: "assets/video/boxer.mp4",
     legend: false,
+    legend_en: "Boxer — Loop Fight · Bell rings.",
+    legend_ko: "복서 — 루프 파이트 · 종이 울린다.",
     tags: ["fight", "momentum", "pulse"],
     created_date: "2024-09-05"
   }
@@ -534,8 +548,21 @@ window.addEventListener('resize', debounce(() => {
 
 // ====== Legend Pins ======
 let IMM_VIEW = [], IMM_CUR = -1;
+
+function isLegendEnabled(legendField) {
+  if (legendField === true) return true;
+  if (!legendField || legendField === false) return false;
+  if (typeof legendField === 'object' && !Array.isArray(legendField)) {
+    if ('enabled' in legendField) {
+      return Boolean(legendField.enabled);
+    }
+    return true;
+  }
+  return Boolean(legendField);
+}
+
 async function spawnLegendPins(resize = false) {
-  const legends = IMM_LIST.filter(x => x.legend === true);
+  const legends = IMM_LIST.filter(x => isLegendEnabled(x.legend));
   if (!legends.length) return;
 
   [...DOM.stage.querySelectorAll('.portal.legend')].forEach(n => n.remove());
@@ -874,6 +901,28 @@ function renderImmGrid(list, opts = {}) {
   });
 }
 
+function resolveEntryLegend(entry) {
+  const legendField = entry.legend;
+  const legendObj = (legendField && typeof legendField === 'object' && !Array.isArray(legendField))
+    ? legendField
+    : null;
+  const en = entry.legend_en !== undefined ? entry.legend_en : legendObj?.en;
+  const ko = entry.legend_ko !== undefined ? entry.legend_ko : legendObj?.ko;
+  return { en, ko };
+}
+
+function buildLegendContent(entry) {
+  const archetypeKey = (entry.archetype || '').toLowerCase();
+  const fallback = LEGEND_DESC[archetypeKey] || {};
+  const resolved = resolveEntryLegend(entry);
+  const en = resolved.en !== undefined ? resolved.en : fallback.en;
+  const ko = resolved.ko !== undefined ? resolved.ko : fallback.ko;
+  const parts = [];
+  if (en) parts.push(`<div class="en">${en}</div>`);
+  if (ko) parts.push(`<div class="ko">${ko}</div>`);
+  return parts.join('');
+}
+
 function openImmDetailByIndex(i) {
   if (!IMM_VIEW.length) return;
   IMM_CUR = (i + IMM_VIEW.length) % IMM_VIEW.length;
@@ -897,9 +946,16 @@ function openImmDetailByIndex(i) {
     const metaVisible = Boolean((DOM.immTags && !DOM.immTags.hidden) || (DOM.immDate && !DOM.immDate.hidden));
     DOM.immMeta.hidden = !metaVisible;
   }
-  const lg = LEGEND_DESC[(it.archetype || '').toLowerCase()];
-  if (lg) { DOM.immLegend.innerHTML = `<div class="en">${lg.en}</div><div class="ko">${lg.ko}</div>`; DOM.immLegend.style.display = 'block'; }
-  else { DOM.immLegend.style.display = 'none'; }
+  if (DOM.immLegend) {
+    const legendContent = buildLegendContent(it);
+    if (legendContent) {
+      DOM.immLegend.innerHTML = legendContent;
+      DOM.immLegend.style.display = 'block';
+    } else {
+      DOM.immLegend.innerHTML = '';
+      DOM.immLegend.style.display = 'none';
+    }
+  }
   if (DOM.immVideo) {
     DOM.immVideo.hidden = false;
     DOM.immVideo.src = it.video || '';
