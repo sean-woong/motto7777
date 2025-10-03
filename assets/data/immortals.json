@@ -1,0 +1,1381 @@
+[
+  {
+    "id": "boxer-1000",
+    "title": "Boxer #1000 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 1000.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 1000.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #1000.",
+      "kr": "복서가 루프 #1000을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-122",
+    "title": "Boxer #122 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 122.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 122.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #122.",
+      "kr": "복서가 루프 #122을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-168",
+    "title": "Boxer #168 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 168.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 168.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #168.",
+      "kr": "복서가 루프 #168을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-190",
+    "title": "Boxer #190 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 190.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 190.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #190.",
+      "kr": "복서가 루프 #190을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-25",
+    "title": "Boxer #25 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 25.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 25.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #25.",
+      "kr": "복서가 루프 #25을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-376",
+    "title": "Boxer #376 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 376.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 376.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #376.",
+      "kr": "복서가 루프 #376을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-695",
+    "title": "Boxer #695 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 695.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 695.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #695.",
+      "kr": "복서가 루프 #695을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-814",
+    "title": "Boxer #814 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 814.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 814.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #814.",
+      "kr": "복서가 루프 #814을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-857",
+    "title": "Boxer #857 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 857.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 857.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #857.",
+      "kr": "복서가 루프 #857을 반복한다."
+    }
+  },
+  {
+    "id": "boxer-87",
+    "title": "Boxer #87 — Loop Fight",
+    "category": "BOXER",
+    "archetype": "boxer",
+    "thumb": "assets/immortals/Thumbnails_GIF/BOXER/Boxer 87.gif",
+    "video": "assets/immortals/Artwork_MP4/BOXER/Boxer 87.mp4",
+    "legend": false,
+    "tags": [
+      "BOXER",
+      "FIGHT",
+      "LOOP"
+    ],
+    "description": {
+      "en": "Boxer replays loop #87.",
+      "kr": "복서가 루프 #87을 반복한다."
+    }
+  },
+  {
+    "id": "dealer-157",
+    "title": "Dealer #157 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 157.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 157.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #157.",
+      "kr": "딜러가 프로토콜 #157을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-19",
+    "title": "Dealer #19 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 19.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 19.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #19.",
+      "kr": "딜러가 프로토콜 #19을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-205",
+    "title": "Dealer #205 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 205.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 205.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #205.",
+      "kr": "딜러가 프로토콜 #205을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-213",
+    "title": "Dealer #213 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 213.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 213.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #213.",
+      "kr": "딜러가 프로토콜 #213을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-22",
+    "title": "Dealer #22 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 22.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 22.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #22.",
+      "kr": "딜러가 프로토콜 #22을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-223",
+    "title": "Dealer #223 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 223.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 223.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #223.",
+      "kr": "딜러가 프로토콜 #223을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-295",
+    "title": "Dealer #295 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 295.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 295.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #295.",
+      "kr": "딜러가 프로토콜 #295을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-354",
+    "title": "Dealer #354 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 354.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 354.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #354.",
+      "kr": "딜러가 프로토콜 #354을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-471",
+    "title": "Dealer #471 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 471.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 471.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #471.",
+      "kr": "딜러가 프로토콜 #471을 재조정한다."
+    }
+  },
+  {
+    "id": "dealer-591",
+    "title": "Dealer #591 — Loop Protocol",
+    "category": "DEALER",
+    "archetype": "dealer",
+    "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer 591.gif",
+    "video": "assets/immortals/Artwork_MP4/DEALER/Dealer 591.mp4",
+    "legend": false,
+    "tags": [
+      "DEALER",
+      "GLITCH",
+      "PROTOCOL"
+    ],
+    "description": {
+      "en": "Dealer reroutes protocol #591.",
+      "kr": "딜러가 프로토콜 #591을 재조정한다."
+    }
+  },
+  {
+    "id": "drag-1",
+    "title": "Drag #1 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 1.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 1.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #1.",
+      "kr": "드랙이 글램 #1을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-17",
+    "title": "Drag #17 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 17.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 17.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #17.",
+      "kr": "드랙이 글램 #17을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-233",
+    "title": "Drag #233 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 233.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 233.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #233.",
+      "kr": "드랙이 글램 #233을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-24",
+    "title": "Drag #24 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 24.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 24.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #24.",
+      "kr": "드랙이 글램 #24을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-285",
+    "title": "Drag #285 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 285.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 285.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #285.",
+      "kr": "드랙이 글램 #285을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-286",
+    "title": "Drag #286 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 286.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 286.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #286.",
+      "kr": "드랙이 글램 #286을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-325",
+    "title": "Drag #325 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 325.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 325.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #325.",
+      "kr": "드랙이 글램 #325을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-402",
+    "title": "Drag #402 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 402.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 402.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #402.",
+      "kr": "드랙이 글램 #402을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-404",
+    "title": "Drag #404 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 404.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 404.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #404.",
+      "kr": "드랙이 글램 #404을 다시 쓴다."
+    }
+  },
+  {
+    "id": "drag-419",
+    "title": "Drag #419 — Recode Glam",
+    "category": "DRAG",
+    "archetype": "drag",
+    "thumb": "assets/immortals/Thumbnails_GIF/DRAG/Drag 419.gif",
+    "video": "assets/immortals/Artwork_MP4/DRAG/Drag 419.mp4",
+    "legend": false,
+    "tags": [
+      "DRAG",
+      "GLAM",
+      "RECODE"
+    ],
+    "description": {
+      "en": "Drag rewrites glam #419.",
+      "kr": "드랙이 글램 #419을 다시 쓴다."
+    }
+  },
+  {
+    "id": "motorcycle-170",
+    "title": "Motorcycle #170 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 170.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 170.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #170.",
+      "kr": "모터사이클이 트랙 #170을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-233",
+    "title": "Motorcycle #233 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 233.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 233.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #233.",
+      "kr": "모터사이클이 트랙 #233을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-267",
+    "title": "Motorcycle #267 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 267.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 267.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #267.",
+      "kr": "모터사이클이 트랙 #267을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-28",
+    "title": "Motorcycle #28 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 28.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 28.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #28.",
+      "kr": "모터사이클이 트랙 #28을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-302",
+    "title": "Motorcycle #302 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 302.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 302.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #302.",
+      "kr": "모터사이클이 트랙 #302을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-313",
+    "title": "Motorcycle #313 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 313.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 313.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #313.",
+      "kr": "모터사이클이 트랙 #313을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-352",
+    "title": "Motorcycle #352 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 352.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 352.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #352.",
+      "kr": "모터사이클이 트랙 #352을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-380",
+    "title": "Motorcycle #380 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 380.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 380.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #380.",
+      "kr": "모터사이클이 트랙 #380을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-466",
+    "title": "Motorcycle #466 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 466.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 466.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #466.",
+      "kr": "모터사이클이 트랙 #466을 태운다."
+    }
+  },
+  {
+    "id": "motorcycle-505",
+    "title": "Motorcycle #505 — Skid Speed",
+    "category": "MOTORCYCLE",
+    "archetype": "motorcycle",
+    "thumb": "assets/immortals/Thumbnails_GIF/MOTORCYCLE/Motto 505.gif",
+    "video": "assets/immortals/Artwork_MP4/MOTORCYCLE/Motto 505.mp4",
+    "legend": false,
+    "tags": [
+      "MOTORCYCLE",
+      "SPEED",
+      "SKID"
+    ],
+    "description": {
+      "en": "Motorcycle burns track #505.",
+      "kr": "모터사이클이 트랙 #505을 태운다."
+    }
+  },
+  {
+    "id": "rockstar-170",
+    "title": "Rockstar #170 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 170.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 170.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #170.",
+      "kr": "록스타가 스테이지 #170을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-20",
+    "title": "Rockstar #20 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 20.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 20.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #20.",
+      "kr": "록스타가 스테이지 #20을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-22",
+    "title": "Rockstar #22 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 22.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 22.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #22.",
+      "kr": "록스타가 스테이지 #22을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-251",
+    "title": "Rockstar #251 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 251.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 251.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #251.",
+      "kr": "록스타가 스테이지 #251을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-35",
+    "title": "Rockstar #35 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 35.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 35.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #35.",
+      "kr": "록스타가 스테이지 #35을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-51",
+    "title": "Rockstar #51 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 51.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 51.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #51.",
+      "kr": "록스타가 스테이지 #51을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-569",
+    "title": "Rockstar #569 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 569.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 569.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #569.",
+      "kr": "록스타가 스테이지 #569을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-597",
+    "title": "Rockstar #597 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 597.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 597.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #597.",
+      "kr": "록스타가 스테이지 #597을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-650",
+    "title": "Rockstar #650 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 650.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 650.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #650.",
+      "kr": "록스타가 스테이지 #650을 얼린다."
+    }
+  },
+  {
+    "id": "rockstar-696",
+    "title": "Rockstar #696 — Stall Stage",
+    "category": "ROCKSTAR",
+    "archetype": "rockstar",
+    "thumb": "assets/immortals/Thumbnails_GIF/ROCKSTAR/Rockstar 696.gif",
+    "video": "assets/immortals/Artwork_MP4/ROCKSTAR/Rockstar 696.mp4",
+    "legend": false,
+    "tags": [
+      "ROCKSTAR",
+      "STAGE",
+      "ECHO"
+    ],
+    "description": {
+      "en": "Rockstar freezes stage #696.",
+      "kr": "록스타가 스테이지 #696을 얼린다."
+    }
+  },
+  {
+    "id": "skull-1098",
+    "title": "Skull #1098 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 1098.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 1098.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #1098.",
+      "kr": "스컬이 프래그먼트 #1098을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-19",
+    "title": "Skull #19 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 19.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 19.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #19.",
+      "kr": "스컬이 프래그먼트 #19을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-262",
+    "title": "Skull #262 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 262.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 262.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #262.",
+      "kr": "스컬이 프래그먼트 #262을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-312",
+    "title": "Skull #312 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 312.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 312.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #312.",
+      "kr": "스컬이 프래그먼트 #312을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-438",
+    "title": "Skull #438 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 438.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 438.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #438.",
+      "kr": "스컬이 프래그먼트 #438을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-547",
+    "title": "Skull #547 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 547.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 547.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #547.",
+      "kr": "스컬이 프래그먼트 #547을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-57",
+    "title": "Skull #57 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 57.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 57.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #57.",
+      "kr": "스컬이 프래그먼트 #57을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-76",
+    "title": "Skull #76 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 76.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 76.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #76.",
+      "kr": "스컬이 프래그먼트 #76을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-885",
+    "title": "Skull #885 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 885.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 885.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #885.",
+      "kr": "스컬이 프래그먼트 #885을 굴절시킨다."
+    }
+  },
+  {
+    "id": "skull-91",
+    "title": "Skull #91 — Fragment Signal",
+    "category": "SKULL",
+    "archetype": "skull",
+    "thumb": "assets/immortals/Thumbnails_GIF/SKULL/Skull 91.gif",
+    "video": "assets/immortals/Artwork_MP4/SKULL/Skull 91.mp4",
+    "legend": false,
+    "tags": [
+      "SKULL",
+      "FRAGMENT",
+      "SIGNAL"
+    ],
+    "description": {
+      "en": "Skull refracts fragment #91.",
+      "kr": "스컬이 프래그먼트 #91을 굴절시킨다."
+    }
+  },
+  {
+    "id": "soldier-126",
+    "title": "Soldier #126 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 126.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 126.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #126.",
+      "kr": "솔저가 전투 #126을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-245",
+    "title": "Soldier #245 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 245.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 245.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #245.",
+      "kr": "솔저가 전투 #245을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-258",
+    "title": "Soldier #258 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 258.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 258.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #258.",
+      "kr": "솔저가 전투 #258을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-348",
+    "title": "Soldier #348 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 348.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 348.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #348.",
+      "kr": "솔저가 전투 #348을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-375",
+    "title": "Soldier #375 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 375.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 375.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #375.",
+      "kr": "솔저가 전투 #375을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-377",
+    "title": "Soldier #377 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 377.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 377.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #377.",
+      "kr": "솔저가 전투 #377을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-396",
+    "title": "Soldier #396 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 396.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 396.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #396.",
+      "kr": "솔저가 전투 #396을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-397",
+    "title": "Soldier #397 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 397.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 397.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #397.",
+      "kr": "솔저가 전투 #397을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-486",
+    "title": "Soldier #486 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 486.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 486.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #486.",
+      "kr": "솔저가 전투 #486을 고정한다."
+    }
+  },
+  {
+    "id": "soldier-59",
+    "title": "Soldier #59 — Reload Combat",
+    "category": "SOLDIER",
+    "archetype": "soldier",
+    "thumb": "assets/immortals/Thumbnails_GIF/SOLDIER/Soldier 59.gif",
+    "video": "assets/immortals/Artwork_MP4/SOLDIER/Soldier 59.mp4",
+    "legend": false,
+    "tags": [
+      "SOLDIER",
+      "COMBAT",
+      "RELOAD"
+    ],
+    "description": {
+      "en": "Soldier locks combat #59.",
+      "kr": "솔저가 전투 #59을 고정한다."
+    }
+  },
+  {
+    "id": "legend-dealer",
+    "title": "Dealer — Loop Glitch",
+    "archetype": "dealer",
+    "category": "LEGEND",
+    "tags": [
+      "DEALER",
+      "LEGEND"
+    ],
+    "thumb": "assets/images/dealer.gif",
+    "video": "assets/video/dealer.mp4",
+    "legend": true,
+    "description": {
+      "en": "Fumes bleed.",
+      "kr": "연기가 스며든다."
+    }
+  },
+  {
+    "id": "legend-skull",
+    "title": "Skull — Fragment Protocol",
+    "archetype": "skull",
+    "category": "LEGEND",
+    "tags": [
+      "SKULL",
+      "LEGEND"
+    ],
+    "thumb": "assets/images/skull.gif",
+    "video": "assets/video/skull.mp4",
+    "legend": true,
+    "description": {
+      "en": "Sparks ignite.",
+      "kr": "스파크가 튄다."
+    }
+  },
+  {
+    "id": "legend-rockstar",
+    "title": "Rockstar — Stall Stage",
+    "archetype": "rockstar",
+    "category": "LEGEND",
+    "tags": [
+      "ROCKSTAR",
+      "LEGEND"
+    ],
+    "thumb": "assets/images/rockstar.gif",
+    "video": "assets/video/rockstar.mp4",
+    "legend": true,
+    "description": {
+      "en": "Smile stalls.",
+      "kr": "미소가 멈춘다."
+    }
+  },
+  {
+    "id": "legend-drag",
+    "title": "Drag — Recode Glam",
+    "archetype": "drag",
+    "category": "LEGEND",
+    "tags": [
+      "DRAG",
+      "LEGEND"
+    ],
+    "thumb": "assets/images/drag.gif",
+    "video": "assets/video/drag.mp4",
+    "legend": true,
+    "description": {
+      "en": "Everything screams.",
+      "kr": "모든 것이 비명한다."
+    }
+  },
+  {
+    "id": "legend-soldier",
+    "title": "Soldier — Reload Combat",
+    "archetype": "soldier",
+    "category": "LEGEND",
+    "tags": [
+      "SOLDIER",
+      "LEGEND"
+    ],
+    "thumb": "assets/images/military.gif",
+    "video": "assets/video/military.mp4",
+    "legend": true,
+    "description": {
+      "en": "Target locked.",
+      "kr": "조준이 고정된다."
+    }
+  },
+  {
+    "id": "legend-boxer",
+    "title": "Boxer — Loop Fight",
+    "archetype": "boxer",
+    "category": "LEGEND",
+    "tags": [
+      "BOXER",
+      "LEGEND"
+    ],
+    "thumb": "assets/images/boxer.gif",
+    "video": "assets/video/boxer.mp4",
+    "legend": true,
+    "description": {
+      "en": "Bell rings.",
+      "kr": "종이 울린다."
+    }
+  },
+  {
+    "id": "legend-motorcycle",
+    "title": "Motorcycle — Skid Speed",
+    "archetype": "motorcycle",
+    "category": "LEGEND",
+    "tags": [
+      "MOTORCYCLE",
+      "LEGEND"
+    ],
+    "thumb": "assets/images/motorcycle.gif",
+    "video": "assets/video/motorcycle.mp4",
+    "legend": true,
+    "description": {
+      "en": "Veins pulse.",
+      "kr": "맥박이 뛴다."
+    }
+  }
+]

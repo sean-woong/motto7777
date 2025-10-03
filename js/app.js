@@ -15,114 +15,20 @@ const IG_URL = '#';
 const TT_URL = '#';
 
 // ====== Data Sources ======
-const IMM_LIST = [
-  {
-    id: "imm_dealer",
-    title: "Immortals #01 — Dealer Protocol",
-    desc: "Dealer remixes the loop until neon fumes bloom. 딜러가 루프를 비틀어 네온이 피어난다.",
-    archetype: "dealer",
-    thumb: "assets/images/dealer.gif",
-    video: "assets/video/dealer.mp4",
-    legend: true,
-    legend_en: "Dealer — Loop Glitch · Fumes bleed.",
-    legend_ko: "딜러 — 루프 글리치 · 연기가 스며든다.",
-    tags: ["dealer", "glitch", "loop"],
-    created_date: "2024-03-07"
-  },
-  {
-    id: "imm_skull",
-    title: "Immortals #02 — Skull Fragment",
-    desc: "Shards orbit Skull while the protocol recalibrates. 조각이 스컬을 맴돌며 프로토콜이 재정렬된다.",
-    archetype: "skull",
-    thumb: "assets/images/skull.gif",
-    video: "assets/video/skull.mp4",
-    legend: true,
-    legend_en: "Skull — Fragment Protocol · Sparks ignite.",
-    legend_ko: "스컬 — 프래그먼트 프로토콜 · 스파크가 튄다.",
-    tags: ["skull", "fragment", "pulse"],
-    created_date: "2024-04-18"
-  },
-  {
-    id: "imm_rockstar",
-    title: "Immortals #03 — Rockstar Stall",
-    desc: "Amp feedback freezes the grin mid-frame. 앰프 피드백이 미소를 정지시킨다.",
-    archetype: "rockstar",
-    thumb: "assets/images/rockstar.gif",
-    video: "assets/video/rockstar.mp4",
-    legend: false,
-    legend_en: "Rockstar — Stall Stage · Smile stalls.",
-    legend_ko: "록스타 — 스톨 스테이지 · 미소가 멈춘다.",
-    tags: ["rock", "feedback", "stage"],
-    created_date: "2024-05-26"
-  },
-  {
-    id: "imm_drag",
-    title: "Immortals #04 — Drag Recode",
-    desc: "Glitter tears through the timeline. 글리터가 타임라인을 가른다.",
-    archetype: "drag",
-    thumb: "assets/images/drag.gif",
-    video: "assets/video/drag.mp4",
-    legend: false,
-    legend_en: "Drag — Recode Glam · Everything screams.",
-    legend_ko: "드랙 — 리코드 글램 · 모든 것이 비명한다.",
-    tags: ["glam", "remix", "neon"],
-    created_date: "2024-06-22"
-  },
-  {
-    id: "imm_military",
-    title: "Immortals #05 — Military Reload",
-    desc: "The visor locks as sirens fade. 바이저가 잠기고 사이렌이 멀어진다.",
-    archetype: "military",
-    thumb: "assets/images/military.gif",
-    video: "assets/video/military.mp4",
-    legend: false,
-    legend_en: "Military — Reload Combat · Target locked.",
-    legend_ko: "밀리터리 — 리로드 컴뱃 · 조준이 고정된다.",
-    tags: ["combat", "precision", "signal"],
-    created_date: "2024-07-19"
-  },
-  {
-    id: "imm_motorcycle",
-    title: "Immortals #06 — Motorcycle Skid",
-    desc: "Tires spark while the city blurs. 타이어가 불꽃을 튀기며 도시가 흐릿해진다.",
-    archetype: "motorcycle",
-    thumb: "assets/images/motorcycle.gif",
-    video: "assets/video/motorcycle.mp4",
-    legend: false,
-    legend_en: "Motorcycle — Skid Speed · Veins pulse.",
-    legend_ko: "모터사이클 — 스키드 스피드 · 맥박이 뛴다.",
-    tags: ["speed", "neon", "highway"],
-    created_date: "2024-08-10"
-  },
-  {
-    id: "imm_boxer",
-    title: "Immortals #07 — Boxer Loop",
-    desc: "Sweat ignites beneath the ring lights. 링 조명이 땀을 번쩍이게 한다.",
-    archetype: "boxer",
-    thumb: "assets/images/boxer.gif",
-    video: "assets/video/boxer.mp4",
-    legend: false,
-    legend_en: "Boxer — Loop Fight · Bell rings.",
-    legend_ko: "복서 — 루프 파이트 · 종이 울린다.",
-    tags: ["fight", "momentum", "pulse"],
-    created_date: "2024-09-05"
+const IMM_DATA_URL = (() => {
+  try {
+    const base = document.baseURI || window.location.href;
+    return new URL('assets/data/immortals.json', base).href;
+  } catch (err) {
+    console.warn('Failed to resolve Immortals data URL, falling back to relative path.', err);
+    return 'assets/data/immortals.json';
   }
-];
-
-const IMM_TAG_OPTIONS = (() => {
-  const tagMap = new Map();
-  IMM_LIST.forEach((item) => {
-    (item.tags || []).forEach((tag) => {
-      const cleaned = (tag || '').toString().trim();
-      if (!cleaned) return;
-      const key = cleaned.toLowerCase();
-      if (!tagMap.has(key)) {
-        tagMap.set(key, cleaned);
-      }
-    });
-  });
-  return Array.from(tagMap.entries()).map(([key, label]) => ({ key, label }));
 })();
+
+let IMM_LIST = [];
+let IMM_TAG_OPTIONS = [];
+let immDataPromise = null;
+let immDataError = null;
 
 // ====== Portals ======
 const PORTALS = [
@@ -196,6 +102,294 @@ function formatDateLabel(dateStr) {
     month: 'short',
     day: '2-digit'
   }).format(dt);
+}
+
+function resolveAssetPath(input) {
+  if (input === undefined || input === null) return '';
+  const raw = `${input}`.trim();
+  if (!raw) return '';
+
+  const isAbsolute = /^(?:https?:|data:|blob:|\/\/)/i.test(raw);
+  const hasWhitespace = /\s/.test(raw);
+
+  if (isAbsolute) {
+    if (!hasWhitespace) return raw;
+    return raw.replace(/\s+/g, (match) => encodeURIComponent(match));
+  }
+
+  const encoded = hasWhitespace
+    ? raw.split('/').map((segment) => (segment ? encodeURIComponent(segment) : segment)).join('/')
+    : raw;
+  try {
+    return new URL(encoded, document.baseURI || window.location.href).href;
+  } catch (err) {
+    console.warn('Failed to resolve asset path:', raw, err);
+    return encoded;
+  }
+}
+
+function stripBom(input) {
+  if (!input) return '';
+  return input.charCodeAt(0) === 0xFEFF ? input.slice(1) : input;
+}
+
+function tryParseJson(text) {
+  try {
+    return { value: JSON.parse(text), error: null };
+  } catch (err) {
+    return { value: null, error: err };
+  }
+}
+
+function parseImmortalsPayload(rawText) {
+  const trimmed = stripBom((rawText || '').trim());
+  if (!trimmed) return [];
+
+  const direct = tryParseJson(trimmed);
+  if (!direct.error) {
+    return direct.value;
+  }
+
+  const wrappedText = `[${trimmed.replace(/\,\s*$/, '')}]`;
+  const wrapped = tryParseJson(wrappedText);
+  if (!wrapped.error) {
+    console.warn('Immortals payload wrapped as array for parsing compatibility.');
+    return wrapped.value;
+  }
+
+  const looseObjects = splitLooseJsonObjects(trimmed);
+  if (looseObjects.length) {
+    const parsed = [];
+    for (let i = 0; i < looseObjects.length; i += 1) {
+      const chunk = looseObjects[i].trim().replace(/\,\s*$/, '');
+      if (!chunk) continue;
+      const result = tryParseJson(chunk);
+      if (result.error) {
+        console.error(`Failed to parse Immortal entry #${i + 1}:`, result.error);
+        throw result.error;
+      }
+      parsed.push(result.value);
+    }
+    if (parsed.length) {
+      console.warn('Immortals payload parsed via loose object fallback.');
+      return parsed;
+    }
+  }
+
+  const originalError = direct.error || wrapped.error;
+  throw originalError || new Error('Unable to parse Immortals payload.');
+}
+
+function splitLooseJsonObjects(text) {
+  const objects = [];
+  let depth = 0;
+  let start = -1;
+  let inString = false;
+  let escaping = false;
+
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+
+    if (inString) {
+      if (escaping) {
+        escaping = false;
+      } else if (ch === '\\') {
+        escaping = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+
+    if (ch === '{') {
+      if (depth === 0) {
+        start = i;
+      }
+      depth += 1;
+    } else if (ch === '}') {
+      if (depth > 0) depth -= 1;
+      if (depth === 0 && start !== -1) {
+        objects.push(text.slice(start, i + 1));
+        start = -1;
+      }
+    }
+  }
+  return objects;
+}
+
+function sanitizeImmTags(tags) {
+  if (!tags) return [];
+  if (Array.isArray(tags)) {
+    return tags
+      .map(tag => (tag || '').toString().trim())
+      .filter(Boolean);
+  }
+  if (typeof tags === 'string') {
+    const parts = tags.split(/[,#]/);
+    return parts
+      .map(part => part.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+function buildImmTagOptions(list) {
+  const tagMap = new Map();
+  list.forEach((item) => {
+    sanitizeImmTags(item.tags).forEach((tag) => {
+      const key = tag.toLowerCase();
+      if (!tagMap.has(key)) {
+        tagMap.set(key, tag);
+      }
+    });
+  });
+  return Array.from(tagMap.entries())
+    .map(([key, label]) => ({ key, label }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+function pickFirstEntryField(entry, fields) {
+  for (let i = 0; i < fields.length; i += 1) {
+    const key = fields[i];
+    if (key in entry && entry[key] !== undefined && entry[key] !== null) {
+      const val = entry[key];
+      if (Array.isArray(val)) {
+        if (val.length) return val;
+        continue;
+      }
+      const str = `${val}`.trim();
+      if (str) return str;
+    }
+  }
+  return '';
+}
+
+function sanitizeImmEntry(raw, index) {
+  const source = (raw && typeof raw === 'object') ? raw : {};
+  const entry = { ...source };
+  const fallbackId = `imm_${index + 1}`;
+  entry.id = pickFirstEntryField(entry, ['id', 'slug', 'uid']) || fallbackId;
+  entry.archetype = (pickFirstEntryField(entry, ['archetype', 'type', 'category']) || '').toLowerCase();
+
+  const titleEn = pickFirstEntryField(entry, ['title_en', 'titleEn', 'name_en', 'nameEn']);
+  const titleKo = pickFirstEntryField(entry, ['title_ko', 'titleKo', 'name_ko', 'nameKo']);
+  const genericTitle = pickFirstEntryField(entry, ['title', 'name', 'label']);
+  entry.title_en = titleEn || '';
+  entry.title_ko = titleKo || '';
+  entry.title = genericTitle || titleEn || titleKo || entry.id;
+
+  let descEn = pickFirstEntryField(entry, ['desc_en', 'description_en', 'summary_en', 'descEn']);
+  let descKo = pickFirstEntryField(entry, ['desc_ko', 'description_ko', 'summary_ko', 'descKo']);
+  const descriptionObj = entry.description || entry.descriptions;
+  if (descriptionObj && typeof descriptionObj === 'object') {
+    if (!descEn && descriptionObj.en !== undefined) {
+      descEn = `${descriptionObj.en}`.trim();
+    }
+    const koText = descriptionObj.ko ?? descriptionObj.kr ?? descriptionObj['ko-KR'];
+    if (!descKo && koText !== undefined) {
+      descKo = `${koText}`.trim();
+    }
+    if (!descEn && Array.isArray(descriptionObj)) {
+      descEn = `${descriptionObj[0] || ''}`.trim();
+    }
+  }
+  const unifiedDesc = pickFirstEntryField(entry, ['desc', 'description', 'summary']);
+  entry.desc_en = descEn || '';
+  entry.desc_ko = descKo || '';
+  if (unifiedDesc) {
+    entry.desc = unifiedDesc;
+  } else {
+    const parts = [descEn, descKo].filter(Boolean);
+    entry.desc = parts.join('\n');
+  }
+
+  const legendEn = pickFirstEntryField(entry, ['legend_en', 'legendEn']);
+  const legendKo = pickFirstEntryField(entry, ['legend_ko', 'legendKo']);
+  if (legendEn || legendKo) {
+    entry.legend = entry.legend || {};
+    if (typeof entry.legend !== 'object' || entry.legend === null || Array.isArray(entry.legend)) {
+      entry.legend = { value: entry.legend };
+    }
+    if (legendEn) entry.legend_en = legendEn;
+    if (legendKo) entry.legend_ko = legendKo;
+  }
+
+  const thumbPath = pickFirstEntryField(entry, ['thumb', 'thumbnail', 'thumb_url', 'thumbUrl', 'preview', 'image', 'gif']);
+  const videoPath = pickFirstEntryField(entry, ['video', 'video_url', 'videoUrl', 'mp4', 'src', 'media']);
+  entry.thumb = resolveAssetPath(thumbPath || entry.thumb || '');
+  entry.video = resolveAssetPath(videoPath || entry.video || '');
+
+  const createdAt = pickFirstEntryField(entry, ['created_date', 'createdDate', 'release', 'date', 'released_at', 'released']);
+  entry.created_date = createdAt || entry.created_date || '';
+
+  entry.tags = sanitizeImmTags(entry.tags || entry.tag || entry.labels || entry.categories);
+  if (!entry.tags.length && entry.archetype) {
+    entry.tags = [entry.archetype];
+  }
+  return entry;
+}
+
+function extractImmortalsArray(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (payload && typeof payload === 'object') {
+    const candidates = ['immortals', 'items', 'data', 'list'];
+    for (let i = 0; i < candidates.length; i += 1) {
+      const key = candidates[i];
+      if (Array.isArray(payload[key])) {
+        return payload[key];
+      }
+    }
+  }
+  return [];
+}
+
+function rebuildImmCaches(list) {
+  IMM_LIST = list.slice();
+  IMM_TAG_OPTIONS = buildImmTagOptions(IMM_LIST);
+}
+
+async function ensureImmortalsData() {
+  if (immDataPromise) return immDataPromise;
+  immDataPromise = fetch(IMM_DATA_URL, { credentials: 'same-origin' })
+    .then((resp) => {
+      if (!resp.ok) {
+        throw new Error(`Failed to load immortals.json (${resp.status})`);
+      }
+      return resp.text();
+    })
+    .then((payload) => {
+      const parsed = parseImmortalsPayload(payload);
+      const list = extractImmortalsArray(parsed).map(sanitizeImmEntry);
+      rebuildImmCaches(list);
+      const validTags = new Set(IMM_TAG_OPTIONS.map(opt => opt.key));
+      IMM_FILTER_TAGS.forEach((tag) => {
+        if (!validTags.has(tag)) {
+          IMM_FILTER_TAGS.delete(tag);
+        }
+      });
+      immDataError = null;
+      if (_immFiltersInitialized) {
+        renderImmTagFilters();
+        updateImmFilterUI();
+      }
+      return IMM_LIST;
+    })
+    .catch((err) => {
+      immDataError = err;
+      console.error('Immortals data load failed:', err);
+      rebuildImmCaches([]);
+      if (_immFiltersInitialized) {
+        renderImmTagFilters();
+        updateImmFilterUI();
+      }
+      return [];
+    });
+  return immDataPromise;
 }
 
 // ====== Legend Descriptions ======
@@ -562,6 +756,7 @@ function isLegendEnabled(legendField) {
 }
 
 async function spawnLegendPins(resize = false) {
+  await ensureImmortalsData();
   const legends = IMM_LIST.filter(x => isLegendEnabled(x.legend));
   if (!legends.length) return;
 
@@ -722,6 +917,37 @@ let IMM_FILTER_TEXT = '';
 const IMM_FILTER_TAGS = new Set();
 const IMM_TAG_BUTTONS = new Map();
 
+function renderImmTagFilters() {
+  if (!DOM.immTagFilters) return;
+  DOM.immTagFilters.innerHTML = '';
+  IMM_TAG_BUTTONS.clear();
+
+  if (!IMM_TAG_OPTIONS.length) {
+    DOM.immTagFilters.hidden = true;
+    return;
+  }
+
+  DOM.immTagFilters.hidden = false;
+  IMM_TAG_OPTIONS.forEach(({ key, label }) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'imm-tag-btn';
+    btn.dataset.tag = key;
+    btn.setAttribute('aria-pressed', IMM_FILTER_TAGS.has(key) ? 'true' : 'false');
+    btn.textContent = `#${label.toUpperCase()}`;
+    btn.addEventListener('click', () => {
+      if (IMM_FILTER_TAGS.has(key)) {
+        IMM_FILTER_TAGS.delete(key);
+      } else {
+        IMM_FILTER_TAGS.add(key);
+      }
+      applyImmortalFilters();
+    });
+    DOM.immTagFilters.appendChild(btn);
+    IMM_TAG_BUTTONS.set(key, btn);
+  });
+}
+
 function normalizeImmTag(tag) {
   return (tag || '').toString().trim().toLowerCase();
 }
@@ -761,52 +987,32 @@ function updateImmCount(current, total) {
 }
 
 function ensureImmFilterControls() {
-  if (_immFiltersInitialized) return;
-
-  if (DOM.immSearch) {
-    DOM.immSearch.addEventListener('input', () => {
-      IMM_FILTER_TEXT = DOM.immSearch.value;
-      applyImmortalFilters();
-    });
-  }
-
-  if (DOM.immTagFilters && IMM_TAG_OPTIONS.length) {
-    DOM.immTagFilters.innerHTML = '';
-    IMM_TAG_OPTIONS.forEach(({ key, label }) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'imm-tag-btn';
-      btn.dataset.tag = key;
-      btn.setAttribute('aria-pressed', 'false');
-      btn.textContent = `#${label.toUpperCase()}`;
-      btn.addEventListener('click', () => {
-        if (IMM_FILTER_TAGS.has(key)) {
-          IMM_FILTER_TAGS.delete(key);
-        } else {
-          IMM_FILTER_TAGS.add(key);
-        }
+  if (!_immFiltersInitialized) {
+    if (DOM.immSearch) {
+      DOM.immSearch.addEventListener('input', () => {
+        IMM_FILTER_TEXT = DOM.immSearch.value;
         applyImmortalFilters();
       });
-      DOM.immTagFilters.appendChild(btn);
-      IMM_TAG_BUTTONS.set(key, btn);
+    }
+
+    DOM.immClearFilters?.addEventListener('click', () => {
+      if (!isImmFilterActive()) return;
+      IMM_FILTER_TEXT = '';
+      IMM_FILTER_TAGS.clear();
+      applyImmortalFilters();
     });
-  } else if (DOM.immTagFilters) {
-    DOM.immTagFilters.hidden = true;
+
+    _immFiltersInitialized = true;
   }
 
-  DOM.immClearFilters?.addEventListener('click', () => {
-    if (!isImmFilterActive()) return;
-    IMM_FILTER_TEXT = '';
-    IMM_FILTER_TAGS.clear();
-    applyImmortalFilters();
-  });
-
-  _immFiltersInitialized = true;
+  renderImmTagFilters();
   updateImmFilterUI();
 }
 
 async function openImmortals() {
+  if (!DOM.immModal) return [];
   DOM.immModal.classList.add('modal-loading');
+  await ensureImmortalsData();
   ensureImmFilterControls();
   const filtered = applyImmortalFilters();
   DOM.immModal.classList.remove('modal-loading');
@@ -822,6 +1028,19 @@ async function openImmortals() {
 function applyImmortalFilters() {
   const filtersActive = isImmFilterActive();
   const needle = IMM_FILTER_TEXT.trim().toLowerCase();
+
+  if (!IMM_LIST.length) {
+    const errorDetail = immDataError?.message || '';
+    const emptyText = immDataError
+      ? `Immortals data load failed. ${errorDetail}`.trim()
+      : filtersActive
+        ? 'No Immortals match the current filters.'
+        : 'No Immortals yet.';
+    renderImmGrid([], { emptyText });
+    updateImmCount(0, IMM_LIST.length);
+    updateImmFilterUI();
+    return [];
+  }
 
   const filtered = IMM_LIST.filter((item) => {
     if (!item) return false;
@@ -862,6 +1081,7 @@ function applyImmortalFilters() {
 }
 
 function renderImmGrid(list, opts = {}) {
+  if (!DOM.immGrid) return;
   DOM.immGrid.innerHTML = '';
   const emptyText = opts.emptyText || 'No items yet.';
   if (!Array.isArray(list) || !list.length) {
@@ -876,7 +1096,7 @@ function renderImmGrid(list, opts = {}) {
     cell.className = 'imm-cell';
     cell.setAttribute('role', 'button');
     cell.setAttribute('tabindex', '0');
-    const thumb = item.thumb || '';
+    const thumb = resolveAssetPath(item.thumb || item.thumbnail || '');
     const overlayTags = formatTagList(item.tags);
     cell.innerHTML = `
       <img src="${thumb}" alt="${item.title || ''}" loading="lazy">
@@ -923,6 +1143,31 @@ function buildLegendContent(entry) {
   return parts.join('');
 }
 
+function renderImmDescription(entry) {
+  if (!DOM.immDesc) return;
+  const lines = [];
+  if (entry.desc_en) lines.push(entry.desc_en);
+  if (entry.desc_ko) lines.push(entry.desc_ko);
+  if (!lines.length && entry.desc) lines.push(entry.desc);
+
+  DOM.immDesc.innerHTML = '';
+
+  if (!lines.length) {
+    DOM.immDesc.hidden = true;
+    return;
+  }
+
+  DOM.immDesc.hidden = false;
+  lines.forEach((text, idx) => {
+    const span = document.createElement('span');
+    span.textContent = text;
+    DOM.immDesc.appendChild(span);
+    if (idx < lines.length - 1) {
+      DOM.immDesc.appendChild(document.createElement('br'));
+    }
+  });
+}
+
 function openImmDetailByIndex(i) {
   if (!IMM_VIEW.length) return;
   IMM_CUR = (i + IMM_VIEW.length) % IMM_VIEW.length;
@@ -931,7 +1176,7 @@ function openImmDetailByIndex(i) {
     _immDetailShouldReopenImmModal = true;
   }
   DOM.immTitle.textContent = it.title || '';
-  DOM.immDesc.textContent = it.desc || '';
+  renderImmDescription(it);
   if (DOM.immTags) {
     const tagsText = formatTagList(it.tags, { hash: true, joiner: ' ' });
     DOM.immTags.textContent = tagsText;
@@ -957,13 +1202,19 @@ function openImmDetailByIndex(i) {
     }
   }
   if (DOM.immVideo) {
-    DOM.immVideo.hidden = false;
-    DOM.immVideo.src = it.video || '';
-    DOM.immVideo.currentTime = 0;
-    DOM.immVideo.onerror = () => {
-      console.warn('Immortal video missing:', it.video);
-    };
-    DOM.immVideo.play().catch(() => {});
+    if (it.video) {
+      DOM.immVideo.hidden = false;
+      DOM.immVideo.src = it.video;
+      DOM.immVideo.currentTime = 0;
+      DOM.immVideo.onerror = () => {
+        console.warn('Immortal video missing:', it.video);
+      };
+      DOM.immVideo.play().catch(() => {});
+    } else {
+      DOM.immVideo.pause();
+      DOM.immVideo.removeAttribute('src');
+      DOM.immVideo.hidden = true;
+    }
   }
   DOM.immIndex.textContent = `${IMM_CUR + 1} / ${IMM_VIEW.length}`;
   openModal(DOM.immDModal);
@@ -973,6 +1224,8 @@ function closeImmDetailModal({ reopenImm } = {}) {
   if (!DOM.immDModal) return;
   if (DOM.immVideo) {
     DOM.immVideo.pause();
+    DOM.immVideo.removeAttribute('src');
+    DOM.immVideo.hidden = true;
   }
   deactivateModal(DOM.immDModal);
   const shouldReopen = typeof reopenImm === 'boolean'
@@ -1012,9 +1265,9 @@ function openArchive() {
   } else {
     ARCHIVE_FILES.forEach(entry => {
       const item = typeof entry === 'string' ? { src: entry } : entry;
-      const src = item.src;
+      const src = resolveAssetPath(item.src);
       if (!src) return;
-      const isVideo = /\.mp4$/i.test(src);
+      const isVideo = /\.mp4(?:$|\?)/i.test(item.src || src);
       const cell = document.createElement('div');
       cell.className = 'cell';
       const media = isVideo
@@ -1202,9 +1455,9 @@ document.addEventListener('keydown', (e) => {
 function openArchiveDetail(entry) {
   if (!DOM.arcDetail || !DOM.arcDetailMedia) return;
   const item = typeof entry === 'string' ? { src: entry } : entry;
-  const src = item?.src;
+  const src = resolveAssetPath(item?.src);
   if (!src) return;
-  const isVideo = /\.mp4$/i.test(src);
+  const isVideo = /\.mp4(?:$|\?)/i.test(item?.src || src);
   const mediaMarkup = isVideo
     ? `<video src="${src}" controls autoplay playsinline loop style="width:100%;max-height:70vh;object-fit:contain;background:#000;"></video>`
     : `<img src="${src}" alt="${item.title || ''}" loading="lazy" style="width:100%;max-height:70vh;object-fit:contain;background:#000;"/>`;
@@ -1231,3 +1484,7 @@ function closeArchiveDetail() {
   DOM.arcDetail.classList.add('hidden');
   DOM.arcGrid?.classList.remove('hidden');
 }
+
+ensureImmortalsData().catch((err) => {
+  console.error('Initial Immortals preload failed:', err);
+});

@@ -864,6 +864,39 @@ body {
 }
 .modal-close:hover { color: var(--color-primary); border-color: rgba(255,0,170,.6); }
 
+#immModal .modal-card {
+  padding: clamp(72px, 12vw, 120px) clamp(20px, 5vw, 36px) clamp(32px, 8vw, 60px) !important;
+  max-height: min(92vh, 1080px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 24px);
+}
+
+#immModal .modal-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+#immModal .modal-card::-webkit-scrollbar-thumb {
+  background: rgba(255, 0, 170, .35);
+  border-radius: 999px;
+}
+
+#immModal .modal-card::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, .06);
+}
+
+#immModal .imm-controls,
+#immModal .imm-tag-filters,
+#immModal .imm-grid {
+  flex: 0 0 auto;
+}
+
+#immModal .imm-grid {
+  margin-top: clamp(16px, 3vw, 28px);
+  padding-bottom: clamp(40px, 8vw, 80px);
+}
+
 /* Character modal */
 .char-card { width: min(94vw, 1000px); padding: 12px; }
 .char-legend {
