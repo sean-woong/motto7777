@@ -30,6 +30,8 @@ let IMM_TAG_OPTIONS = [];
 let immDataPromise = null;
 let immDataError = null;
 
+const ARCHIVE_BACKDROP_CACHE = new Map();
+
 // ====== Portals ======
 const PORTALS = [
   { id: 'dealer', label: 'DEALER', img: 'assets/images/dealer.gif', emo: '🎲' },
@@ -220,6 +222,219 @@ function splitLooseJsonObjects(text) {
     }
   }
   return objects;
+}
+
+
+// ====== Media Utilities ======
+function sampleAverageColor(drawable, width, height) {
+  const SAMPLE_W = 32;
+  const aspect = width && height ? height / width : 1;
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  if (!ctx) return null;
+  const sampleHeight = Math.max(1, Math.round(SAMPLE_W * aspect));
+  canvas.width = SAMPLE_W;
+  canvas.height = sampleHeight;
+  ctx.drawImage(drawable, 0, 0, SAMPLE_W, sampleHeight);
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  let total = 0;
+  const data = ctx.getImageData(0, 0, SAMPLE_W, sampleHeight).data;
+  for (let i = 0; i < data.length; i += 4) {
+    const alpha = data[i + 3] / 255;
+    if (alpha <= 0) continue;
+    r += data[i] * alpha;
+    g += data[i + 1] * alpha;
+    b += data[i + 2] * alpha;
+    total += alpha;
+  }
+  if (!total) return null;
+  return [
+    Math.round(r / total),
+    Math.round(g / total),
+    Math.round(b / total)
+  ];
+}
+
+function computeAverageColorFromImage(src) {
+  return new Promise((resolve) => {
+    if (!src) {
+      resolve(null);
+      return;
+    }
+    const img = new Image();
+    if (!/^data:/i.test(src)) {
+      img.crossOrigin = 'anonymous';
+    }
+    const cleanup = () => {
+      img.onload = null;
+      img.onerror = null;
+    };
+    const handleReady = () => {
+      cleanup();
+      try {
+        const color = sampleAverageColor(img, img.naturalWidth || img.width, img.naturalHeight || img.height);
+        resolve(color);
+      } catch (err) {
+        console.warn('Image sampling failed:', err);
+        resolve(null);
+      }
+    };
+    img.onload = handleReady;
+    img.onerror = () => {
+      cleanup();
+      resolve(null);
+    };
+    img.src = src;
+    if (img.complete && (img.naturalWidth || img.width)) {
+      handleReady();
+    }
+  });
+}
+
+function computeAverageColorFromVideo(src) {
+  return new Promise((resolve) => {
+    if (!src) {
+      resolve(null);
+      return;
+    }
+    const video = document.createElement('video');
+    if (!/^data:/i.test(src)) {
+      video.crossOrigin = 'anonymous';
+    }
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    let settled = false;
+    let timeoutId = null;
+    const cleanup = () => {
+      video.removeEventListener('loadeddata', handleLoaded);
+      video.removeEventListener('error', handleError);
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    };
+    const settle = (color) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeoutId);
+      cleanup();
+      resolve(color);
+    };
+    const handleLoaded = () => {
+      try {
+        const color = sampleAverageColor(video, video.videoWidth || video.width, video.videoHeight || video.height);
+        settle(color);
+      } catch (err) {
+        console.warn('Video sampling failed:', err);
+        settle(null);
+      }
+    };
+    const handleError = () => settle(null);
+    video.addEventListener('loadeddata', handleLoaded, { once: true });
+    video.addEventListener('error', handleError, { once: true });
+    video.src = src;
+    video.load();
+    timeoutId = setTimeout(() => settle(null), 2000);
+  });
+}
+
+function mixChannel(channel, target, weight) {
+  return Math.max(0, Math.min(255, Math.round(channel + (target - channel) * weight)));
+}
+
+function lightenColor(rgb, weight = 0.3) {
+  return rgb.map((channel) => mixChannel(channel, 255, weight));
+}
+
+function darkenColor(rgb, weight = 0.4) {
+  return rgb.map((channel) => mixChannel(channel, 0, weight));
+}
+
+function toRgba(rgb, alpha = 1) {
+  const [r, g, b] = rgb.map((channel) => Math.max(0, Math.min(255, Math.round(channel))));
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function escapeCssUrl(input) {
+  return (input || '').replace(/["\\]/g, '\\$&');
+}
+
+function buildArchiveBackdropValue(color, src) {
+  const accent = lightenColor(color, 0.35);
+  const shadow = darkenColor(color, 0.6);
+  const gradient = `linear-gradient(125deg, ${toRgba(accent, 0.45)} 0%, ${toRgba(shadow, 0.94)} 100%)`;
+  const imageLayer = src ? `, url("${escapeCssUrl(src)}") center / cover no-repeat` : '';
+  return {
+    imageValue: `${gradient}${imageLayer}`,
+    accentValue: toRgba(accent, 0.55)
+  };
+}
+
+function deriveArchiveBackdrop(src, { isVideo } = {}) {
+  if (!src) return Promise.resolve(null);
+  const key = `${isVideo ? 'v' : 'i'}:${src}`;
+  if (ARCHIVE_BACKDROP_CACHE.has(key)) {
+    const cached = ARCHIVE_BACKDROP_CACHE.get(key);
+    return cached instanceof Promise ? cached : Promise.resolve(cached);
+  }
+  const loader = (isVideo ? computeAverageColorFromVideo(src) : computeAverageColorFromImage(src))
+    .then((rgb) => {
+      if (!rgb) {
+        ARCHIVE_BACKDROP_CACHE.set(key, null);
+        return null;
+      }
+      const values = buildArchiveBackdropValue(rgb, src);
+      ARCHIVE_BACKDROP_CACHE.set(key, values);
+      return values;
+    })
+    .catch((err) => {
+      console.warn('Backdrop derive failed:', err);
+      ARCHIVE_BACKDROP_CACHE.set(key, null);
+      return null;
+    });
+  ARCHIVE_BACKDROP_CACHE.set(key, loader);
+  return loader;
+}
+
+function applyArchiveBackdrop(container, { src, isVideo } = {}) {
+  if (!container) return;
+  const token = Symbol('backdrop');
+  container._backdropToken = token;
+  container.style.removeProperty('--archive-detail-image');
+  container.style.removeProperty('--archive-detail-accent');
+  if (!src) return;
+  deriveArchiveBackdrop(src, { isVideo }).then((values) => {
+    if (!values || container._backdropToken !== token) return;
+    if (values.imageValue) {
+      container.style.setProperty('--archive-detail-image', values.imageValue);
+    }
+    if (values.accentValue) {
+      container.style.setProperty('--archive-detail-accent', values.accentValue);
+    }
+  });
+}
+
+function updateArchiveOrientation(container, mediaEl) {
+  if (!container || !mediaEl) return;
+  let width = 0;
+  let height = 0;
+  if (mediaEl.tagName === 'IMG') {
+    width = mediaEl.naturalWidth || mediaEl.width;
+    height = mediaEl.naturalHeight || mediaEl.height;
+  } else if (mediaEl.tagName === 'VIDEO') {
+    width = mediaEl.videoWidth || mediaEl.clientWidth;
+    height = mediaEl.videoHeight || mediaEl.clientHeight;
+  }
+  if (!width || !height) return;
+  const delta = Math.abs(width - height);
+  const orientation = delta / Math.max(width, height) < 0.08
+    ? 'square'
+    : width > height
+      ? 'landscape'
+      : 'portrait';
+  container.dataset.orientation = orientation;
 }
 
 function sanitizeImmTags(tags) {
@@ -598,19 +813,82 @@ function debounce(fn, ms) {
   };
 }
 
+let _overlayQueue = Promise.resolve();
+
+function playTransitionOverlay(callback, opts = {}) {
+  const overlay = DOM.introClip;
+  if (!overlay) {
+    if (typeof callback === 'function') {
+      try { callback(); } catch (err) { console.error('Transition callback failed:', err); }
+    }
+    return Promise.resolve();
+  }
+  const {
+    duration = 1200,
+    fade = DUR_MEDIUM,
+    backgroundOpacity = 0.65,
+    revealDelay = 260
+  } = opts;
+  const clampedOpacity = Math.max(0, Math.min(1, Number(backgroundOpacity) || 0));
+  const totalDuration = Math.max(0, duration);
+  const fadeDuration = Math.max(0, fade);
+  const delay = Math.max(0, revealDelay);
+  const img = overlay.querySelector('img');
+  if (img && !img.dataset.originalSrc) {
+    img.dataset.originalSrc = img.getAttribute('data-src') || img.src;
+  }
+  _overlayQueue = _overlayQueue.then(() => new Promise((resolve) => {
+    if (img && img.dataset.originalSrc) {
+      const original = img.dataset.originalSrc;
+      img.src = '';
+      void img.offsetWidth;
+      img.src = original;
+    }
+    overlay.hidden = false;
+    overlay.style.setProperty('--overlay-alpha', String(clampedOpacity));
+    requestAnimationFrame(() => {
+      overlay.classList.add('intro-clip--active');
+      if (typeof callback === 'function') {
+        setTimeout(() => {
+          try {
+            callback();
+          } catch (err) {
+            console.error('Transition callback failed:', err);
+          }
+        }, delay);
+      }
+    });
+    setTimeout(() => {
+      overlay.classList.remove('intro-clip--active');
+      setTimeout(() => {
+        overlay.hidden = true;
+        resolve();
+      }, fadeDuration);
+    }, totalDuration);
+  }));
+  return _overlayQueue;
+}
+
+const NAV_OVERLAY_DEFAULTS = Object.freeze({
+  duration: 1200,
+  fade: DUR_MEDIUM,
+  backgroundOpacity: 0.66,
+  revealDelay: 240
+});
+
 // ====== Intro → Main ======
 DOM.enterBtn?.addEventListener('click', () => {
   console.log("ENTER 버튼 클릭됨 ✅");
   DOM.enterBtn.disabled = true;
   DOM.enterBtn.setAttribute('aria-busy', 'true');
 
-  const finalizeBoot = () => {
-    console.log("bootMain 실행 직전 ✅");
+  const finalizeBoot = async () => {
+    console.log('bootMain 실행 직전 ✅');
     try {
-      bootMain();
-      console.log("bootMain 실행 완료 ✅");
+      await bootMain();
+      console.log('bootMain 실행 완료 ✅');
     } catch (err) {
-      console.error("bootMain 실행 오류:", err);
+      console.error('bootMain 실행 오류:', err);
     }
   };
 
@@ -624,29 +902,130 @@ DOM.enterBtn?.addEventListener('click', () => {
     }
 
     if (DOM.introClip) {
-      DOM.introClip.hidden = false;
-      requestAnimationFrame(() => DOM.introClip.classList.add('intro-clip--active'));
-
-      const clipVisibleMs = 2200;
-      setTimeout(() => {
-        DOM.introClip.classList.remove('intro-clip--active');
-        setTimeout(() => {
-          DOM.introClip.hidden = true;
-          finalizeBoot();
-        }, DUR_LONG);
-      }, clipVisibleMs);
+      playTransitionOverlay(() => finalizeBoot(), {
+        duration: 1600,
+        fade: DUR_MEDIUM,
+        backgroundOpacity: 0.68,
+        revealDelay: 320
+      });
     } else {
       finalizeBoot();
     }
   }, DUR_LONG);
 });
 
+// ====== Today Stage ======
+function pickRandomImmortal() {
+  if (!IMM_LIST.length) return null;
+  const candidates = IMM_LIST.filter((item) => item && item.thumb);
+  if (!candidates.length) return null;
+  const idx = Math.floor(Math.random() * candidates.length);
+  return candidates[idx];
+}
+
+function createTodayHeroCard(entry) {
+  const card = document.createElement('div');
+  card.className = 'imm-cell today-hero-card';
+  card.setAttribute('role', 'button');
+  card.setAttribute('tabindex', '0');
+
+  const title = entry.title || entry.title_en || entry.id || '';
+  const tags = Array.isArray(entry.tags) ? entry.tags : [];
+  const overlayTags = formatTagList(tags);
+
+  const hasVideo = Boolean(entry.video);
+  const mediaMarkup = hasVideo
+    ? `<video src="${entry.video}" muted loop playsinline autoplay preload="metadata"></video>`
+    : `<img src="${entry.thumb}" alt="${title}" loading="lazy">`;
+
+  card.innerHTML = `
+    <div class="today-hero-media">${mediaMarkup}</div>
+    <div class="imm-info">
+      <strong>${title}</strong>
+      ${overlayTags ? `<span>${overlayTags}</span>` : ''}
+    </div>`;
+
+  if (title) {
+    card.setAttribute('aria-label', title);
+  }
+
+  const handleActivate = () => {
+    const idx = IMM_LIST.findIndex((item) => item.id === entry.id);
+    if (idx >= 0) {
+      IMM_VIEW = IMM_LIST.slice();
+      openImmDetailByIndex(idx);
+    } else {
+      playTransitionOverlay(() => openImmortals(), NAV_OVERLAY_DEFAULTS);
+    }
+  };
+
+  card.addEventListener('click', handleActivate);
+  card.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      handleActivate();
+    }
+  });
+
+  return card;
+}
+
+async function renderTodayGallery() {
+  if (!DOM.stage) return;
+  DOM.stage.classList.add('stage--hero');
+  DOM.stage.innerHTML = '<div class="today-loading">Loading...</div>';
+  try {
+    await ensureImmortalsData();
+    const pick = pickRandomImmortal();
+
+    DOM.stage.innerHTML = '';
+    const section = document.createElement('section');
+    section.className = 'today-section';
+
+    if (pick) {
+      const hero = createTodayHeroCard(pick);
+      section.appendChild(hero);
+      requestAnimationFrame(() => {
+        hero.classList.add('today-hero-animate');
+      });
+    } else {
+      const empty = document.createElement('div');
+      empty.className = 'imm-empty today-empty';
+      empty.textContent = immDataError
+        ? 'Unable to load art right now.'
+        : 'Art will unlock soon.';
+      section.appendChild(empty);
+    }
+
+    const footer = document.createElement('div');
+    footer.className = 'today-footer';
+    const viewAllLink = document.createElement('a');
+    viewAllLink.href = '#';
+    viewAllLink.className = 'today-nav-link';
+    viewAllLink.textContent = 'Explore All Immortals';
+    viewAllLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      playTransitionOverlay(() => openImmortals(), NAV_OVERLAY_DEFAULTS);
+    });
+    footer.appendChild(viewAllLink);
+    section.appendChild(footer);
+
+    DOM.stage.appendChild(section);
+  } catch (err) {
+    console.error('Failed to render Today gallery:', err);
+    const error = document.createElement('div');
+    error.className = 'today-error imm-empty';
+    error.textContent = 'Unable to load art right now.';
+    DOM.stage.innerHTML = '';
+    DOM.stage.appendChild(error);
+  }
+}
+
 // ====== Boot Main ======
-function bootMain() {
-  console.log("Booting main stage ✅");
-  spawnPortals();
+async function bootMain() {
+  console.log('Booting main stage ✅');
+  await renderTodayGallery();
   requestAnimationFrame(() => {
-    if (SHOW_LEGEND_PINS) spawnLegendPins();
     if (ENABLE_AUDIO) {
       DOM.audioUI.hidden = false;
       startOST();
@@ -657,6 +1036,7 @@ function bootMain() {
 let portalObserver = null;
 
 function spawnPortals() {
+  DOM.stage?.classList.remove('stage--hero');
   if (portalObserver) {
     portalObserver.disconnect();
     portalObserver = null;
@@ -735,9 +1115,17 @@ function observePortals(nodes) {
   const observer = ensurePortalObserver();
   nodes.forEach(node => observer.observe(node));
 }
+function triggerTodayHeroAnimation() {
+  const hero = DOM.stage?.querySelector('.today-hero-card');
+  if (!hero) return;
+  hero.classList.remove('today-hero-animate');
+  void hero.offsetWidth;
+  hero.classList.add('today-hero-animate');
+}
+
 window.addEventListener('resize', debounce(() => {
-  spawnPortals();
   if (SHOW_LEGEND_PINS) spawnLegendPins(true);
+  triggerTodayHeroAnimation();
 }, 200));
 
 // ====== Legend Pins ======
@@ -783,10 +1171,12 @@ async function spawnLegendPins(resize = false) {
 
     el.addEventListener('click', (e) => {
       e.preventDefault();
-      openImmortals();
-      IMM_VIEW = legends.slice();
-      const idx = IMM_VIEW.findIndex(x => x.id === item.id);
-      openImmDetailByIndex(Math.max(0, idx));
+      playTransitionOverlay(() => {
+        openImmortals();
+        IMM_VIEW = legends.slice();
+        const idx = IMM_VIEW.findIndex(x => x.id === item.id);
+        openImmDetailByIndex(Math.max(0, idx));
+      }, NAV_OVERLAY_DEFAULTS);
     });
 
     DOM.stage.appendChild(el);
@@ -1098,11 +1488,16 @@ function renderImmGrid(list, opts = {}) {
     cell.setAttribute('tabindex', '0');
     const thumb = resolveAssetPath(item.thumb || item.thumbnail || '');
     const overlayTags = formatTagList(item.tags);
+    const thumbMarkup = thumb
+      ? `<img src="${thumb}" alt="${item.title || ''}" loading="lazy">`
+      : `<div class="imm-thumb-placeholder" aria-hidden="true"></div>`;
     cell.innerHTML = `
-      <img src="${thumb}" alt="${item.title || ''}" loading="lazy">
-      <div class="imm-info">
-        <strong>${item.title || ''}</strong>
-        ${overlayTags ? `<span>${overlayTags}</span>` : ''}
+      <div class="imm-thumb">
+        ${thumbMarkup}
+        <div class="imm-info">
+          <strong>${item.title || ''}</strong>
+          ${overlayTags ? `<span>${overlayTags}</span>` : ''}
+        </div>
       </div>`;
     if (item.title) {
       cell.setAttribute('aria-label', item.title);
@@ -1268,11 +1663,15 @@ function openArchive() {
       const src = resolveAssetPath(item.src);
       if (!src) return;
       const isVideo = /\.mp4(?:$|\?)/i.test(item.src || src);
+      const fitMode = (item.fit || item.objectFit || '').toLowerCase();
+      const mediaClass = fitMode === 'contain'
+        ? 'archive-media archive-media--contain'
+        : 'archive-media';
       const cell = document.createElement('div');
       cell.className = 'cell';
       const media = isVideo
-        ? `<video src="${src}" muted loop playsinline loading="lazy"></video>`
-        : `<img src="${src}" alt="${item.title || ''}" loading="lazy">`;
+        ? `<div class="${mediaClass}"><video src="${src}" muted loop playsinline loading="lazy"></video></div>`
+        : `<div class="${mediaClass}"><img src="${src}" alt="${item.title || ''}" loading="lazy"></div>`;
       const caption = item.title ? `<div class="caption">${item.title}</div>` : '';
       cell.innerHTML = `${media}${caption}`;
       if (item.title) {
@@ -1432,14 +1831,20 @@ function trackEvent(category, action, label) {
 
 DOM.homeBtn?.addEventListener('click', (e) => {
   e.preventDefault();
-  closeArchiveDetail();
-  document.querySelectorAll('.modal').forEach(mod => closeModal(mod, { reopenImm: false }));
-  spawnPortals();
-  if (SHOW_LEGEND_PINS) spawnLegendPins();
+  playTransitionOverlay(() => {
+    closeArchiveDetail();
+    document.querySelectorAll('.modal').forEach(mod => closeModal(mod, { reopenImm: false }));
+    renderTodayGallery();
+  }, NAV_OVERLAY_DEFAULTS);
 });
-
-DOM.immBtn?.addEventListener('click', (e) => { e.preventDefault(); openImmortals(); });
-DOM.arcBtn?.addEventListener('click', (e) => { e.preventDefault(); openArchive(); });
+DOM.immBtn?.addEventListener('click', (e) => {
+  e.preventDefault();
+  playTransitionOverlay(() => openImmortals(), NAV_OVERLAY_DEFAULTS);
+});
+DOM.arcBtn?.addEventListener('click', (e) => {
+  e.preventDefault();
+  playTransitionOverlay(() => openArchive(), NAV_OVERLAY_DEFAULTS);
+});
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && DOM.intro && DOM.intro.style.display !== 'none') { DOM.enterBtn?.click(); }
@@ -1458,10 +1863,53 @@ function openArchiveDetail(entry) {
   const src = resolveAssetPath(item?.src);
   if (!src) return;
   const isVideo = /\.mp4(?:$|\?)/i.test(item?.src || src);
+  const fitMode = (item?.fit || item?.objectFit || '').toLowerCase();
+  const mediaClass = fitMode === 'contain'
+    ? 'archive-media archive-media--contain'
+    : 'archive-media';
+  const detailMedia = DOM.arcDetailMedia;
+  detailMedia.classList.remove('is-ready');
+  detailMedia.removeAttribute('data-orientation');
+  detailMedia.dataset.mediaType = isVideo ? 'video' : 'image';
   const mediaMarkup = isVideo
-    ? `<video src="${src}" controls autoplay playsinline loop style="width:100%;max-height:70vh;object-fit:contain;background:#000;"></video>`
-    : `<img src="${src}" alt="${item.title || ''}" loading="lazy" style="width:100%;max-height:70vh;object-fit:contain;background:#000;"/>`;
-  DOM.arcDetailMedia.innerHTML = mediaMarkup;
+    ? `<div class="${mediaClass}"><video src="${src}" muted loop playsinline controls autoplay></video></div>`
+    : `<div class="${mediaClass}"><img src="${src}" alt="${item.title || ''}" decoding="async" loading="lazy" /></div>`;
+  detailMedia.innerHTML = mediaMarkup;
+  const backdropSrc = resolveAssetPath(item?.backdrop || item?.poster || item?.preview || item?.src);
+  applyArchiveBackdrop(detailMedia, { src: backdropSrc, isVideo });
+  const mediaEl = detailMedia.querySelector('img, video');
+  if (mediaEl && mediaEl.tagName === 'VIDEO') {
+    mediaEl.muted = true;
+    mediaEl.loop = item?.loop !== false;
+    mediaEl.playsInline = true;
+    mediaEl.setAttribute('playsinline', '');
+    mediaEl.setAttribute('muted', '');
+    mediaEl.setAttribute('loop', '');
+    mediaEl.play().catch(() => {});
+  }
+  const markReady = () => {
+    updateArchiveOrientation(detailMedia, mediaEl);
+    detailMedia.classList.add('is-ready');
+  };
+  if (mediaEl) {
+    if (mediaEl.tagName === 'IMG') {
+      if (mediaEl.complete && (mediaEl.naturalWidth || mediaEl.width)) {
+        markReady();
+      } else {
+        mediaEl.addEventListener('load', markReady, { once: true });
+        mediaEl.addEventListener('error', () => detailMedia.classList.add('is-ready'), { once: true });
+      }
+    } else {
+      if (mediaEl.readyState >= 1 && (mediaEl.videoWidth || mediaEl.clientWidth)) {
+        markReady();
+      } else {
+        mediaEl.addEventListener('loadedmetadata', markReady, { once: true });
+        mediaEl.addEventListener('error', () => detailMedia.classList.add('is-ready'), { once: true });
+      }
+    }
+  } else {
+    detailMedia.classList.add('is-ready');
+  }
   if (DOM.arcDetailCaption) {
     DOM.arcDetailCaption.textContent = item.title || '';
     DOM.arcDetailCaption.classList.toggle('hidden', !item.title);
@@ -1472,10 +1920,16 @@ function openArchiveDetail(entry) {
 
 function closeArchiveDetail() {
   if (!DOM.arcDetail) return;
-  const video = DOM.arcDetail.querySelector('video');
+  const video = DOM.arcDetailMedia?.querySelector('video');
   if (video) video.pause();
   if (DOM.arcDetailMedia) {
     DOM.arcDetailMedia.innerHTML = '';
+    DOM.arcDetailMedia.classList.remove('is-ready');
+    DOM.arcDetailMedia.removeAttribute('data-orientation');
+    delete DOM.arcDetailMedia.dataset.mediaType;
+    DOM.arcDetailMedia.style.removeProperty('--archive-detail-image');
+    DOM.arcDetailMedia.style.removeProperty('--archive-detail-accent');
+    DOM.arcDetailMedia._backdropToken = null;
   }
   if (DOM.arcDetailCaption) {
     DOM.arcDetailCaption.textContent = '';
