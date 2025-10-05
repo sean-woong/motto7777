@@ -141,17 +141,20 @@ function resolveAssetPath(input) {
   const raw = `${input}`.trim();
   if (!raw) return '';
 
+  const encodeSpacesOnce = (value) => {
+    // encode spaces only once
+    return value.includes('%20') ? value : value.replace(/ /g, '%20');
+  };
+
   const isAbsolute = /^(?:https?:|data:|blob:|\/\/)/i.test(raw);
-  const hasWhitespace = /\s/.test(raw);
 
   if (isAbsolute) {
-    if (!hasWhitespace) return raw;
-    return raw.replace(/\s+/g, (match) => encodeURIComponent(match));
+    return encodeSpacesOnce(raw);
   }
 
-  const encoded = hasWhitespace
-    ? raw.split('/').map((segment) => (segment ? encodeURIComponent(segment) : segment)).join('/')
-    : raw;
+  const cleaned = raw.replace(/^(?:\.\/)+/, '').replace(/^\/+/u, '');
+  const encoded = encodeSpacesOnce(cleaned);
+
   try {
     return new URL(encoded, document.baseURI || window.location.href).href;
   } catch (err) {
@@ -664,10 +667,10 @@ const OST_TRACKS = [
 // ====== Archive Files ======
 const ARCHIVE_FILES = [
   { src: 'assets/archive/KIA.mp4', title: 'KIA — Performance Snippet' },
-  { src: 'assets/archive/List.jpg', title: 'Immortals Checklist' },
-  { src: 'assets/archive/Logo_motto%203.jpg', title: 'MOTTO Logo Treatments' },
-  { src: 'assets/archive/Track_list%202.jpg', title: 'Track List Draft' },
-  { src: 'assets/archive/track_list.jpg', title: 'Track List Final' }
+  { src: 'assets/archive/track list/List.jpg', title: 'Immortals Checklist' },
+  { src: 'assets/archive/logo/Logo_motto 3.jpg', title: 'MOTTO Logo Treatments' },
+  { src: 'assets/archive/track list/Track_list 2.jpg', title: 'Track List Draft' },
+  { src: 'assets/archive/track list/track_list.jpg', title: 'Track List Final' }
 ];
 
 // ====== DOM Cache ======

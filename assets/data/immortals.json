@@ -1262,15 +1262,15 @@
   {
     "id": "legend-dealer",
     "title": "Dealer — Loop Glitch",
+    "category": "DEALER",
     "archetype": "dealer",
-    "category": "LEGEND",
+    "thumb": "assets/images/dealer.gif",
+    "video": "assets/video/dealer.mp4",
+    "legend": true,
     "tags": [
       "DEALER",
       "LEGEND"
     ],
-    "thumb": "assets/images/dealer.gif",
-    "video": "assets/video/dealer.mp4",
-    "legend": true,
     "description": {
       "en": "Fumes bleed.",
       "kr": "연기가 스며든다."
@@ -1279,15 +1279,15 @@
   {
     "id": "legend-skull",
     "title": "Skull — Fragment Protocol",
+    "category": "SKULL",
     "archetype": "skull",
-    "category": "LEGEND",
+    "thumb": "assets/images/skull.gif",
+    "video": "assets/video/skull.mp4",
+    "legend": true,
     "tags": [
       "SKULL",
       "LEGEND"
     ],
-    "thumb": "assets/images/skull.gif",
-    "video": "assets/video/skull.mp4",
-    "legend": true,
     "description": {
       "en": "Sparks ignite.",
       "kr": "스파크가 튄다."
@@ -1296,15 +1296,15 @@
   {
     "id": "legend-rockstar",
     "title": "Rockstar — Stall Stage",
+    "category": "ROCKSTAR",
     "archetype": "rockstar",
-    "category": "LEGEND",
+    "thumb": "assets/images/rockstar.gif",
+    "video": "assets/video/rockstar.mp4",
+    "legend": true,
     "tags": [
       "ROCKSTAR",
       "LEGEND"
     ],
-    "thumb": "assets/images/rockstar.gif",
-    "video": "assets/video/rockstar.mp4",
-    "legend": true,
     "description": {
       "en": "Smile stalls.",
       "kr": "미소가 멈춘다."
@@ -1313,15 +1313,15 @@
   {
     "id": "legend-drag",
     "title": "Drag — Recode Glam",
+    "category": "DRAG",
     "archetype": "drag",
-    "category": "LEGEND",
+    "thumb": "assets/images/drag.gif",
+    "video": "assets/video/drag.mp4",
+    "legend": true,
     "tags": [
       "DRAG",
       "LEGEND"
     ],
-    "thumb": "assets/images/drag.gif",
-    "video": "assets/video/drag.mp4",
-    "legend": true,
     "description": {
       "en": "Everything screams.",
       "kr": "모든 것이 비명한다."
@@ -1330,15 +1330,15 @@
   {
     "id": "legend-soldier",
     "title": "Soldier — Reload Combat",
+    "category": "SOLDIER",
     "archetype": "soldier",
-    "category": "LEGEND",
+    "thumb": "assets/images/military.gif",
+    "video": "assets/video/military.mp4",
+    "legend": true,
     "tags": [
       "SOLDIER",
       "LEGEND"
     ],
-    "thumb": "assets/images/military.gif",
-    "video": "assets/video/military.mp4",
-    "legend": true,
     "description": {
       "en": "Target locked.",
       "kr": "조준이 고정된다."
@@ -1347,15 +1347,15 @@
   {
     "id": "legend-boxer",
     "title": "Boxer — Loop Fight",
+    "category": "BOXER",
     "archetype": "boxer",
-    "category": "LEGEND",
+    "thumb": "assets/images/boxer.gif",
+    "video": "assets/video/boxer.mp4",
+    "legend": true,
     "tags": [
       "BOXER",
       "LEGEND"
     ],
-    "thumb": "assets/images/boxer.gif",
-    "video": "assets/video/boxer.mp4",
-    "legend": true,
     "description": {
       "en": "Bell rings.",
       "kr": "종이 울린다."
@@ -1364,15 +1364,15 @@
   {
     "id": "legend-motorcycle",
     "title": "Motorcycle — Skid Speed",
+    "category": "MOTORCYCLE",
     "archetype": "motorcycle",
-    "category": "LEGEND",
+    "thumb": "assets/images/motorcycle.gif",
+    "video": "assets/video/motorcycle.mp4",
+    "legend": true,
     "tags": [
       "MOTORCYCLE",
       "LEGEND"
     ],
-    "thumb": "assets/images/motorcycle.gif",
-    "video": "assets/video/motorcycle.mp4",
-    "legend": true,
     "description": {
       "en": "Veins pulse.",
       "kr": "맥박이 뛴다."
