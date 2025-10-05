@@ -15,7 +15,6 @@ const IG_URL = '#';
 const TT_URL = '#';
 
 // ====== Data Sources ======
-<<<<<<< ours
 const IMM_DATA_URL = (() => {
   try {
     const base = document.baseURI || window.location.href;
@@ -32,92 +31,6 @@ let immDataPromise = null;
 let immDataError = null;
 
 const ARCHIVE_BACKDROP_CACHE = new Map();
-=======
-const IMM_LIST = [
-  {
-    id: "imm_dealer",
-    title: "Immortals #01 — Dealer Protocol",
-    desc: "Dealer remixes the loop until neon fumes bloom. 딜러가 루프를 비틀어 네온이 피어난다.",
-    archetype: "dealer",
-    thumb: "assets/images/dealer.gif",
-    video: "assets/video/dealer.mp4",
-    legend: true,
-    tags: ["dealer", "glitch", "loop"],
-    created_date: "2024-03-07"
-  },
-  {
-    id: "imm_skull",
-    title: "Immortals #02 — Skull Fragment",
-    desc: "Shards orbit Skull while the protocol recalibrates. 조각이 스컬을 맴돌며 프로토콜이 재정렬된다.",
-    archetype: "skull",
-    thumb: "assets/images/skull.gif",
-    video: "assets/video/skull.mp4",
-    legend: true,
-    tags: ["skull", "fragment", "pulse"],
-    created_date: "2024-04-18"
-  },
-  {
-    id: "imm_rockstar",
-    title: "Immortals #03 — Rockstar Stall",
-    desc: "Amp feedback freezes the grin mid-frame. 앰프 피드백이 미소를 정지시킨다.",
-    archetype: "rockstar",
-    thumb: "assets/images/rockstar.gif",
-    video: "assets/video/rockstar.mp4",
-    legend: false,
-    tags: ["rock", "feedback", "stage"],
-    created_date: "2024-05-26"
-  },
-  {
-    id: "imm_drag",
-    title: "Immortals #04 — Drag Recode",
-    desc: "Glitter tears through the timeline. 글리터가 타임라인을 가른다.",
-    archetype: "drag",
-    thumb: "assets/images/drag.gif",
-    video: "assets/video/drag.mp4",
-    legend: false,
-    tags: ["glam", "remix", "neon"],
-    created_date: "2024-06-22"
-  },
-  {
-    id: "imm_military",
-    title: "Immortals #05 — Military Reload",
-    desc: "The visor locks as sirens fade. 바이저가 잠기고 사이렌이 멀어진다.",
-    archetype: "military",
-    thumb: "assets/images/military.gif",
-    video: "assets/video/military.mp4",
-    legend: false,
-    tags: ["combat", "precision", "signal"],
-    created_date: "2024-07-19"
-  },
-  {
-    id: "imm_motorcycle",
-    title: "Immortals #06 — Motorcycle Skid",
-    desc: "Tires spark while the city blurs. 타이어가 불꽃을 튀기며 도시가 흐릿해진다.",
-    archetype: "motorcycle",
-    thumb: "assets/images/motorcycle.gif",
-    video: "assets/video/motorcycle.mp4",
-    legend: false,
-    tags: ["speed", "neon", "highway"],
-    created_date: "2024-08-10"
-  },
-  {
-    id: "imm_boxer",
-    title: "Immortals #07 — Boxer Loop",
-    desc: "Sweat ignites beneath the ring lights. 링 조명이 땀을 번쩍이게 한다.",
-    archetype: "boxer",
-    thumb: "assets/images/boxer.gif",
-    video: "assets/video/boxer.mp4",
-    legend: false,
-    tags: ["fight", "momentum", "pulse"],
-    created_date: "2024-09-05"
-  }
-<<<<<<< ours
-].map(normalizeImmItem);
-
-const IMM_TAG_OPTIONS = deriveImmTagOptions(IMM_LIST);
-
-let IMM_ACTIVE_FILTERS = { tags: [] };
-
 function normalizeImmItem(item = {}) {
   const clone = { ...item };
   const tags = Array.isArray(clone.tags) ? clone.tags.slice() : [];
@@ -133,56 +46,21 @@ function normalizeImmItem(item = {}) {
     normalizedTags.push(clean);
   });
 
-  if (clone.legend === true && !seen.has('legend')) {
+  const legendActive = typeof isLegendEnabled === 'function'
+    ? isLegendEnabled(clone.legend)
+    : clone.legend === true;
+
+  if (legendActive && !seen.has('legend')) {
     seen.add('legend');
     normalizedTags.push('legend');
   }
 
-  clone.legend = clone.legend === true;
+  if (typeof clone.legend !== 'object' || clone.legend === null) {
+    clone.legend = legendActive;
+  }
   clone.tags = normalizedTags;
   return clone;
 }
-
-function deriveImmTagOptions(list = []) {
-  const tagSet = new Set();
-  list.forEach((item) => {
-    const tags = Array.isArray(item?.tags) ? item.tags : [];
-    tags.forEach((tag) => {
-      const clean = (tag || '').toString().trim();
-      if (!clean) return;
-      tagSet.add(clean.toLowerCase());
-    });
-  });
-  return Array.from(tagSet).sort();
-}
-
-function applyImmortalFilters(items = [], filters = IMM_ACTIVE_FILTERS) {
-  const normalizedItems = items.map(normalizeImmItem);
-  const tagFilters = Array.isArray(filters?.tags)
-    ? filters.tags.map(tag => (tag || '').toString().trim().toLowerCase()).filter(Boolean)
-    : [];
-
-  if (!tagFilters.length) {
-    return normalizedItems;
-  }
-
-  const required = new Set(tagFilters);
-  if (!required.size) {
-    return normalizedItems;
-  }
-
-  return normalizedItems.filter((item) => {
-    const tags = Array.isArray(item?.tags)
-      ? item.tags.map(tag => (tag || '').toString().trim().toLowerCase())
-      : [];
-    if (!tags.length) return false;
-    return [...required].every(tag => tags.includes(tag));
-  });
-}
->>>>>>> theirs
-=======
-];
->>>>>>> theirs
 
 // ====== Portals ======
 const PORTALS = [
@@ -716,7 +594,8 @@ function extractImmortalsArray(payload) {
 }
 
 function rebuildImmCaches(list) {
-  IMM_LIST = list.slice();
+  const normalized = Array.isArray(list) ? list.map(normalizeImmItem) : [];
+  IMM_LIST = normalized;
   IMM_TAG_OPTIONS = buildImmTagOptions(IMM_LIST);
 }
 
@@ -1553,19 +1432,14 @@ function ensureImmFilterControls() {
 
 async function openImmortals() {
   if (!DOM.immModal) return [];
-  DOM.immModal.classList.add('modal-loading');
-<<<<<<< ours
-<<<<<<< ours
-  await ensureImmortalsData();
   ensureImmFilterControls();
+  DOM.immModal.classList.add('modal-loading');
+  try {
+    await ensureImmortalsData();
+  } catch (err) {
+    console.error('Immortals modal open failed:', err);
+  }
   const filtered = applyImmortalFilters();
-=======
-  const filtered = applyImmortalFilters(IMM_LIST, IMM_ACTIVE_FILTERS);
-  renderImmGrid(filtered);
->>>>>>> theirs
-=======
-  renderImmGrid(IMM_LIST);
->>>>>>> theirs
   DOM.immModal.classList.remove('modal-loading');
   openModal(DOM.immModal);
   setTimeout(() => {
@@ -1633,25 +1507,22 @@ function applyImmortalFilters() {
 
 function renderImmGrid(list, opts = {}) {
   if (!DOM.immGrid) return;
+  const { emptyText = 'No Immortals yet.' } = opts;
   DOM.immGrid.innerHTML = '';
-<<<<<<< ours
-<<<<<<< ours
-  const emptyText = opts.emptyText || 'No items yet.';
-  if (!Array.isArray(list) || !list.length) {
-=======
   const normalizedList = Array.isArray(list) ? list.map(normalizeImmItem) : [];
   if (!normalizedList.length) {
->>>>>>> theirs
-=======
-  if (!Array.isArray(list) || !list.length) {
->>>>>>> theirs
     const empty = document.createElement('div');
     empty.className = 'imm-empty';
     empty.textContent = emptyText;
     DOM.immGrid.appendChild(empty);
+    IMM_VIEW = [];
     return;
   }
-  list.forEach((item, idx) => {
+
+  const view = normalizedList.slice();
+  IMM_VIEW = view;
+
+  view.forEach((item, idx) => {
     const cell = document.createElement('div');
     cell.className = 'imm-cell';
     cell.setAttribute('role', 'button');
@@ -1673,7 +1544,7 @@ function renderImmGrid(list, opts = {}) {
       cell.setAttribute('aria-label', item.title);
     }
     cell.onclick = () => {
-      IMM_VIEW = list.slice();
+      IMM_VIEW = view;
       openImmDetailByIndex(idx);
     };
     cell.addEventListener('keydown', (ev) => {
