@@ -713,6 +713,7 @@ const DOM = {
   immLegend: document.getElementById('immLegend'),
   immTitle: document.getElementById('immTitle'),
   immVideo: document.getElementById('immVideo'),
+  immVideoFallback: document.getElementById('immVideoFallback'),
   immMeta: document.getElementById('immMeta'),
   immTags: document.getElementById('immTags'),
   immDate: document.getElementById('immDate'),
@@ -957,6 +958,31 @@ function pickRandomImmortal() {
   return candidates[idx];
 }
 
+function createFallbackImage(src, title) {
+  const img = document.createElement('img');
+  if (src) img.src = src;
+  img.alt = title || '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.hidden = false;
+  return img;
+}
+
+function attachVideoFallback(videoEl, onFailure) {
+  if (!videoEl || typeof onFailure !== 'function') return;
+  const once = { once: true };
+  const handler = () => {
+    try {
+      onFailure();
+    } catch (err) {
+      console.error('Video fallback handler failed:', err);
+    }
+  };
+  videoEl.addEventListener('error', handler, once);
+  videoEl.addEventListener('stalled', handler, once);
+  videoEl.addEventListener('emptied', handler, once);
+}
+
 function createTodayHeroCard(entry) {
   const card = document.createElement('div');
   card.className = 'imm-cell today-hero-card';
@@ -968,16 +994,72 @@ function createTodayHeroCard(entry) {
   const overlayTags = formatTagList(tags);
 
   const hasVideo = Boolean(entry.video);
-  const mediaMarkup = hasVideo
-    ? `<video src="${entry.video}" muted loop playsinline autoplay preload="metadata"></video>`
-    : `<img src="${entry.thumb}" alt="${title}" loading="lazy">`;
 
-  card.innerHTML = `
-    <div class="today-hero-media">${mediaMarkup}</div>
-    <div class="imm-info">
-      <strong>${title}</strong>
-      ${overlayTags ? `<span>${overlayTags}</span>` : ''}
-    </div>`;
+  const media = document.createElement('div');
+  media.className = 'today-hero-media';
+
+  const addFallbackImage = () => {
+    if (!entry.thumb) return;
+    const fallbackImg = createFallbackImage(entry.thumb, title);
+    media.appendChild(fallbackImg);
+    return fallbackImg;
+  };
+
+  if (hasVideo) {
+    const videoEl = document.createElement('video');
+    videoEl.src = entry.video;
+    videoEl.muted = true;
+    videoEl.loop = true;
+    videoEl.playsInline = true;
+    videoEl.autoplay = true;
+    videoEl.preload = 'metadata';
+    if (entry.thumb) {
+      videoEl.setAttribute('poster', entry.thumb);
+    }
+
+    let fallbackImg = null;
+    const ensureFallbackVisible = () => {
+      fallbackImg = fallbackImg || addFallbackImage();
+      if (fallbackImg) {
+        fallbackImg.hidden = false;
+      }
+      try {
+        videoEl.pause();
+      } catch (err) {
+        // noop
+      }
+      videoEl.remove();
+    };
+
+    attachVideoFallback(videoEl, () => {
+      console.warn('Hero video failed, showing thumbnail instead:', entry.video);
+      ensureFallbackVisible();
+    });
+
+    videoEl.addEventListener('loadeddata', () => {
+      if (fallbackImg) {
+        fallbackImg.hidden = true;
+      }
+    }, { once: true });
+
+    media.appendChild(videoEl);
+  } else if (entry.thumb) {
+    addFallbackImage();
+  }
+
+  const info = document.createElement('div');
+  info.className = 'imm-info';
+  const titleNode = document.createElement('strong');
+  titleNode.textContent = title;
+  info.appendChild(titleNode);
+  if (overlayTags) {
+    const tagSpan = document.createElement('span');
+    tagSpan.textContent = overlayTags;
+    info.appendChild(tagSpan);
+  }
+
+  card.appendChild(media);
+  card.appendChild(info);
 
   if (title) {
     card.setAttribute('aria-label', title);
@@ -1614,7 +1696,8 @@ function openImmDetailByIndex(i) {
   if (isModalActive(DOM.immModal)) {
     _immDetailShouldReopenImmModal = true;
   }
-  DOM.immTitle.textContent = it.title || '';
+  const detailTitle = it.title || it.title_en || it.id || '';
+  DOM.immTitle.textContent = detailTitle;
   renderImmDescription(it);
   if (DOM.immTags) {
     const tagsText = formatTagList(it.tags, { hash: true, joiner: ' ' });
@@ -1640,20 +1723,61 @@ function openImmDetailByIndex(i) {
       DOM.immLegend.style.display = 'none';
     }
   }
+  const fallbackImg = DOM.immVideoFallback || null;
+  if (fallbackImg) {
+    if (it.thumb) {
+      fallbackImg.src = it.thumb;
+      fallbackImg.alt = detailTitle || `Preview of ${it.id || 'Immortal'}`;
+    } else {
+      fallbackImg.removeAttribute('src');
+      fallbackImg.alt = '';
+    }
+    fallbackImg.hidden = true;
+  }
+
   if (DOM.immVideo) {
+    const hideVideo = () => {
+      DOM.immVideo.pause();
+      DOM.immVideo.hidden = true;
+      DOM.immVideo.removeAttribute('src');
+      DOM.immVideo.removeAttribute('poster');
+    };
+
+    hideVideo();
+    DOM.immVideo.onerror = null;
+    DOM.immVideo.onstalled = null;
+    DOM.immVideo.onloadeddata = null;
+
     if (it.video) {
       DOM.immVideo.hidden = false;
+      if (it.thumb) {
+        DOM.immVideo.setAttribute('poster', it.thumb);
+      }
       DOM.immVideo.src = it.video;
       DOM.immVideo.currentTime = 0;
-      DOM.immVideo.onerror = () => {
+
+      const revealFallback = () => {
         console.warn('Immortal video missing:', it.video);
+        hideVideo();
+        if (fallbackImg && fallbackImg.src) {
+          fallbackImg.hidden = false;
+        }
       };
+
+      DOM.immVideo.onerror = revealFallback;
+      DOM.immVideo.onstalled = revealFallback;
+      DOM.immVideo.onloadeddata = () => {
+        if (fallbackImg) {
+          fallbackImg.hidden = true;
+        }
+      };
+
       DOM.immVideo.play().catch(() => {});
-    } else {
-      DOM.immVideo.pause();
-      DOM.immVideo.removeAttribute('src');
-      DOM.immVideo.hidden = true;
+    } else if (fallbackImg && fallbackImg.src) {
+      fallbackImg.hidden = false;
     }
+  } else if (fallbackImg && fallbackImg.src) {
+    fallbackImg.hidden = false;
   }
   DOM.immIndex.textContent = `${IMM_CUR + 1} / ${IMM_VIEW.length}`;
   openModal(DOM.immDModal);
@@ -1664,7 +1788,13 @@ function closeImmDetailModal({ reopenImm } = {}) {
   if (DOM.immVideo) {
     DOM.immVideo.pause();
     DOM.immVideo.removeAttribute('src');
+    DOM.immVideo.removeAttribute('poster');
     DOM.immVideo.hidden = true;
+  }
+  if (DOM.immVideoFallback) {
+    DOM.immVideoFallback.hidden = true;
+    DOM.immVideoFallback.removeAttribute('src');
+    DOM.immVideoFallback.alt = '';
   }
   deactivateModal(DOM.immDModal);
   const shouldReopen = typeof reopenImm === 'boolean'
