@@ -1910,13 +1910,18 @@ function startOST() {
   DOM.playBtn.onclick = togglePlay;
   DOM.prevBtn.onclick = prevTrack;
   DOM.nextBtn.onclick = nextTrack;
-  DOM.vol.oninput = () => { if (A) A.volume = parseFloat(DOM.vol.value); };
+  DOM.vol.oninput = () => {
+    if (A) A.volume = parseFloat(DOM.vol.value);
+    updateVolumeFill();
+  };
+  DOM.vol.addEventListener('change', updateVolumeFill);
   DOM.muteBtn.onclick = () => {
     if (!A) return;
     A.muted = !A.muted;
     updateMuteBtn();
   };
   updateMuteBtn();
+  updateVolumeFill();
 }
 
 function clearPendingPlayback() {
@@ -1991,6 +1996,13 @@ function updateMuteBtn() {
   const span = DOM.muteBtn?.querySelector('span');
   if (span) span.textContent = muted ? '🔇' : '🔊';
   if (DOM.muteBtn) DOM.muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+}
+function updateVolumeFill() {
+  if (!DOM.vol) return;
+  const raw = Number.parseFloat(DOM.vol.value || '0');
+  const clamped = Number.isFinite(raw) ? Math.min(Math.max(raw, 0), 1) : 0;
+  const percent = `${Math.round(clamped * 100)}%`;
+  DOM.vol.style.setProperty('--vol', percent);
 }
 function setNowLabel(text) {
   if (!DOM.nowText) return;
