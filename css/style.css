@@ -629,7 +629,9 @@ body {
 .audio-ui {
   position: fixed;
   top: clamp(18px, 4vw, 32px);
-  right: clamp(18px, 5vw, 36px);
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -637,11 +639,10 @@ body {
   padding: 10px clamp(18px, 4vw, 26px);
   height: 48px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.12);
   background: rgba(14, 16, 24, .58);
   backdrop-filter: blur(18px) saturate(130%);
-  box-shadow: 0 16px 32px rgba(0,0,0,.42);
-  width: min(520px, 92vw);
+  width: clamp(320px, 60vw, 800px);
+  margin: 0 auto;
   z-index: 36;
   line-height: 1;
 }
@@ -663,9 +664,17 @@ body {
 .player-left {
   gap: 6px;
   min-width: 0;
-  flex: 1 1 clamp(280px, 46vw, 420px);
-  max-width: clamp(280px, 50vw, 440px);
+  flex: 1 1 clamp(320px, 52vw, 560px);
+  max-width: clamp(320px, 55vw, 560px);
   overflow: hidden;
+  position: relative;
+}
+.player-left::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(18,20,28,1) 0%, rgba(18,20,28,0) 18%, rgba(18,20,28,0) 82%, rgba(18,20,28,1) 100%);
 }
 .audio-title {
   position: relative;
@@ -684,17 +693,43 @@ body {
   padding-bottom: 2px;
   transition: color var(--dur-short) var(--ease-standard), text-shadow var(--dur-short) var(--ease-standard);
 }
+.track-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  will-change: transform;
+}
+.track-title.marquee {
+  animation: trackMarquee var(--marquee-duration, 11s) linear infinite;
+  padding-right: 48px;
+}
+.track-title.marquee::after {
+  content: attr(data-text);
+  display: inline-block;
+  padding-left: 48px;
+}
+.track-title.marquee,
+.track-title.marquee::after {
+  display: inline-block;
+}
+.track-title.marquee.marquee--paused {
+  animation-play-state: paused;
+}
+.track-title.marquee.marquee--paused::after {
+  animation-play-state: paused;
+}
 .audio-title:hover,
 .audio-title:focus {
   color: var(--color-primary);
   text-shadow: 0 0 10px rgba(255,0,170,.4);
 }
-.audio-title.marquee {
-  animation: marqueeScroll 14s linear infinite;
-  padding-right: 30%;
-}
+.audio-title.marquee { animation: none; }
 .player-center {
-  gap: clamp(10px, 2vw, 18px);
+  gap: 8px;
   justify-content: center;
   flex: 0 0 auto;
 }
@@ -704,9 +739,9 @@ body {
 }
 .audio-btn {
   appearance: none;
-  border: 1px solid rgba(255,255,255,.16);
+  border: none;
   background: rgba(30,32,46,.55);
-  color: var(--color-fg);
+  color: #bbb;
   width: 36px;
   height: 36px;
   border-radius: 999px;
@@ -714,20 +749,17 @@ body {
   place-items: center;
   font-size: 18px;
   cursor: pointer;
-  transition: color var(--dur-short) var(--ease-standard), border-color var(--dur-short) var(--ease-standard), box-shadow var(--dur-medium) var(--ease-standard), transform var(--dur-short) var(--ease-standard);
+  transition: color var(--dur-short) var(--ease-standard), transform var(--dur-short) var(--ease-standard);
 }
 .audio-btn span { pointer-events: none; }
 .audio-btn:hover,
 .audio-btn:focus-visible {
-  color: var(--color-primary);
-  border-color: rgba(255,0,170,.8);
-  box-shadow: 0 0 14px rgba(255,0,170,.5);
+  color: #fff;
   transform: translateY(-1px);
   text-shadow: 0 0 8px rgba(0,191,255,.45);
 }
 .audio-btn:focus-visible {
-  outline: 2px solid rgba(255,0,170,.5);
-  outline-offset: 3px;
+  outline: none;
 }
 .audio-btn--primary {
   width: 38px;
@@ -956,6 +988,15 @@ body {
 @keyframes marqueeScroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
+}
+
+@keyframes trackMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% - 48px));
+  }
 }
 
 /* Modal base */

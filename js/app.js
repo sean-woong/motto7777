@@ -1945,10 +1945,12 @@ function loadTrack(i) {
   A.src = meta.url; A.currentTime = 0;
   A.play().then(() => {
     playing = true; updateNow(meta); updatePlayBtn();
+    updateMarqueePlayState();
   }).catch(() => {
     playing = false; updatePlayBtn();
     setNowLabel('탭하여 오디오 시작');
     setPendingPlayback();
+    updateMarqueePlayState();
   });
 }
 
@@ -1960,18 +1962,22 @@ function togglePlay() {
     A.pause();
     playing = false;
     updatePlayBtn();
+    updateMarqueePlayState();
     return;
   }
 
   playing = true;
   updatePlayBtn();
+  updateMarqueePlayState();
   A.play().then(() => {
     playing = true;
     updatePlayBtn();
+    updateMarqueePlayState();
   }).catch(() => {
     playing = false;
     updatePlayBtn();
     setPendingPlayback();
+    updateMarqueePlayState();
   });
 }
 function updatePlayBtn() {
@@ -1988,19 +1994,25 @@ function updateMuteBtn() {
 }
 function setNowLabel(text) {
   if (!DOM.nowText) return;
-  DOM.nowText.classList.remove('marquee');
+  DOM.nowText.classList.remove('marquee', 'marquee--paused');
+  DOM.nowText.dataset.text = text || '';
   DOM.nowText.textContent = text;
   void DOM.nowText.offsetWidth;
   requestAnimationFrame(() => {
     if (!DOM.nowText) return;
-    if (DOM.nowText.scrollWidth > DOM.nowText.clientWidth + 2) {
-      DOM.nowText.classList.add('marquee');
-    }
+    DOM.nowText.classList.add('marquee');
+    updateMarqueePlayState();
   });
 }
 function updateNow(meta) {
   clearPendingPlayback();
   setNowLabel(meta.title || '—');
+}
+
+function updateMarqueePlayState() {
+  if (!DOM.nowText) return;
+  if (!DOM.nowText.classList.contains('marquee')) return;
+  DOM.nowText.classList.toggle('marquee--paused', !playing);
 }
 
 function trackEvent(category, action, label) {
