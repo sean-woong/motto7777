@@ -1993,9 +1993,10 @@ function updatePlayBtn() {
 }
 function updateMuteBtn() {
   const muted = Boolean(A && A.muted);
-  const span = DOM.muteBtn?.querySelector('span');
-  if (span) span.textContent = muted ? '🔇' : '🔊';
-  if (DOM.muteBtn) DOM.muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+  if (DOM.muteBtn) {
+    DOM.muteBtn.classList.toggle('is-muted', muted);
+    DOM.muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+  }
 }
 function updateVolumeFill() {
   if (!DOM.vol) return;
