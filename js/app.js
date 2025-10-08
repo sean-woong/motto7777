@@ -2016,7 +2016,7 @@ function setNowLabel(text) {
 
     const containerWidth = DOM.nowText.clientWidth || 1;
     const textWidth = inner.scrollWidth || containerWidth;
-    const gap = Math.max(24, Math.min(containerWidth * 0.1, 48));
+    const gap = Math.max(16, Math.min(containerWidth * 0.06, 32));
     const start = containerWidth;
     const distance = textWidth + containerWidth + gap;
     const speed = 60;
