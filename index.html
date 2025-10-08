@@ -129,13 +129,25 @@
   <!-- Archive Modal -->
   <div id="archiveModal" class="modal" hidden>
     <div class="modal-bg" data-close></div>
-    <div class="modal-card" style="width:min(96vw,1100px);padding:12px">
+    <div class="modal-card archive-modal-card">
       <button class="modal-close" data-close>✕</button>
-      <h3 style="margin:0 0 10px">ARCHIVE</h3>
-      <div id="archiveGrid" class="archive-grid"></div>
-      <div id="archiveDetail" class="archive-detail hidden" aria-live="polite">
-        <div id="archiveDetailMedia" class="archive-detail-media"></div>
-        <p id="archiveDetailCaption" class="archive-detail-caption"></p>
+      <header class="archive-header">
+        <div class="archive-header-text">
+          <h3 class="archive-title">ARCHIVE</h3>
+          <p class="archive-subtitle">Studio ephemera, works in progress, and show collateral.</p>
+        </div>
+      </header>
+      <div class="archive-gallery">
+        <div class="archive-wall">
+          <div id="archiveGrid" class="archive-grid" role="list"></div>
+        </div>
+        <div id="archiveDetail" class="archive-detail" aria-live="polite">
+          <div id="archiveDetailGuide" class="archive-detail-guide" data-empty>
+            <span>select a piece to view details</span>
+          </div>
+          <div id="archiveDetailMedia" class="archive-detail-media" hidden></div>
+          <p id="archiveDetailCaption" class="archive-detail-caption" hidden></p>
+        </div>
       </div>
     </div>
   </div>

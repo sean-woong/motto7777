@@ -667,10 +667,10 @@ const OST_TRACKS = [
 // ====== Archive Files ======
 const ARCHIVE_FILES = [
   { src: 'assets/archive/KIA.mp4', title: 'KIA — Performance Snippet' },
-  { src: 'assets/archive/track list/List.jpg', title: 'Immortals Checklist' },
-  { src: 'assets/archive/logo/Logo_motto 3.jpg', title: 'MOTTO Logo Treatments' },
-  { src: 'assets/archive/track list/Track_list 2.jpg', title: 'Track List Draft' },
-  { src: 'assets/archive/track list/track_list.jpg', title: 'Track List Final' }
+  { src: 'assets/archive/track_list/List.jpg', title: 'Immortals Checklist' },
+  { src: 'assets/archive/logo/Logo_motto_3.jpg', title: 'MOTTO Logo Treatments' },
+  { src: 'assets/archive/track_list/Track_list 2.jpg', title: 'Track List Draft' },
+  { src: 'assets/archive/track_list/track_list.jpg', title: 'Track List Final' }
 ];
 
 // ====== DOM Cache ======
@@ -724,6 +724,7 @@ const DOM = {
   arcModal: document.getElementById('archiveModal'),
   arcGrid: document.getElementById('archiveGrid'),
   arcDetail: document.getElementById('archiveDetail'),
+  arcDetailGuide: document.getElementById('archiveDetailGuide'),
   arcDetailMedia: document.getElementById('archiveDetailMedia'),
   arcDetailCaption: document.getElementById('archiveDetailCaption')
 };
@@ -1823,6 +1824,8 @@ DOM.immDModal?.addEventListener('click', (e) => {
 });
 
 // ====== Archive ======
+let ARC_ACTIVE_CELL = null;
+
 function openArchive() {
   if (!DOM.arcGrid) return;
   closeArchiveDetail();
@@ -1832,7 +1835,7 @@ function openArchive() {
     empty.style.color = '#9aa0a6'; empty.textContent = 'No archive yet.';
     DOM.arcGrid.appendChild(empty);
   } else {
-    ARCHIVE_FILES.forEach(entry => {
+    ARCHIVE_FILES.forEach((entry, index) => {
       const item = typeof entry === 'string' ? { src: entry } : entry;
       const src = resolveAssetPath(item.src);
       if (!src) return;
@@ -1843,6 +1846,10 @@ function openArchive() {
         : 'archive-media';
       const cell = document.createElement('div');
       cell.className = 'cell';
+      cell.dataset.index = index;
+      if (item.src) {
+        cell.dataset.src = item.src;
+      }
       const media = isVideo
         ? `<div class="${mediaClass}"><video src="${src}" muted loop playsinline loading="lazy"></video></div>`
         : `<div class="${mediaClass}"><img src="${src}" alt="${item.title || ''}" loading="lazy"></div>`;
@@ -1851,19 +1858,16 @@ function openArchive() {
       if (item.title) {
         cell.setAttribute('aria-label', item.title);
       }
-      cell.onclick = () => openArchiveDetail(item);
+      cell.onclick = () => openArchiveDetail(item, cell);
       DOM.arcGrid.appendChild(cell);
     });
-  }
-  if (DOM.arcDetail) {
-    DOM.arcDetail.classList.add('hidden');
   }
   DOM.arcGrid.classList.remove('hidden');
   openModal(DOM.arcModal);
 }
 DOM.arcModal?.addEventListener('click', (e) => {
   if (e.target.hasAttribute('data-close')) {
-    if (e.target.classList.contains('modal-close') && DOM.arcDetail && !DOM.arcDetail.classList.contains('hidden')) {
+    if (e.target.classList.contains('modal-close') && DOM.arcDetail && DOM.arcDetail.classList.contains('has-selection')) {
       closeArchiveDetail();
       return;
     }
@@ -2024,24 +2028,34 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && DOM.intro && DOM.intro.style.display !== 'none') { DOM.enterBtn?.click(); }
   if (e.key === 'Escape') {
     let closed = false;
-    if (DOM.arcDetail && !DOM.arcDetail.classList.contains('hidden')) { closeArchiveDetail(); closed = true; }
+    if (DOM.arcDetail && DOM.arcDetail.classList.contains('has-selection')) { closeArchiveDetail(); closed = true; }
     if (isModalActive(DOM.immDModal)) { closeModal(DOM.immDModal, { reopenImm: false }); closed = true; }
     if (isModalActive(DOM.immModal)) { closeModal(DOM.immModal); closed = true; }
     if (isModalActive(DOM.arcModal)) { closeModal(DOM.arcModal); closed = true; }
     if (isModalActive(DOM.charModal)) { closeModal(DOM.charModal); closed = true; }
   }
 });
-function openArchiveDetail(entry) {
+function openArchiveDetail(entry, sourceCell) {
   if (!DOM.arcDetail || !DOM.arcDetailMedia) return;
   const item = typeof entry === 'string' ? { src: entry } : entry;
   const src = resolveAssetPath(item?.src);
   if (!src) return;
+  if (ARC_ACTIVE_CELL && ARC_ACTIVE_CELL !== sourceCell) {
+    ARC_ACTIVE_CELL.classList.remove('is-active');
+  }
+  if (sourceCell) {
+    sourceCell.classList.add('is-active');
+    ARC_ACTIVE_CELL = sourceCell;
+  } else if (ARC_ACTIVE_CELL) {
+    ARC_ACTIVE_CELL.classList.add('is-active');
+  }
   const isVideo = /\.mp4(?:$|\?)/i.test(item?.src || src);
   const fitMode = (item?.fit || item?.objectFit || '').toLowerCase();
   const mediaClass = fitMode === 'contain'
     ? 'archive-media archive-media--contain'
     : 'archive-media';
   const detailMedia = DOM.arcDetailMedia;
+  detailMedia.hidden = false;
   detailMedia.classList.remove('is-ready');
   detailMedia.removeAttribute('data-orientation');
   detailMedia.dataset.mediaType = isVideo ? 'video' : 'image';
@@ -2086,14 +2100,20 @@ function openArchiveDetail(entry) {
   }
   if (DOM.arcDetailCaption) {
     DOM.arcDetailCaption.textContent = item.title || '';
-    DOM.arcDetailCaption.classList.toggle('hidden', !item.title);
+    DOM.arcDetailCaption.hidden = !item.title;
   }
-  DOM.arcGrid?.classList.add('hidden');
-  DOM.arcDetail.classList.remove('hidden');
+  if (DOM.arcDetailGuide) {
+    DOM.arcDetailGuide.hidden = true;
+  }
+  DOM.arcDetail.classList.add('has-selection');
 }
 
 function closeArchiveDetail() {
   if (!DOM.arcDetail) return;
+  if (ARC_ACTIVE_CELL) {
+    ARC_ACTIVE_CELL.classList.remove('is-active');
+    ARC_ACTIVE_CELL = null;
+  }
   const video = DOM.arcDetailMedia?.querySelector('video');
   if (video) video.pause();
   if (DOM.arcDetailMedia) {
@@ -2104,12 +2124,16 @@ function closeArchiveDetail() {
     DOM.arcDetailMedia.style.removeProperty('--archive-detail-image');
     DOM.arcDetailMedia.style.removeProperty('--archive-detail-accent');
     DOM.arcDetailMedia._backdropToken = null;
+    DOM.arcDetailMedia.hidden = true;
   }
   if (DOM.arcDetailCaption) {
     DOM.arcDetailCaption.textContent = '';
-    DOM.arcDetailCaption.classList.remove('hidden');
+    DOM.arcDetailCaption.hidden = true;
   }
-  DOM.arcDetail.classList.add('hidden');
+  if (DOM.arcDetailGuide) {
+    DOM.arcDetailGuide.hidden = false;
+  }
+  DOM.arcDetail.classList.remove('has-selection');
   DOM.arcGrid?.classList.remove('hidden');
 }
 
