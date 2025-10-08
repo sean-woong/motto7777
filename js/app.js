@@ -2016,10 +2016,10 @@ function setNowLabel(text) {
 
     const containerWidth = DOM.nowText.clientWidth || 1;
     const textWidth = inner.scrollWidth || containerWidth;
-    const gap = Math.max(6, Math.min(containerWidth * 0.02, 16));
-    const start = Math.max(containerWidth * 0.45, 48);
-    const distance = start + textWidth + gap;
-    const speed = 60;
+    const gap = Math.max(4, Math.min(containerWidth * 0.015, 8));
+    const start = containerWidth;
+    const distance = textWidth + containerWidth + gap;
+    const speed = 120;
     const duration = Math.max(10, distance / speed);
 
     DOM.nowText.style.setProperty('--marquee-start', `${start}px`);
