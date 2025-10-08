@@ -2019,7 +2019,7 @@ function setNowLabel(text) {
     const gap = Math.max(4, Math.min(containerWidth * 0.015, 8));
     const start = containerWidth;
     const distance = textWidth + containerWidth + gap;
-    const speed = 120;
+    const speed = 180;
     const duration = Math.max(10, distance / speed);
 
     DOM.nowText.style.setProperty('--marquee-start', `${start}px`);
