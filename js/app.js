@@ -666,11 +666,11 @@ const OST_TRACKS = [
 
 // ====== Archive Files ======
 const ARCHIVE_FILES = [
-  { src: 'assets/archive/KIA.mp4', title: 'KIA — Performance Snippet' },
-  { src: 'assets/archive/track_list/List.jpg', title: 'Immortals Checklist' },
-  { src: 'assets/archive/logo/Logo_motto_3.jpg', title: 'MOTTO Logo Treatments' },
-  { src: 'assets/archive/track_list/Track_list 2.jpg', title: 'Track List Draft' },
-  { src: 'assets/archive/track_list/track_list.jpg', title: 'Track List Final' }
+  { src: "assets/archive/KIA.mp4", title: "KIA — Performance Snippet" },
+  { src: "assets/archive/track_list/List.jpg", title: "Immortals Checklist" },
+  { src: "assets/archive/logo/Logo_motto_3.jpg", title: "MOTTO Logo Treatments" },
+  { src: "assets/archive/track_list/Track_list_2.jpg", title: "Track List Draft" },
+  { src: "assets/archive/track_list/track_list.jpg", title: "Track List Final" }
 ];
 
 // ====== DOM Cache ======

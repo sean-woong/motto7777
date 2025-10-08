@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+REPO_ROOT="$(cd -- "$(dirname "$0")/.." && pwd)"
+python3 "$REPO_ROOT/scripts/check_archive.py"
