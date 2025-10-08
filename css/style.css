@@ -694,9 +694,8 @@ body {
   transition: color var(--dur-short) var(--ease-standard), text-shadow var(--dur-short) var(--ease-standard);
 }
 .track-title {
-  --marquee-gap: 48px;
   --marquee-start: 0px;
-  --marquee-distance: 100%;
+  --marquee-distance: 0px;
   --marquee-duration: 12s;
   flex: 1 1 auto;
   min-width: 0;
@@ -706,18 +705,13 @@ body {
   position: relative;
 }
 .track-title__inner {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--marquee-gap);
+  display: inline-block;
   transform: translateX(0);
   animation: none;
   white-space: nowrap;
 }
 .track-title.marquee .track-title__inner {
   animation: trackMarquee var(--marquee-duration) linear infinite;
-}
-.track-title__label {
-  flex-shrink: 0;
 }
 .track-title.marquee--paused .track-title__inner,
 .track-title:hover .track-title__inner {

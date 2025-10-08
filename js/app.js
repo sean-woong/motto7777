@@ -2003,18 +2003,7 @@ function setNowLabel(text) {
     DOM.nowText.innerHTML = '';
     DOM.nowText.appendChild(inner);
   }
-  inner.innerHTML = '';
-
-  const primary = document.createElement('span');
-  primary.className = 'track-title__label';
-  primary.textContent = label;
-
-  const clone = document.createElement('span');
-  clone.className = 'track-title__label track-title__label--clone';
-  clone.textContent = label;
-
-  inner.appendChild(primary);
-  inner.appendChild(clone);
+  inner.textContent = label;
   DOM.nowText.setAttribute('aria-label', label);
 
   DOM.nowText.classList.remove('marquee', 'marquee--paused');
@@ -2026,14 +2015,14 @@ function setNowLabel(text) {
     if (!DOM.nowText || !inner.isConnected) return;
 
     const containerWidth = DOM.nowText.clientWidth || 1;
-    const primaryWidth = primary.getBoundingClientRect().width || containerWidth;
-    const gapValue = parseFloat(getComputedStyle(DOM.nowText).getPropertyValue('--marquee-gap')) || 48;
-    const travel = primaryWidth + gapValue;
-    const distance = travel <= 0 ? containerWidth : travel;
+    const textWidth = inner.scrollWidth || containerWidth;
+    const gap = 64;
+    const start = containerWidth;
+    const distance = textWidth + containerWidth + gap;
     const speed = 60;
     const duration = Math.max(10, distance / speed);
 
-    DOM.nowText.style.setProperty('--marquee-start', '0px');
+    DOM.nowText.style.setProperty('--marquee-start', `${start}px`);
     DOM.nowText.style.setProperty('--marquee-distance', `${distance}px`);
     DOM.nowText.style.setProperty('--marquee-duration', `${duration}s`);
     DOM.nowText.classList.add('marquee');
