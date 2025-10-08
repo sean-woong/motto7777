@@ -1994,12 +1994,35 @@ function updateMuteBtn() {
 }
 function setNowLabel(text) {
   if (!DOM.nowText) return;
+  const label = ((text ?? '') || '').toString().trim() || '—';
+
+  let inner = DOM.nowText.querySelector('.track-title__inner');
+  if (!inner) {
+    inner = document.createElement('span');
+    inner.className = 'track-title__inner';
+    DOM.nowText.innerHTML = '';
+    DOM.nowText.appendChild(inner);
+  }
+  inner.textContent = label;
+  DOM.nowText.setAttribute('aria-label', label);
+
   DOM.nowText.classList.remove('marquee', 'marquee--paused');
-  DOM.nowText.dataset.text = text || '';
-  DOM.nowText.textContent = text;
-  void DOM.nowText.offsetWidth;
+  DOM.nowText.style.removeProperty('--marquee-distance');
+  DOM.nowText.style.removeProperty('--marquee-duration');
+  DOM.nowText.style.removeProperty('--marquee-start');
+
   requestAnimationFrame(() => {
-    if (!DOM.nowText) return;
+    if (!DOM.nowText || !inner.isConnected) return;
+
+    const containerWidth = DOM.nowText.clientWidth || 1;
+    const travel = inner.scrollWidth || containerWidth;
+    const distance = -(travel + containerWidth);
+    const speed = 60;
+    const duration = Math.max(10, Math.abs(distance) / speed);
+
+    DOM.nowText.style.setProperty('--marquee-start', '0px');
+    DOM.nowText.style.setProperty('--marquee-distance', `${distance}px`);
+    DOM.nowText.style.setProperty('--marquee-duration', `${duration}s`);
     DOM.nowText.classList.add('marquee');
     updateMarqueePlayState();
   });
