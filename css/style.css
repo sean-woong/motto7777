@@ -764,7 +764,7 @@ body {
 .audio-btn--mute {
   font-size: 14px;
   position: relative;
-  --mute-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22black%22%20d%3D%22M5%202.4%203.1%204H1.2v4h1.9L5%209.6V2.4Zm2%20.9v5.4a2.6%202.6%200%200%200%200-5.4Z%22/%3E%3C/svg%3E");
+  --mute-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2712%27%20height%3D%2712%27%20viewBox%3D%270%200%2012%2012%27%3E%3Cpath%20fill%3D%27black%27%20d%3D%27M5%202.4%203.1%204H1.2v4h1.9L5%209.6V2.4Zm3.25-.35-.7.73A3.3%203.3%200%200%201%209.3%205.96a3.3%203.3%200%200%201-1.75%203.18l.7.73A4.3%204.3%200%200%200%2010.3%205.96%204.3%204.3%200%200%200%208.25%202.05Zm-1.5%201.48-.7.7a1.6%201.6%200%200%201%20.02%202.32l.7.71a2.6%202.6%200%200%200-.02-3.73Z%27/%3E%3C/svg%3E");
 }
 .audio-btn--mute::before {
   content: '';
@@ -788,7 +788,7 @@ body {
 }
 .audio-btn--mute.is-muted {
   color: #6b7288;
-  --mute-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22black%22%20d%3D%22M5%202.4%203.1%204H1.2v4h1.9L5%209.6V2.4Zm2.5.6-.7.7L8.8%205%207%206.8l.7.7%201.8-1.8%201.8%201.8.7-.7L10.2%205l1.8-1.8-.7-.7L9.5%204.3%207.7%202.5Z%22/%3E%3C/svg%3E");
+  --mute-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2712%27%20height%3D%2712%27%20viewBox%3D%270%200%2012%2012%27%3E%3Cpath%20fill%3D%27black%27%20d%3D%27M5%202.4%203.1%204H1.2v4h1.9L5%209.6V2.4Zm3.25-.35-.7.73A3.3%203.3%200%200%201%209.3%205.96a3.3%203.3%200%200%201-.92%202.27l.68.69%201.13-1.14.7.7-1.15%201.15.99%201L10.9%2012%200%201.1.7.4l3.4%203.4L8.25%202.05Zm-1.5%201.48-.7.7.79.8a1.6%201.6%200%200%201-.05%201.61l.7.71a2.6%202.6%200%200%200-.02-3.82ZM6.58%208.98l.71.7-.29.29.27.28-.7.7-7-7%20.7-.7L2.1%204.5%203.1%204H1.2v4h1.9l1.9%201.6V7.7l1.28%201.28.3-.3Z%27/%3E%3C/svg%3E");
 }
 .player-right {
   gap: clamp(8px, 1.4vw, 12px);
@@ -800,7 +800,7 @@ body {
   -webkit-appearance: none;
   appearance: none;
   width: clamp(140px, 34vw, 220px);
-  height: 6px;
+  height: 3px;
   border-radius: 999px;
   background:
     linear-gradient(90deg, #2B96E8, #81F6FF) 0 0 / var(--vol) 100% no-repeat,
@@ -817,24 +817,24 @@ body {
   box-shadow: 0 0 0 2px rgba(70, 200, 255, 0.32);
 }
 .audio-range::-webkit-slider-runnable-track {
-  height: 6px;
+  height: 3px;
   border-radius: 999px;
   background: transparent;
 }
 .audio-range::-moz-range-track {
-  height: 6px;
+  height: 3px;
   border-radius: 999px;
   background: #1A2230;
 }
 .audio-range::-moz-range-progress {
-  height: 6px;
+  height: 3px;
   border-radius: 999px;
   background: linear-gradient(90deg, #2B96E8, #81F6FF);
 }
 .audio-range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #FF2CA0;
   border: none;
@@ -847,8 +847,8 @@ body {
   box-shadow: 0 0 14px rgba(255, 44, 160, 0.9), 0 0 0 5px rgba(255, 44, 160, 0.24);
 }
 .audio-range::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #FF2CA0;
   border: none;
@@ -861,7 +861,7 @@ body {
 }
 .audio-range::-ms-track {
   width: 100%;
-  height: 6px;
+  height: 3px;
   background: transparent;
   border-color: transparent;
   color: transparent;
@@ -875,8 +875,8 @@ body {
   border-radius: 999px;
 }
 .audio-range::-ms-thumb {
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #FF2CA0;
   border: none;
