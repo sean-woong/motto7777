@@ -1436,10 +1436,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: clamp(18px, 3vw, 28px);
-  --focus-scale: 1.2;
-  --dim-scale: 0.9;
-  --dim-saturate: 0.85;
-  --dim-blur: 1.5px;
 }
 
 .archive-grid .cell {
@@ -1455,7 +1451,6 @@ body {
   transition: transform var(--dur-short) var(--ease-standard),
               border-color var(--dur-short) var(--ease-standard),
               box-shadow var(--dur-short) var(--ease-standard);
-  will-change: transform;
 }
 
 .archive-grid .cell::after {
@@ -1480,9 +1475,7 @@ body {
 
 .archive-grid .cell.is-active {
   border-color: rgba(255, 0, 170, .55);
-  box-shadow: 0 0 0 1px rgba(255, 0, 170, .35),
-              0 24px 52px rgba(255, 0, 170, .18),
-              0 18px 42px rgba(0,0,0,.48);
+  box-shadow: 0 0 0 1px rgba(255, 0, 170, .35), 0 18px 36px rgba(255, 0, 170, .12);
 }
 
 .archive-grid .cell.is-active::after {
@@ -1499,9 +1492,6 @@ body {
   background: rgba(4,4,4,.92);
   display: grid;
   place-items: center;
-  transition: transform var(--dur-medium) var(--ease-standard),
-              filter var(--dur-medium) var(--ease-standard),
-              box-shadow var(--dur-medium) var(--ease-standard);
 }
 
 .archive-grid .cell .archive-media img,
@@ -1510,8 +1500,7 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform var(--dur-medium) var(--ease-standard),
-              filter var(--dur-medium) var(--ease-standard);
+  transition: transform var(--dur-medium) var(--ease-standard);
 }
 
 .archive-grid .cell:hover .archive-media img,
@@ -1519,32 +1508,8 @@ body {
   transform: scale(1.03);
 }
 
-.archive-grid.has-selection .cell:not(.is-active):hover .archive-media img,
-.archive-grid.has-selection .cell:not(.is-active):hover .archive-media video {
-  transform: none;
-}
-
 .archive-grid .cell .archive-media video {
   background: #000;
-}
-
-.archive-grid.has-selection .cell:not(.is-active) .archive-media {
-  transform: scale(var(--dim-scale));
-}
-
-.archive-grid.has-selection .cell:not(.is-active) .archive-media img,
-.archive-grid.has-selection .cell:not(.is-active) .archive-media video {
-  filter: saturate(var(--dim-saturate)) blur(var(--dim-blur));
-}
-
-.archive-grid.has-selection .cell.is-active .archive-media {
-  transform: scale(var(--focus-scale));
-  box-shadow: 0 26px 60px rgba(255, 0, 170, .22);
-}
-
-.archive-grid.has-selection .cell.is-active .archive-media img,
-.archive-grid.has-selection .cell.is-active .archive-media video {
-  filter: saturate(1.05);
 }
 
 .archive-grid .cell .caption {
@@ -1624,7 +1589,7 @@ body {
   max-height: 100%;
   object-fit: contain;
   border-radius: 12px;
-  box-shadow: 0 28px 64px rgba(0,0,0,.56);
+  box-shadow: 0 24px 48px rgba(0,0,0,.38);
 }
 
 .archive-detail-media .archive-media video {
