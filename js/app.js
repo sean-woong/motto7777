@@ -666,12 +666,59 @@ const OST_TRACKS = [
 
 // ====== Archive Files ======
 const ARCHIVE_FILES = [
-  { src: "assets/archive/KIA.mp4", title: "KIA — Performance Snippet" },
-  { src: "assets/archive/track_list/List.jpg", title: "Immortals Checklist" },
-  { src: "assets/archive/logo/Logo_motto_3.jpg", title: "MOTTO Logo Treatments" },
-  { src: "assets/archive/track_list/Track_list_2.jpg", title: "Track List Draft" },
-  { src: "assets/archive/track_list/track_list.jpg", title: "Track List Final" }
+  {
+    src: "assets/archive/KIA.mp4",
+    title: "KIA — Performance Snippet",
+    backdrop: "assets/archive/logo_empty.jpg?v=20251011"
+  },
+  {
+    src: "assets/archive/Drop_Page_Cover_Image.jpg?v=20251011",
+    title: "Drop Page Cover Layout"
+  },
+  {
+    src: "assets/archive/Logo_motto_3.jpg?v=20251011",
+    title: "MOTTO Logo Treatments"
+  },
+  {
+    src: "assets/archive/Logo_motto.jpg?v=20251011",
+    title: "Glyph Variations — Primary Lockup"
+  },
+  {
+    src: "assets/archive/logo_empty.jpg?v=20251011",
+    title: "Empty Frame Light Leak"
+  },
+  {
+    src: "assets/archive/mottt.jpg?v=20251011",
+    title: "MOTTT Flyer Draft"
+  },
+  {
+    src: "assets/archive/ani_motto_3.JPG?v=20251011",
+    title: "Animation Cells — Panel Study"
+  },
+  {
+    src: "assets/archive/ani_motto_4.JPG?v=20251011",
+    title: "Animation Cells — Spread"
+  },
+  {
+    src: "assets/archive/motto_Silhouettes_notext.png?v=20251011",
+    title: "Silhouettes Without Text",
+    fit: "contain"
+  },
+  {
+    src: "assets/archive/motto_profile_inverted.gif?v=20251011",
+    title: "Profile Inversion Loop"
+  },
+  {
+    src: "assets/archive/ani_motto.GIF?v=20251011",
+    title: "Glyph Animation Reference"
+  },
+  {
+    src: "assets/archive/IMG_4933.jpg?v=20251011",
+    title: "Studio Reference — Rig 4933"
+  }
 ];
+
+window.__MOTTO_ARCHIVE_FILES__ = ARCHIVE_FILES;
 
 // ====== DOM Cache ======
 const DOM = {
@@ -1830,6 +1877,7 @@ function openArchive() {
   if (!DOM.arcGrid) return;
   closeArchiveDetail();
   DOM.arcGrid.innerHTML = '';
+  DOM.arcGrid.classList.remove('has-selection');
   if (!ARCHIVE_FILES.length) {
     const empty = document.createElement('div');
     empty.style.color = '#9aa0a6'; empty.textContent = 'No archive yet.';
@@ -2090,6 +2138,7 @@ function openArchiveDetail(entry, sourceCell) {
   const item = typeof entry === 'string' ? { src: entry } : entry;
   const src = resolveAssetPath(item?.src);
   if (!src) return;
+  DOM.arcGrid?.classList.add('has-selection');
   if (ARC_ACTIVE_CELL && ARC_ACTIVE_CELL !== sourceCell) {
     ARC_ACTIVE_CELL.classList.remove('is-active');
   }
@@ -2164,6 +2213,7 @@ function closeArchiveDetail() {
     ARC_ACTIVE_CELL.classList.remove('is-active');
     ARC_ACTIVE_CELL = null;
   }
+  DOM.arcGrid?.classList.remove('has-selection');
   const video = DOM.arcDetailMedia?.querySelector('video');
   if (video) video.pause();
   if (DOM.arcDetailMedia) {

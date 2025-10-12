@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2025-10-11T11:12:58.131931Z",
+  "images": [
+    {
+      "path": "assets/archive/Drop_Page_Cover_Image.jpg",
+      "name": "Drop_Page_Cover_Image",
+      "extension": "jpg"
+    },
+    {
+      "path": "assets/archive/IMG_4933.jpg",
+      "name": "IMG_4933",
+      "extension": "jpg"
+    },
+    {
+      "path": "assets/archive/IMG_8193.heic",
+      "name": "IMG_8193",
+      "extension": "heic"
+    },
+    {
+      "path": "assets/archive/IMG_8230.HEIC",
+      "name": "IMG_8230",
+      "extension": "heic"
+    },
+    {
+      "path": "assets/archive/Logo_motto.jpg",
+      "name": "Logo_motto",
+      "extension": "jpg"
+    },
+    {
+      "path": "assets/archive/Logo_motto_3.jpg",
+      "name": "Logo_motto_3",
+      "extension": "jpg"
+    },
+    {
+      "path": "assets/archive/ani_motto.GIF",
+      "name": "ani_motto",
+      "extension": "gif"
+    },
+    {
+      "path": "assets/archive/ani_motto_3.JPG",
+      "name": "ani_motto_3",
+      "extension": "jpg"
+    },
+    {
+      "path": "assets/archive/ani_motto_4.JPG",
+      "name": "ani_motto_4",
+      "extension": "jpg"
+    },
+    {
+      "path": "assets/archive/logo_empty.jpg",
+      "name": "logo_empty",
+      "extension": "jpg"
+    },
+    {
+      "path": "assets/archive/motto_Silhouettes_notext.png",
+      "name": "motto_Silhouettes_notext",
+      "extension": "png"
+    },
+    {
+      "path": "assets/archive/motto_profile_inverted.gif",
+      "name": "motto_profile_inverted",
+      "extension": "gif"
+    },
+    {
+      "path": "assets/archive/mottt.jpg",
+      "name": "mottt",
+      "extension": "jpg"
+    }
+  ]
+}
