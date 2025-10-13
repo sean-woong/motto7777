@@ -14,6 +14,67 @@ const TWITTER_URL = 'https://x.com/motto_7777';
 const IG_URL = '#';
 const TT_URL = '#';
 
+// ====== Build Version ======
+const SCRIPT_VERSION = (() => {
+  if (typeof document === 'undefined') return '';
+  try {
+    const current = document.currentScript;
+    if (current?.src) {
+      const url = new URL(current.src, document.baseURI || window.location.href);
+      const version = url.searchParams.get('v');
+      if (version) {
+        return version;
+      }
+    }
+  } catch (err) {
+    // ignore
+  }
+  try {
+    const scripts = document.querySelectorAll('script[src]');
+    for (let i = scripts.length - 1; i >= 0; i -= 1) {
+      const script = scripts[i];
+      const srcAttr = script.getAttribute('src') || '';
+      if (!srcAttr.includes('app.js')) continue;
+      try {
+        const url = new URL(script.src || srcAttr, document.baseURI || window.location.href);
+        const version = url.searchParams.get('v');
+        if (version) {
+          return version;
+        }
+      } catch (innerErr) {
+        const match = srcAttr.match(/[?&]v=([^&]+)/);
+        if (match) {
+          return decodeURIComponent(match[1]);
+        }
+      }
+    }
+  } catch (err) {
+    // ignore
+  }
+  return '';
+})();
+
+function appendQueryParam(path, key, value, options = {}) {
+  if (!path) return path;
+  const { skipIfExists = false } = options;
+  const [base, fragment = ''] = path.split('#');
+  const safeKey = `${key}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const pattern = new RegExp(`([?&])${safeKey}=`);
+  if (skipIfExists && pattern.test(base)) {
+    return path;
+  }
+  const separator = base.includes('?') ? '&' : '?';
+  const next = `${base}${separator}${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+  return fragment ? `${next}#${fragment}` : next;
+}
+
+function withAssetVersion(path) {
+  if (!path) return path;
+  const version = SCRIPT_VERSION;
+  if (!version) return path;
+  return appendQueryParam(path, 'v', version, { skipIfExists: true });
+}
+
 // ====== Data Sources ======
 const IMM_DATA_URL = (() => {
   try {
@@ -665,13 +726,33 @@ const OST_TRACKS = [
 ];
 
 // ====== Archive Files ======
-const ARCHIVE_FILES = [
-  { src: "assets/archive/KIA.mp4", title: "KIA — Performance Snippet" },
-  { src: "assets/archive/track_list/List.jpg", title: "Immortals Checklist" },
-  { src: "assets/archive/logo/Logo_motto_3.jpg", title: "MOTTO Logo Treatments" },
-  { src: "assets/archive/track_list/Track_list_2.jpg", title: "Track List Draft" },
-  { src: "assets/archive/track_list/track_list.jpg", title: "Track List Final" }
-];
+const ARCHIVE_MANIFEST_URL = withAssetVersion('assets/archive/archive.json');
+let ARCHIVE_FILES = [];
+let _archiveManifestPromise = null;
+let ARCHIVE_SPOTLIGHT_ENABLED = true;
+const ARCHIVE_ACCENT_CACHE = new Map();
+const ARCHIVE_COLOR_CANVAS = document.createElement('canvas');
+const ARCHIVE_COLOR_CONTEXT = ARCHIVE_COLOR_CANVAS.getContext('2d', { willReadFrequently: true })
+  || ARCHIVE_COLOR_CANVAS.getContext('2d');
+const ARCHIVE_DEFAULT_COLOR = [190, 204, 224];
+let ARCHIVE_IS_ANIMATING = false;
+let ARCHIVE_TRANSITION_TIMER = null;
+const SPOTLIGHT_STATE = {
+  enabled: true,
+  raf: null,
+  currentX: 50,
+  currentY: 48,
+  targetX: 50,
+  targetY: 48,
+  lerp: 0.2,
+  offsetPx: 32
+};
+const SPOTLIGHT_MEDIA_PREF = window.matchMedia('(prefers-reduced-motion: reduce)');
+const SPOTLIGHT_POINTER_PREF = window.matchMedia('(pointer: coarse)');
+
+if (typeof window !== 'undefined') {
+  window.__MOTTO_ARCHIVE_FILES__ = ARCHIVE_FILES;
+}
 
 // ====== DOM Cache ======
 const DOM = {
@@ -796,6 +877,9 @@ function closeModal(modal, opts = {}) {
   if (modal === DOM.arcModal) {
     closeArchiveDetail();
     deactivateModal(modal);
+    if (window.location.hash.startsWith('#archive')) {
+      history.replaceState(null, '', '#');
+    }
     return;
   }
   deactivateModal(modal);
@@ -1825,45 +1909,915 @@ DOM.immDModal?.addEventListener('click', (e) => {
 
 // ====== Archive ======
 let ARC_ACTIVE_CELL = null;
+let ARCHIVE_ACTIVE_INDEX = -1;
+let ARCHIVE_ACTIVE_KEY = null;
+let ARCHIVE_PENDING_KEY = null;
+let ARCHIVE_PENDING_SCROLL = false;
+const ARCHIVE_KEY_TO_INDEX = new Map();
+const ARCHIVE_ALLOWED_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'gif', 'mp4']);
+const ARCHIVE_ALLOWED_POSTER_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'gif']);
+
+function extractArchiveFilename(path) {
+  if (typeof path !== 'string') return '';
+  const withoutQuery = path.split('?')[0];
+  const parts = withoutQuery.split('/');
+  return parts[parts.length - 1] || '';
+}
+
+function isValidArchiveFilename(name, { allowVideo = true } = {}) {
+  if (!name) return false;
+  if (name.includes('-')) return false;
+  if (!/^[A-Za-z0-9_]+\.[A-Za-z0-9]+$/.test(name)) return false;
+  const ext = name.split('.').pop()?.toLowerCase() || '';
+  if (allowVideo) {
+    return ARCHIVE_ALLOWED_EXTENSIONS.has(ext);
+  }
+  return ARCHIVE_ALLOWED_POSTER_EXTENSIONS.has(ext);
+}
+
+function deriveArchiveFallbackTitle(filename, index) {
+  if (!filename) {
+    return `Archive Item ${index + 1}`;
+  }
+  const base = filename.replace(/\.[^.]+$/, '');
+  const spaced = base.replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!spaced) {
+    return `Archive Item ${index + 1}`;
+  }
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+}
+
+function sanitizeArchiveEntry(raw, index) {
+  if (!raw || typeof raw !== 'object') {
+    console.warn(`Archive entry #${index + 1} is not an object`, raw);
+    return null;
+  }
+  const entry = { ...raw };
+  const src = typeof entry.src === 'string' ? entry.src.trim() : '';
+  if (!src) {
+    console.warn(`Archive entry #${index + 1} is missing src`, raw);
+    return null;
+  }
+  if (/\s/.test(src) || src.includes('%')) {
+    console.warn(`Archive entry #${index + 1} contains invalid characters: ${src}`);
+    return null;
+  }
+  const filename = extractArchiveFilename(src);
+  if (!isValidArchiveFilename(filename)) {
+    console.warn(`Archive entry #${index + 1} has an invalid filename: ${src}`);
+    return null;
+  }
+  const ext = filename.split('.').pop()?.toLowerCase() || '';
+  if (!ARCHIVE_ALLOWED_EXTENSIONS.has(ext)) {
+    console.warn(`Archive entry #${index + 1} uses an unsupported extension: ${src}`);
+    return null;
+  }
+  const declaredType = (entry.type || '').toLowerCase();
+  const inferredType = ext === 'mp4' ? 'video' : 'image';
+  const type = declaredType === 'video' || declaredType === 'image' ? declaredType : inferredType;
+  const normalizedType = inferredType === 'video' ? 'video' : 'image';
+  if (type !== normalizedType) {
+    console.warn(`Archive entry #${index + 1} type mismatch; using "${normalizedType}" for ${src}`);
+  }
+  const fit = (entry.fit || entry.objectFit || '').toLowerCase();
+  const providedTitle = typeof entry.title === 'string' && entry.title.trim()
+    ? entry.title.trim()
+    : '';
+  const hasManualTitle = Boolean(providedTitle);
+  const fallbackTitle = deriveArchiveFallbackTitle(filename, index);
+  const title = hasManualTitle ? providedTitle : '';
+  const accessibleTitle = hasManualTitle ? providedTitle : fallbackTitle;
+  let poster = typeof entry.poster === 'string' && entry.poster.trim()
+    ? entry.poster.trim()
+    : (typeof entry.preview === 'string' && entry.preview.trim() ? entry.preview.trim() : '');
+  if (poster) {
+    if (/\s/.test(poster) || poster.includes('%')) {
+      console.warn(`Archive entry #${index + 1} poster contains invalid characters: ${poster}`);
+      poster = '';
+    } else {
+      const posterFilename = extractArchiveFilename(poster);
+      if (!isValidArchiveFilename(posterFilename, { allowVideo: false })) {
+        console.warn(`Archive entry #${index + 1} poster has an invalid filename: ${poster}`);
+        poster = '';
+      }
+    }
+  }
+  const key = generateArchiveKey({ ...entry, src, title }, index);
+
+  return {
+    src,
+    title,
+    type: normalizedType,
+    displayType: normalizedType === 'video' ? 'VIDEO' : 'STILL',
+    fit,
+    poster,
+    loop: entry.loop !== undefined ? Boolean(entry.loop) : undefined,
+    fallbackTitle,
+    accessibleTitle,
+    hasManualTitle,
+    key,
+    index
+  };
+}
+
+function generateArchiveKey(entry, index) {
+  const base = (entry && (entry.id || entry.slug || entry.key || entry.src || entry.title))
+    ? `${entry.id || entry.slug || entry.key || entry.src || entry.title}`
+    : `archive-${index}`;
+  const slug = base
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return slug || `archive-${index}`;
+}
+
+function escapeHTML(str) {
+  return `${str}`.replace(/[&<>"]+/g, (match) => {
+    switch (match) {
+      case '&': return '&amp;';
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '"': return '&quot;';
+      default: return match;
+    }
+  });
+}
+
+function ensureArchiveManifest(options = {}) {
+  if (options.force) {
+    _archiveManifestPromise = null;
+  }
+  if (_archiveManifestPromise) {
+    return _archiveManifestPromise;
+  }
+  const manifestUrl = appendQueryParam(
+    ARCHIVE_MANIFEST_URL,
+    '_cb',
+    Date.now().toString(36)
+  );
+  _archiveManifestPromise = fetch(manifestUrl, { cache: 'no-store' })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Manifest request failed: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((payload) => {
+      if (!Array.isArray(payload)) {
+        throw new Error('Archive manifest payload is not an array');
+      }
+      const sanitized = payload
+        .map((item, index) => sanitizeArchiveEntry(item, index))
+        .filter(Boolean);
+      ARCHIVE_KEY_TO_INDEX.clear();
+      ARCHIVE_FILES = sanitized.map((entry, idx) => {
+        const key = (entry.key || generateArchiveKey(entry, idx)).toLowerCase();
+        const normalized = { ...entry, key, index: idx };
+        ARCHIVE_KEY_TO_INDEX.set(key, idx);
+        return normalized;
+      });
+      if (typeof window !== 'undefined') {
+        window.__MOTTO_ARCHIVE_FILES__ = ARCHIVE_FILES;
+      }
+      return ARCHIVE_FILES;
+    })
+    .catch((error) => {
+      console.error('Failed to load archive manifest:', error);
+      ARCHIVE_FILES = [];
+      _archiveManifestPromise = null;
+      if (typeof window !== 'undefined') {
+        window.__MOTTO_ARCHIVE_FILES__ = ARCHIVE_FILES;
+      }
+      throw error;
+    });
+  return _archiveManifestPromise;
+}
+
+function setArchiveGridState(state, message) {
+  if (!DOM.arcGrid) return;
+  clearArchiveFocus();
+  DOM.arcGrid.innerHTML = '';
+  const notice = document.createElement('div');
+  notice.className = 'archive-grid-state';
+  if (state) {
+    notice.classList.add(`archive-grid-state--${state}`);
+  }
+  notice.textContent = message;
+  notice.setAttribute('role', 'status');
+  notice.setAttribute('aria-live', 'polite');
+  DOM.arcGrid.appendChild(notice);
+  syncArchiveSpotlightClass();
+}
+
+function renderArchiveGrid(entries) {
+  if (!DOM.arcGrid) return;
+  DOM.arcGrid.innerHTML = '';
+  if (!entries.length) {
+    setArchiveGridState('empty', 'Archive coming soon');
+    return;
+  }
+  const allowHoverScrub = window.matchMedia('(hover:hover)').matches
+    && window.matchMedia('(pointer:fine)').matches
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  clearArchiveFocus();
+  entries.forEach((item, index) => {
+    const src = resolveAssetPath(item.src);
+    if (!src) return;
+    const isVideo = item.type === 'video' || /\.mp4(?:$|\?)/i.test(item.src || src);
+    const fitMode = (item.fit || '').toLowerCase();
+    const mediaClass = fitMode === 'contain'
+      ? 'archive-media archive-media--contain'
+      : 'archive-media';
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.dataset.index = index;
+    cell.dataset.archiveSrc = item.src || '';
+    if (item.key) {
+      cell.dataset.key = item.key;
+      cell.id = `archive-cell-${item.key}`;
+    }
+    const label = item.accessibleTitle || item.title || `Archive Item ${index + 1}`;
+    cell.setAttribute('role', 'button');
+    cell.setAttribute('aria-expanded', 'false');
+    if (label) {
+      cell.setAttribute('aria-label', label);
+    } else {
+      cell.removeAttribute('aria-label');
+    }
+    cell.tabIndex = 0;
+    let media;
+    if (isVideo) {
+      const posterAttr = item.poster ? ` poster="${resolveAssetPath(item.poster)}"` : '';
+      const loopAttr = item.loop === false ? '' : ' loop';
+      media = `<div class="${mediaClass}"><video src="${src}" muted playsinline preload="metadata" data-archive-video${posterAttr}${loopAttr}></video></div>`;
+    } else {
+      const altText = label ? escapeHTML(label) : '';
+      media = `<div class="${mediaClass}"><img src="${src}" alt="${altText}" loading="lazy"></div>`;
+    }
+    const title = item.title ? escapeHTML(item.title) : '';
+    const typeLabel = item.displayType ? escapeHTML(item.displayType) : '';
+    const caption = item.title
+      ? `<div class="caption"><span class="caption-title">${title}</span>${typeLabel ? `<span class="caption-type">${typeLabel}</span>` : ''}</div>`
+      : '';
+    cell.innerHTML = `${media}${caption}`;
+    cell.onclick = (event) => {
+      event.preventDefault();
+      if (cell.classList.contains('is-focus')) {
+        closeArchiveDetail();
+      } else {
+        openArchiveDetail(item, cell);
+      }
+    };
+    DOM.arcGrid.appendChild(cell);
+    decorateArchiveCell(cell, item, allowHoverScrub);
+  });
+  syncArchiveSpotlightClass();
+  if (ARCHIVE_PENDING_KEY) {
+    const pendingKey = ARCHIVE_PENDING_KEY;
+    const pendingScroll = ARCHIVE_PENDING_SCROLL;
+    ARCHIVE_PENDING_KEY = null;
+    ARCHIVE_PENDING_SCROLL = false;
+    openArchiveByKey(pendingKey, { scroll: pendingScroll });
+  }
+}
+
+function decorateArchiveCell(cell, item, allowHoverScrub) {
+  if (!cell) return;
+  const mediaEl = cell.querySelector('img, video');
+  if (!mediaEl) {
+    removeArchiveCell(cell, 'Archive item missing media.');
+    return;
+  }
+
+  const onError = () => removeArchiveCell(cell, 'Some archive files were removed.');
+  mediaEl.addEventListener('error', onError, { once: true });
+  if (mediaEl.tagName === 'VIDEO') {
+    mediaEl.addEventListener('stalled', onError, { once: true });
+    mediaEl.loop = item.loop !== false;
+  }
+
+  const accentKey = (item.poster || item.preview || item.src || '').trim();
+  if (accentKey) {
+    if (ARCHIVE_ACCENT_CACHE.has(accentKey)) {
+      setCellAccent(cell, ARCHIVE_ACCENT_CACHE.get(accentKey));
+    } else {
+      setCellAccent(cell, ARCHIVE_DEFAULT_COLOR);
+      applyArchiveAccentToCell(cell, item, mediaEl, accentKey).catch(() => {});
+    }
+  } else {
+    setCellAccent(cell, ARCHIVE_DEFAULT_COLOR);
+  }
+
+  const mediaWrapper = cell.querySelector('.archive-media');
+  if (allowHoverScrub && mediaEl.tagName === 'VIDEO' && mediaWrapper) {
+    mediaWrapper.style.setProperty('--scrub-progress', '0');
+    mediaWrapper.dataset.scrub = '1';
+    setupVideoHoverScrub(mediaEl, mediaWrapper);
+  } else if (mediaWrapper) {
+    mediaWrapper.style.removeProperty('--scrub-progress');
+    delete mediaWrapper.dataset.scrub;
+  }
+
+  updateArchiveCaption(cell, item);
+
+  if (!cell._archiveKeydown) {
+    cell.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Enter' || evt.key === ' ') {
+        evt.preventDefault();
+        if (cell.classList.contains('is-focus')) {
+          closeArchiveDetail();
+        } else {
+          const idx = Number.parseInt(cell.dataset.index || '-1', 10);
+          const entry = ARCHIVE_FILES[idx] || item;
+          openArchiveDetail(entry, cell);
+        }
+      }
+    });
+    cell._archiveKeydown = true;
+  }
+}
+
+function spotlightEligible() {
+  return !SPOTLIGHT_MEDIA_PREF.matches && !SPOTLIGHT_POINTER_PREF.matches;
+}
+
+function syncArchiveSpotlightClass() {
+  if (!DOM.arcGrid) return;
+  const hasCells = Boolean(DOM.arcGrid.querySelector('.cell'));
+  const shouldEnable = ARCHIVE_SPOTLIGHT_ENABLED && hasCells && spotlightEligible();
+  SPOTLIGHT_STATE.enabled = shouldEnable;
+  DOM.arcGrid.classList.toggle('archive-grid--spotlight', shouldEnable);
+  if (shouldEnable) {
+    initArchiveSpotlight();
+    scheduleSpotlightFrame(true);
+  } else {
+    stopSpotlightAnimation();
+    setSpotlightTarget(50, 48, true);
+    DOM.arcGrid.style.setProperty('--spotlight-intensity', '0');
+    DOM.arcGrid.style.setProperty('--spotlight-secondary-intensity', '0');
+  }
+}
+
+function initArchiveSpotlight() {
+  if (!DOM.arcGrid || DOM.arcGrid._spotlightInit) return;
+  const grid = DOM.arcGrid;
+  const handlePointer = (event) => {
+    if (!SPOTLIGHT_STATE.enabled) return;
+    const type = event.pointerType;
+    if (type && type !== 'mouse' && type !== 'pen') return;
+    const rect = grid.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const x = clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100);
+    const y = clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100);
+    setSpotlightTarget(x, y);
+  };
+  const handleLeave = () => {
+    setSpotlightTarget(50, 48);
+  };
+  grid.addEventListener('pointermove', handlePointer);
+  grid.addEventListener('pointerdown', handlePointer);
+  grid.addEventListener('pointerleave', handleLeave);
+  grid._spotlightInit = true;
+  handleLeave();
+}
+
+function setSpotlightTarget(xPerc, yPerc, immediate = false) {
+  const x = clamp(Number.isFinite(xPerc) ? xPerc : 50, 0, 100);
+  const y = clamp(Number.isFinite(yPerc) ? yPerc : 48, 0, 100);
+  SPOTLIGHT_STATE.targetX = x;
+  SPOTLIGHT_STATE.targetY = y;
+  if (immediate) {
+    SPOTLIGHT_STATE.currentX = x;
+    SPOTLIGHT_STATE.currentY = y;
+    applySpotlightStyle(x, y);
+  }
+  scheduleSpotlightFrame();
+}
+
+function scheduleSpotlightFrame(force) {
+  if (!SPOTLIGHT_STATE.enabled) return;
+  if (force) {
+    SPOTLIGHT_STATE.currentX = SPOTLIGHT_STATE.targetX;
+    SPOTLIGHT_STATE.currentY = SPOTLIGHT_STATE.targetY;
+    applySpotlightStyle(SPOTLIGHT_STATE.currentX, SPOTLIGHT_STATE.currentY);
+  }
+  if (SPOTLIGHT_STATE.raf) return;
+  const step = () => {
+    SPOTLIGHT_STATE.raf = null;
+    if (!SPOTLIGHT_STATE.enabled) return;
+    const lerp = ARCHIVE_IS_ANIMATING ? 0.14 : SPOTLIGHT_STATE.lerp;
+    const nextX = SPOTLIGHT_STATE.currentX + (SPOTLIGHT_STATE.targetX - SPOTLIGHT_STATE.currentX) * lerp;
+    const nextY = SPOTLIGHT_STATE.currentY + (SPOTLIGHT_STATE.targetY - SPOTLIGHT_STATE.currentY) * lerp;
+    SPOTLIGHT_STATE.currentX = nextX;
+    SPOTLIGHT_STATE.currentY = nextY;
+    applySpotlightStyle(nextX, nextY);
+    const settled = Math.abs(nextX - SPOTLIGHT_STATE.targetX) < 0.05
+      && Math.abs(nextY - SPOTLIGHT_STATE.targetY) < 0.05;
+    if (!settled) {
+      SPOTLIGHT_STATE.raf = requestAnimationFrame(step);
+    }
+  };
+  SPOTLIGHT_STATE.raf = requestAnimationFrame(step);
+}
+
+function stopSpotlightAnimation() {
+  if (SPOTLIGHT_STATE.raf) {
+    cancelAnimationFrame(SPOTLIGHT_STATE.raf);
+    SPOTLIGHT_STATE.raf = null;
+  }
+}
+
+function applySpotlightStyle(x, y) {
+  const grid = DOM.arcGrid;
+  if (!grid) return;
+  const rect = grid.getBoundingClientRect();
+  grid.style.setProperty('--spotlight-x', `${x}%`);
+  grid.style.setProperty('--spotlight-y', `${y}%`);
+  if (rect.width && rect.height) {
+    const offsetBase = Math.min(Math.max(Math.min(rect.width, rect.height) * 0.04, 24), 36);
+    const offsetX = clamp((((x / 100) * rect.width) + offsetBase) / rect.width * 100, 0, 100);
+    const offsetY = clamp((((y / 100) * rect.height) + offsetBase * 0.6) / rect.height * 100, 0, 100);
+    grid.style.setProperty('--spotlight-secondary-x', `${offsetX}%`);
+    grid.style.setProperty('--spotlight-secondary-y', `${offsetY}%`);
+  }
+  const intensity = ARCHIVE_IS_ANIMATING ? 0.45 : 0.75;
+  const secondary = ARCHIVE_IS_ANIMATING ? 0.28 : 0.41;
+  grid.style.setProperty('--spotlight-intensity', intensity.toFixed(3));
+  grid.style.setProperty('--spotlight-secondary-intensity', secondary.toFixed(3));
+}
+
+const SPOTLIGHT_PREF_HANDLERS = [SPOTLIGHT_MEDIA_PREF, SPOTLIGHT_POINTER_PREF];
+SPOTLIGHT_PREF_HANDLERS.forEach((mq) => {
+  if (!mq) return;
+  const listener = () => syncArchiveSpotlightClass();
+  if (typeof mq.addEventListener === 'function') mq.addEventListener('change', listener);
+  else if (typeof mq.addListener === 'function') mq.addListener(listener);
+});
+
+function applyArchiveAccentToCell(cell, item, mediaEl, cacheKey) {
+  if (!cell || !mediaEl) return Promise.resolve();
+  if (ARCHIVE_ACCENT_CACHE.has(cacheKey)) {
+    setCellAccent(cell, ARCHIVE_ACCENT_CACHE.get(cacheKey));
+    return Promise.resolve();
+  }
+
+  if (mediaEl.tagName === 'IMG') {
+    return new Promise((resolve) => {
+      const compute = () => {
+        try {
+          const color = sampleColorFromImage(mediaEl) || ARCHIVE_DEFAULT_COLOR;
+          ARCHIVE_ACCENT_CACHE.set(cacheKey, color);
+          setCellAccent(cell, color);
+        } catch (err) {
+          // ignored
+        }
+        resolve();
+      };
+      if (mediaEl.complete && mediaEl.naturalWidth) {
+        compute();
+      } else {
+        mediaEl.addEventListener('load', compute, { once: true });
+      }
+    });
+  }
+
+  const posterSrc = (item.poster && !/\.mp4(?:$|\?)/i.test(item.poster))
+    ? resolveAssetPath(item.poster)
+    : null;
+
+  if (posterSrc) {
+    return loadImageForAccent(posterSrc).then((color) => {
+      if (!color) return;
+      ARCHIVE_ACCENT_CACHE.set(cacheKey, color);
+      setCellAccent(cell, color);
+    }).catch(() => {});
+  }
+
+  if (mediaEl.tagName === 'VIDEO') {
+    return extractAverageColorFromVideo(mediaEl)
+      .then((color) => {
+        if (!color) return;
+        ARCHIVE_ACCENT_CACHE.set(cacheKey, color);
+        setCellAccent(cell, color);
+      })
+      .catch(() => {});
+  }
+
+  return Promise.resolve();
+}
+
+function loadImageForAccent(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.decoding = 'async';
+    img.onload = () => {
+      try {
+        resolve(sampleColorFromImage(img));
+      } catch (err) {
+        reject(err);
+      }
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+function sampleColorFromImage(img) {
+  if (!ARCHIVE_COLOR_CONTEXT) return ARCHIVE_DEFAULT_COLOR;
+  const width = Math.max(1, img.naturalWidth || img.width || 1);
+  const height = Math.max(1, img.naturalHeight || img.height || 1);
+  const targetWidth = Math.min(48, width);
+  const targetHeight = Math.max(1, Math.round((height / width) * targetWidth));
+  ARCHIVE_COLOR_CANVAS.width = targetWidth;
+  ARCHIVE_COLOR_CANVAS.height = targetHeight;
+  ARCHIVE_COLOR_CONTEXT.drawImage(img, 0, 0, targetWidth, targetHeight);
+  return sampleAverageFromCanvas(targetWidth, targetHeight);
+}
+
+function extractAverageColorFromVideo(video) {
+  if (!ARCHIVE_COLOR_CONTEXT) return Promise.resolve(ARCHIVE_DEFAULT_COLOR);
+  return new Promise((resolve, reject) => {
+    const attemptSample = () => {
+      const width = Math.max(1, video.videoWidth || 1);
+      const height = Math.max(1, video.videoHeight || 1);
+      const targetWidth = Math.min(48, width);
+      const targetHeight = Math.max(1, Math.round((height / width) * targetWidth));
+      ARCHIVE_COLOR_CANVAS.width = targetWidth;
+      ARCHIVE_COLOR_CANVAS.height = targetHeight;
+      try {
+        ARCHIVE_COLOR_CONTEXT.drawImage(video, 0, 0, targetWidth, targetHeight);
+        resolve(sampleAverageFromCanvas(targetWidth, targetHeight));
+      } catch (err) {
+        reject(err);
+      }
+    };
+
+    const finish = () => {
+      try { video.pause(); } catch (err) { /* noop */ }
+      attemptSample();
+    };
+
+    const prepareFrame = () => {
+      if (!Number.isFinite(video.duration) || video.duration <= 0) {
+        finish();
+        return;
+      }
+      const previous = video.currentTime;
+      const target = clamp(video.duration * 0.12, 0, Math.max(video.duration - 0.1, 0));
+      const handleSeek = () => {
+        video.removeEventListener('seeked', handleSeek);
+        finish();
+        try { video.currentTime = previous; } catch (err) { /* noop */ }
+      };
+      video.addEventListener('seeked', handleSeek, { once: true });
+      try {
+        video.currentTime = target;
+      } catch (err) {
+        video.removeEventListener('seeked', handleSeek);
+        finish();
+      }
+    };
+
+    if (video.readyState >= 2 && video.videoWidth) {
+      prepareFrame();
+      return;
+    }
+
+    const onLoaded = () => {
+      video.removeEventListener('loadeddata', onLoaded);
+      prepareFrame();
+    };
+    video.addEventListener('loadeddata', onLoaded, { once: true });
+    try {
+      video.preload = 'auto';
+      video.load();
+    } catch (err) {
+      setTimeout(() => {
+        video.removeEventListener('loadeddata', onLoaded);
+        finish();
+      }, 0);
+    }
+  });
+}
+
+function sampleAverageFromCanvas(width, height) {
+  if (!ARCHIVE_COLOR_CONTEXT) return ARCHIVE_DEFAULT_COLOR;
+  const data = ARCHIVE_COLOR_CONTEXT.getImageData(0, 0, width, height).data;
+  let total = 0;
+  let r = 0, g = 0, b = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    const alpha = data[i + 3];
+    if (alpha < 16) continue;
+    r += data[i];
+    g += data[i + 1];
+    b += data[i + 2];
+    total += 1;
+  }
+  if (!total) return ARCHIVE_DEFAULT_COLOR;
+  return [r / total, g / total, b / total];
+}
+
+function setCellAccent(cell, rgb) {
+  if (!cell || !rgb) return;
+  const [r, g, b] = rgb;
+  const accent = `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, 0.92)`; // Accent alpha knob ↑ for stronger edge glow
+  const soft = `rgba(${mixChannel(r, 255, 0.65)}, ${mixChannel(g, 255, 0.65)}, ${mixChannel(b, 255, 0.65)}, 0.32)`; // Mix ratio 0.65 controls frame tint softness
+  const shadow = `rgba(${mixChannel(r, 0, 0.7)}, ${mixChannel(g, 0, 0.7)}, ${mixChannel(b, 0, 0.7)}, 0.65)`; // Shadow ratio 0.7 deepens neon halo
+  cell.style.setProperty('--archive-accent', accent);
+  cell.style.setProperty('--archive-accent-soft', soft);
+  cell.style.setProperty('--archive-accent-shadow', shadow);
+}
+
+function mixChannel(value, target, ratio) {
+  return Math.round(value * (1 - ratio) + target * ratio);
+}
+
+function resetInlineVideos(excludeCell) {
+  if (!DOM.arcGrid) return;
+  DOM.arcGrid.querySelectorAll('video[data-inline-active]').forEach((video) => {
+    if (excludeCell && excludeCell.contains(video)) return;
+    try {
+      video.pause();
+      video.currentTime = 0;
+    } catch (err) {
+      /* noop */
+    }
+    video.controls = false;
+    video.removeAttribute('data-inline-active');
+    video.muted = true;
+    video.loop = true;
+  });
+}
+
+function updateArchiveCaption(cell, item) {
+  const caption = cell.querySelector('.caption');
+  if (!caption) return;
+  const title = item?.title ? escapeHTML(item.title) : '';
+  const typeLabel = item?.displayType ? escapeHTML(item.displayType) : '';
+  caption.innerHTML = title
+    ? `<span class="caption-title">${title}</span>${typeLabel ? `<span class="caption-type">${typeLabel}</span>` : ''}`
+    : '';
+}
+
+function setupVideoHoverScrub(video, wrapper) {
+  if (!video || !wrapper) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let raf = null;
+  let pendingTime = null;
+  let scrubbing = false;
+
+  const ensureReady = () => {
+    if (video.readyState >= 2 && Number.isFinite(video.duration) && video.duration > 0) {
+      return Promise.resolve();
+    }
+    return new Promise((resolve) => {
+      const handle = () => {
+        video.removeEventListener('loadeddata', handle);
+        resolve();
+      };
+      video.addEventListener('loadeddata', handle, { once: true });
+      try {
+        video.preload = 'auto';
+        video.load();
+      } catch (err) {
+        resolve();
+      }
+    });
+  };
+
+  const updateTime = () => {
+    raf = null;
+    if (!scrubbing || !Number.isFinite(pendingTime)) return;
+    try {
+      video.currentTime = pendingTime;
+    } catch (err) {
+      // ignore
+    }
+  };
+
+  const handleMove = (event) => {
+    if (!scrubbing || ARCHIVE_IS_ANIMATING) return;
+    const rect = wrapper.getBoundingClientRect();
+    const ratio = clamp((event.clientX - rect.left) / (rect.width || 1), 0, 1);
+    wrapper.style.setProperty('--scrub-progress', ratio.toFixed(4));
+    if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+    pendingTime = ratio * video.duration;
+    if (!raf) raf = requestAnimationFrame(updateTime);
+  };
+
+  const handleEnter = () => {
+    if (ARCHIVE_IS_ANIMATING) return;
+    ensureReady().then(() => {
+      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+      try { video.pause(); } catch (err) { /* noop */ }
+      scrubbing = true;
+    });
+  };
+
+  const handleLeave = () => {
+    scrubbing = false;
+    wrapper.style.setProperty('--scrub-progress', '0');
+    if (raf) {
+      cancelAnimationFrame(raf);
+      raf = null;
+    }
+    pendingTime = null;
+    try { video.currentTime = 0; } catch (err) { /* noop */ }
+  };
+
+  wrapper.addEventListener('mousemove', handleMove);
+  wrapper.addEventListener('mouseenter', handleEnter);
+  wrapper.addEventListener('mouseleave', handleLeave);
+  wrapper.addEventListener('focusin', handleEnter);
+  wrapper.addEventListener('focusout', handleLeave);
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function runArchiveTransition(mutator) {
+  if (typeof mutator !== 'function') return;
+  const grid = DOM.arcGrid;
+  const begin = () => {
+    ARCHIVE_IS_ANIMATING = true;
+    if (grid) {
+      grid.classList.add('is-animating');
+    }
+    if (ARCHIVE_TRANSITION_TIMER) {
+      clearTimeout(ARCHIVE_TRANSITION_TIMER);
+    }
+    if (SPOTLIGHT_STATE.enabled) {
+      scheduleSpotlightFrame(true);
+    }
+  };
+  const end = () => {
+    if (ARCHIVE_TRANSITION_TIMER) clearTimeout(ARCHIVE_TRANSITION_TIMER);
+    ARCHIVE_TRANSITION_TIMER = setTimeout(() => {
+      ARCHIVE_IS_ANIMATING = false;
+      if (grid) grid.classList.remove('is-animating');
+      ARCHIVE_TRANSITION_TIMER = null;
+      if (SPOTLIGHT_STATE.enabled) {
+        scheduleSpotlightFrame(true);
+      }
+    }, 420);
+  };
+  begin();
+  if (document.startViewTransition) {
+    try {
+      const vt = document.startViewTransition(() => {
+        mutator();
+      });
+      vt?.finished?.then(end).catch(end);
+      return;
+    } catch (err) {
+      // graceful fallback
+    }
+  }
+  mutator();
+  requestAnimationFrame(() => end());
+}
+
+function applyArchiveFocus(cell) {
+  if (!DOM.arcGrid || !cell) return;
+  resetInlineVideos(cell);
+  const apply = () => {
+    DOM.arcGrid.classList.add('is-focused', 'has-active');
+    const cells = DOM.arcGrid.querySelectorAll('.cell');
+    cells.forEach((el) => {
+      const isFocus = el === cell;
+      el.classList.toggle('is-focus', isFocus);
+      el.classList.toggle('is-dim', !isFocus);
+      el.setAttribute('aria-expanded', isFocus ? 'true' : 'false');
+    });
+  };
+  runArchiveTransition(apply);
+}
+
+function clearArchiveFocus() {
+  if (!DOM.arcGrid) return;
+  const apply = () => {
+    DOM.arcGrid.classList.remove('is-focused', 'has-active');
+    DOM.arcGrid.querySelectorAll('.cell').forEach((el) => {
+      el.classList.remove('is-active');
+      el.classList.remove('is-focus', 'is-dim');
+      el.setAttribute('aria-expanded', 'false');
+    });
+  };
+  resetInlineVideos();
+  runArchiveTransition(apply);
+  ARC_ACTIVE_CELL = null;
+  ARCHIVE_ACTIVE_INDEX = -1;
+  ARCHIVE_ACTIVE_KEY = null;
+}
+
+function updateArchiveHash(key) {
+  const target = key
+    ? `#archive:${encodeURIComponent(key.toLowerCase())}`
+    : '#archive';
+  if (window.location.hash === target) return;
+  history.replaceState(null, '', target);
+}
+
+function openArchiveByKey(key, options = {}) {
+  if (!key) return false;
+  const normalized = key.toLowerCase();
+  const index = ARCHIVE_KEY_TO_INDEX.get(normalized);
+  if (index == null) {
+    ARCHIVE_PENDING_KEY = normalized;
+    ARCHIVE_PENDING_SCROLL = Boolean(options.scroll);
+    return false;
+  }
+  const entry = ARCHIVE_FILES[index];
+  if (!entry) return false;
+  const cell = DOM.arcGrid?.querySelector(`.cell[data-key="${normalized}"]`);
+  if (!cell) {
+    ARCHIVE_PENDING_KEY = normalized;
+    ARCHIVE_PENDING_SCROLL = Boolean(options.scroll);
+    return false;
+  }
+  openArchiveDetail(entry, cell);
+  if (options.scroll && cell.scrollIntoView) {
+    cell.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+  return true;
+}
+
+function navigateArchive(step) {
+  if (!Number.isFinite(step) || !ARCHIVE_FILES.length) return;
+  let next = ARCHIVE_ACTIVE_INDEX;
+  if (next === -1) {
+    next = 0;
+  }
+  next = (next + ARCHIVE_FILES.length + step) % ARCHIVE_FILES.length;
+  const entry = ARCHIVE_FILES[next];
+  if (!entry) return;
+  const cell = DOM.arcGrid?.querySelector(`.cell[data-index="${next}"]`);
+  if (!cell) {
+    ARCHIVE_PENDING_KEY = entry.key;
+    ARCHIVE_PENDING_SCROLL = true;
+    openArchiveByKey(entry.key, { scroll: true });
+    return;
+  }
+  resetInlineVideos(cell);
+  openArchiveDetail(entry, cell);
+  cell.scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+
+function parseArchiveHash() {
+  const hash = (window.location.hash || '').replace(/^#/, '');
+  if (!hash) return { open: false, key: null };
+  if (!hash.toLowerCase().startsWith('archive')) return { open: false, key: null };
+  const parts = hash.split(':');
+  const rawKey = parts[1] ? decodeURIComponent(parts[1]) : null;
+  return { open: true, key: rawKey ? rawKey.toLowerCase() : null };
+}
+
+function handleArchiveHashChange() {
+  const { open, key } = parseArchiveHash();
+  if (!open) {
+    if (isModalActive(DOM.arcModal)) {
+      closeModal(DOM.arcModal);
+    }
+    return;
+  }
+  if (!isModalActive(DOM.arcModal)) {
+    ARCHIVE_PENDING_KEY = key;
+    ARCHIVE_PENDING_SCROLL = Boolean(key);
+    openArchive();
+    return;
+  }
+  if (key) {
+    if (!openArchiveByKey(key, { scroll: true })) {
+      ARCHIVE_PENDING_KEY = key;
+      ARCHIVE_PENDING_SCROLL = true;
+    }
+  } else if (DOM.arcDetail && DOM.arcDetail.classList.contains('has-selection')) {
+    closeArchiveDetail();
+  }
+}
 
 function openArchive() {
   if (!DOM.arcGrid) return;
-  closeArchiveDetail();
-  DOM.arcGrid.innerHTML = '';
-  if (!ARCHIVE_FILES.length) {
-    const empty = document.createElement('div');
-    empty.style.color = '#9aa0a6'; empty.textContent = 'No archive yet.';
-    DOM.arcGrid.appendChild(empty);
-  } else {
-    ARCHIVE_FILES.forEach((entry, index) => {
-      const item = typeof entry === 'string' ? { src: entry } : entry;
-      const src = resolveAssetPath(item.src);
-      if (!src) return;
-      const isVideo = /\.mp4(?:$|\?)/i.test(item.src || src);
-      const fitMode = (item.fit || item.objectFit || '').toLowerCase();
-      const mediaClass = fitMode === 'contain'
-        ? 'archive-media archive-media--contain'
-        : 'archive-media';
-      const cell = document.createElement('div');
-      cell.className = 'cell';
-      cell.dataset.index = index;
-      if (item.src) {
-        cell.dataset.src = item.src;
-      }
-      const media = isVideo
-        ? `<div class="${mediaClass}"><video src="${src}" muted loop playsinline loading="lazy"></video></div>`
-        : `<div class="${mediaClass}"><img src="${src}" alt="${item.title || ''}" loading="lazy"></div>`;
-      const caption = item.title ? `<div class="caption">${item.title}</div>` : '';
-      cell.innerHTML = `${media}${caption}`;
-      if (item.title) {
-        cell.setAttribute('aria-label', item.title);
-      }
-      cell.onclick = () => openArchiveDetail(item, cell);
-      DOM.arcGrid.appendChild(cell);
-    });
-  }
-  DOM.arcGrid.classList.remove('hidden');
+  closeArchiveDetail({ skipHash: true });
+  setSpotlightTarget(50, 48, true);
+  setArchiveGridState('loading', 'Loading archive…');
   openModal(DOM.arcModal);
+  if (!window.location.hash.startsWith('#archive')) {
+    updateArchiveHash(null);
+  }
+  ensureArchiveManifest({ force: true })
+    .then((entries) => {
+      if (!entries.length) {
+        setArchiveGridState('empty', 'Archive coming soon');
+        return;
+      }
+      renderArchiveGrid(entries);
+    })
+    .catch(() => {
+      setArchiveGridState('error', 'Unable to load archive right now.');
+    });
 }
 DOM.arcModal?.addEventListener('click', (e) => {
   if (e.target.hasAttribute('data-close')) {
@@ -1874,6 +2828,22 @@ DOM.arcModal?.addEventListener('click', (e) => {
     closeModal(DOM.arcModal);
   }
 });
+
+function removeArchiveCell(cell, emptyMessage) {
+  if (!cell) return;
+  const grid = cell.parentElement;
+  const wasFocused = cell === ARC_ACTIVE_CELL;
+  cell.replaceWith();
+  if (!grid) return;
+  if (wasFocused) {
+    closeArchiveDetail();
+  }
+  if (!grid.querySelector('.cell')) {
+    setArchiveGridState('empty', emptyMessage || 'Archive coming soon');
+  } else {
+    syncArchiveSpotlightClass();
+  }
+}
 
 // ====== Audio ======
 let A = null, queue = [], now = -1, playing = false;
@@ -2083,87 +3053,86 @@ document.addEventListener('keydown', (e) => {
     if (isModalActive(DOM.immModal)) { closeModal(DOM.immModal); closed = true; }
     if (isModalActive(DOM.arcModal)) { closeModal(DOM.arcModal); closed = true; }
     if (isModalActive(DOM.charModal)) { closeModal(DOM.charModal); closed = true; }
+    if (closed) return;
+  }
+  if (isModalActive(DOM.arcModal) && ARCHIVE_ACTIVE_KEY) {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      navigateArchive(1);
+      return;
+    }
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      navigateArchive(-1);
+      return;
+    }
   }
 });
 function openArchiveDetail(entry, sourceCell) {
-  if (!DOM.arcDetail || !DOM.arcDetailMedia) return;
-  const item = typeof entry === 'string' ? { src: entry } : entry;
+  const item = entry && typeof entry === 'object' ? entry : { src: entry };
   const src = resolveAssetPath(item?.src);
   if (!src) return;
-  if (ARC_ACTIVE_CELL && ARC_ACTIVE_CELL !== sourceCell) {
-    ARC_ACTIVE_CELL.classList.remove('is-active');
+  let cell = sourceCell;
+  if (!cell && item?.key) {
+    cell = DOM.arcGrid?.querySelector(`.cell[data-key="${item.key}"]`);
   }
-  if (sourceCell) {
-    sourceCell.classList.add('is-active');
-    ARC_ACTIVE_CELL = sourceCell;
-  } else if (ARC_ACTIVE_CELL) {
-    ARC_ACTIVE_CELL.classList.add('is-active');
-  }
-  const isVideo = /\.mp4(?:$|\?)/i.test(item?.src || src);
-  const fitMode = (item?.fit || item?.objectFit || '').toLowerCase();
-  const mediaClass = fitMode === 'contain'
-    ? 'archive-media archive-media--contain'
-    : 'archive-media';
-  const detailMedia = DOM.arcDetailMedia;
-  detailMedia.hidden = false;
-  detailMedia.classList.remove('is-ready');
-  detailMedia.removeAttribute('data-orientation');
-  detailMedia.dataset.mediaType = isVideo ? 'video' : 'image';
-  const mediaMarkup = isVideo
-    ? `<div class="${mediaClass}"><video src="${src}" muted loop playsinline controls autoplay></video></div>`
-    : `<div class="${mediaClass}"><img src="${src}" alt="${item.title || ''}" decoding="async" loading="lazy" /></div>`;
-  detailMedia.innerHTML = mediaMarkup;
-  const backdropSrc = resolveAssetPath(item?.backdrop || item?.poster || item?.preview || item?.src);
-  applyArchiveBackdrop(detailMedia, { src: backdropSrc, isVideo });
-  const mediaEl = detailMedia.querySelector('img, video');
-  if (mediaEl && mediaEl.tagName === 'VIDEO') {
-    mediaEl.muted = true;
-    mediaEl.loop = item?.loop !== false;
-    mediaEl.playsInline = true;
-    mediaEl.setAttribute('playsinline', '');
-    mediaEl.setAttribute('muted', '');
-    mediaEl.setAttribute('loop', '');
-    mediaEl.play().catch(() => {});
-  }
-  const markReady = () => {
-    updateArchiveOrientation(detailMedia, mediaEl);
-    detailMedia.classList.add('is-ready');
-  };
-  if (mediaEl) {
-    if (mediaEl.tagName === 'IMG') {
-      if (mediaEl.complete && (mediaEl.naturalWidth || mediaEl.width)) {
-        markReady();
-      } else {
-        mediaEl.addEventListener('load', markReady, { once: true });
-        mediaEl.addEventListener('error', () => detailMedia.classList.add('is-ready'), { once: true });
-      }
-    } else {
-      if (mediaEl.readyState >= 1 && (mediaEl.videoWidth || mediaEl.clientWidth)) {
-        markReady();
-      } else {
-        mediaEl.addEventListener('loadedmetadata', markReady, { once: true });
-        mediaEl.addEventListener('error', () => detailMedia.classList.add('is-ready'), { once: true });
-      }
+  if (!cell) {
+    if (item?.key) {
+      ARCHIVE_PENDING_KEY = item.key.toLowerCase();
+      ARCHIVE_PENDING_SCROLL = true;
     }
-  } else {
-    detailMedia.classList.add('is-ready');
+    return;
   }
-  if (DOM.arcDetailCaption) {
-    DOM.arcDetailCaption.textContent = item.title || '';
-    DOM.arcDetailCaption.hidden = !item.title;
+
+  if (ARCHIVE_PENDING_KEY) {
+    ARCHIVE_PENDING_KEY = null;
+    ARCHIVE_PENDING_SCROLL = false;
   }
-  if (DOM.arcDetailGuide) {
-    DOM.arcDetailGuide.hidden = true;
+
+  DOM.arcGrid?.querySelectorAll('.cell.is-active').forEach((el) => {
+    if (el !== cell) el.classList.remove('is-active');
+  });
+  cell.classList.add('is-active');
+  ARC_ACTIVE_CELL = cell;
+
+  const index = Number.parseInt(cell.dataset.index || (item?.index ?? -1), 10);
+  ARCHIVE_ACTIVE_INDEX = Number.isFinite(index) ? index : ARCHIVE_ACTIVE_INDEX;
+  ARCHIVE_ACTIVE_KEY = (item?.key || cell.dataset.key || generateArchiveKey(item, index)).toLowerCase();
+
+  applyArchiveFocus(cell);
+
+  try {
+    cell.focus({ preventScroll: ARCHIVE_PENDING_SCROLL });
+  } catch (err) {
+    // ignore
   }
-  DOM.arcDetail.classList.add('has-selection');
+
+  updateArchiveHash(ARCHIVE_ACTIVE_KEY);
+  ARCHIVE_PENDING_SCROLL = false;
+
+  const mediaWrapper = cell.querySelector('.archive-media');
+  const mediaEl = mediaWrapper?.querySelector('img, video');
+  if (mediaEl && mediaEl.tagName === 'VIDEO') {
+    mediaEl.dataset.inlineActive = '1';
+    mediaEl.controls = true;
+    mediaEl.loop = item?.loop !== false;
+    mediaEl.muted = true;
+    try { mediaEl.play(); } catch (err) { /* noop */ }
+  }
+
+  updateArchiveCaption(cell, item);
+  DOM.arcDetail?.classList.add('has-selection');
+  syncArchiveSpotlightClass();
 }
 
-function closeArchiveDetail() {
-  if (!DOM.arcDetail) return;
+function closeArchiveDetail(opts = {}) {
+  const detailEl = DOM.arcDetail;
+  const hadSelection = detailEl?.classList.contains('has-selection');
   if (ARC_ACTIVE_CELL) {
     ARC_ACTIVE_CELL.classList.remove('is-active');
     ARC_ACTIVE_CELL = null;
   }
+  clearArchiveFocus();
   const video = DOM.arcDetailMedia?.querySelector('video');
   if (video) video.pause();
   if (DOM.arcDetailMedia) {
@@ -2183,10 +3152,37 @@ function closeArchiveDetail() {
   if (DOM.arcDetailGuide) {
     DOM.arcDetailGuide.hidden = false;
   }
-  DOM.arcDetail.classList.remove('has-selection');
+  detailEl?.classList.remove('has-selection');
   DOM.arcGrid?.classList.remove('hidden');
+  ARCHIVE_ACTIVE_INDEX = -1;
+  ARCHIVE_ACTIVE_KEY = null;
+  if (hadSelection && !opts.skipHash) {
+    updateArchiveHash(null);
+  }
+  syncArchiveSpotlightClass();
+  setSpotlightTarget(50, 48, true);
 }
 
 ensureImmortalsData().catch((err) => {
   console.error('Initial Immortals preload failed:', err);
 });
+
+ensureArchiveManifest().catch((err) => {
+  console.warn('Archive manifest preload failed:', err);
+});
+
+window.MottoArchive = window.MottoArchive || {};
+window.MottoArchive.setSpotlight = (enabled = true) => {
+  ARCHIVE_SPOTLIGHT_ENABLED = Boolean(enabled);
+  syncArchiveSpotlightClass();
+  return ARCHIVE_SPOTLIGHT_ENABLED;
+};
+window.MottoArchive.toggleSpotlight = () => {
+  ARCHIVE_SPOTLIGHT_ENABLED = !ARCHIVE_SPOTLIGHT_ENABLED;
+  syncArchiveSpotlightClass();
+  return ARCHIVE_SPOTLIGHT_ENABLED;
+};
+window.MottoArchive.disableOverlay = true;
+
+window.addEventListener('hashchange', handleArchiveHashChange);
+handleArchiveHashChange();
