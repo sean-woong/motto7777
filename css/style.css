@@ -1140,9 +1140,29 @@ body {
   color: var(--color-muted);
 }
 .modal-close {
-  position: absolute; right: 8px; top: 8px; background: transparent; color: var(--color-fg); border: 1px solid rgba(255,255,255,.2); cursor: pointer; transition: color var(--dur-short) var(--ease-standard), border-color var(--dur-short) var(--ease-standard);
+  position: absolute;
+  right: clamp(12px, 2.2vw, 20px);
+  top: clamp(12px, 2.2vw, 20px);
+  background: transparent;
+  color: rgba(214, 236, 255, .78);
+  border: none;
+  padding: 0;
+  width: auto;
+  height: auto;
+  font-size: clamp(20px, 3vw, 24px);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color var(--dur-short) var(--ease-standard), transform var(--dur-short) var(--ease-standard);
 }
-.modal-close:hover { color: var(--color-primary); border-color: rgba(255,0,170,.6); }
+.modal-close:hover,
+.modal-close:focus-visible {
+  color: var(--color-primary);
+  transform: scale(1.08);
+  outline: none;
+}
 
 #immModal .modal-card {
   padding: clamp(72px, 12vw, 120px) clamp(20px, 5vw, 36px) clamp(32px, 8vw, 60px) !important;
@@ -1380,6 +1400,150 @@ body {
 .imm-desc { color: #cfcfcf; line-height: 1.5; }
 .imm-nav { display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 8px; }
 .imm-index { color: var(--color-secondary); font-size: 12px; }
+
+/* IMMORTALS POLISH PATCH */
+#immDetailModal { position: fixed; inset: 0; z-index: 120; display: flex; align-items: center; justify-content: center; padding: clamp(24px, 6vh, 54px); overflow: auto; overscroll-behavior: contain; }
+#immDetailModal .modal-bg { position: absolute; inset: 0; z-index: 0; }
+#immDetailModal .modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 980px) !important;
+  padding: clamp(28px, 6vh, 54px) clamp(20px, 4vw, 42px) clamp(36px, 8vh, 72px) !important;
+  background: rgba(8, 8, 12, .86);
+  border: none;
+  border-radius: 24px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, .55);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: clamp(20px, 5vh, 48px);
+  overflow: visible !important;
+  transform: none !important;
+  transition: opacity var(--dur-medium) var(--ease-standard);
+  left: auto;
+  top: auto;
+  margin: 0 auto;
+}
+#immDetailModal .modal-card > * { width: 100%; max-width: clamp(280px, 62vw, 640px); }
+#immDetailModal .imm-legend { display: none; }
+#immDetailModal h3 {
+  text-align: center;
+  margin: clamp(12px, 2.2vh, 20px) auto 0;
+  font-size: clamp(20px, 2.2vw, 28px);
+  color: #f5fbff;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: none;
+}
+#immDetailModal .imm-hero {
+  position: relative;
+  width: clamp(280px, 62vw, 640px);
+  aspect-ratio: 1 / 1;
+  margin: clamp(24px, 7vh, 80px) auto 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+#immDetailModal #immVideo,
+#immDetailModal #immVideoFallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  border-radius: 20px;
+  background: #000;
+  object-fit: contain !important;
+  object-position: center center;
+  outline: none;
+  box-shadow: none;
+}
+
+#immDetailModal .imm-meta-bar,
+#immDetailModal .imm-desc,
+#immDetailModal .imm-nav { margin: 0 auto; text-align: center; }
+#immDetailModal .imm-meta-bar {
+  padding: clamp(4px, 1.2vh, 12px) 0 0;
+  border: none;
+  background: none;
+  backdrop-filter: none;
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 2.4vw, 24px);
+  flex-wrap: wrap;
+}
+#immDetailModal .imm-desc {
+  font-size: clamp(15px, 1.2vw, 18px);
+  line-height: 1.7;
+  letter-spacing: .02em;
+  color: #e4f6f0;
+  text-shadow: 0 1px 1px rgba(0,0,0,.45);
+}
+#immDetailModal .imm-nav { margin-top: clamp(18px, 3vh, 36px); display: flex; gap: 10px; align-items: center; justify-content: center; }
+#immDetailModal .imm-nav button {
+  appearance: none;
+  border: 1px solid rgba(116, 248, 255, .32);
+  background: rgba(8, 10, 16, .78);
+  color: var(--color-secondary);
+  width: clamp(36px, 5vw, 46px);
+  height: clamp(36px, 5vw, 46px);
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: clamp(14px, 2vw, 18px);
+  letter-spacing: .08em;
+  transition: transform var(--dur-short) var(--ease-standard), border-color var(--dur-short) var(--ease-standard), color var(--dur-short) var(--ease-standard), box-shadow var(--dur-short) var(--ease-standard);
+}
+#immDetailModal .imm-nav button:hover,
+#immDetailModal .imm-nav button:focus-visible {
+  border-color: rgba(255, 0, 170, .55);
+  color: var(--color-primary);
+  box-shadow: 0 0 18px rgba(255, 0, 170, .28);
+  transform: translateY(-2px);
+  outline: none;
+}
+#immDetailModal .imm-index {
+  font-size: clamp(12px, 1vw, 14px);
+  letter-spacing: .16em;
+  color: rgba(190, 248, 255, .85);
+  text-transform: uppercase;
+}
+#immDetailModal .imm-legend {
+  font-size: clamp(11px, .9vw, 13px);
+  font-weight: 600;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: rgba(116, 248, 255, .86);
+  text-shadow: 0 0 12px rgba(0, 191, 255, .28);
+}
+#immDetailModal #immTitle {
+  font-size: clamp(22px, 3.2vw, 34px);
+  line-height: 1.08;
+  letter-spacing: .05em;
+  font-weight: 700;
+  color: #f4fbff;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, .55);
+}
+#immDetailModal .imm-meta-bar {
+  flex-wrap: nowrap;
+  gap: clamp(12px, 3vw, 26px);
+  font-size: clamp(12px, 1.1vw, 15px);
+  letter-spacing: .14em;
+  color: rgba(190, 248, 255, .82);
+}
+#immDetailModal .imm-tags {
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+#immDetailModal .imm-date {
+  color: rgba(255, 255, 255, .68);
+}
+#immDetailModal .imm-desc {
+  max-width: clamp(320px, 60vw, 600px);
+  margin-top: clamp(20px, 5vh, 48px);
+  color: rgba(220, 230, 240, .92);
+  font-weight: 400;
+  letter-spacing: .04em;
+}
 
 /* Archive */
 #archiveModal .modal-card {
@@ -2127,4 +2291,9 @@ body {
   filter: saturate(var(--dim-saturate)) blur(var(--dim-blur));
   opacity: .6;
   pointer-events: none;
+}
+#immDetailModal:not([hidden]) .modal-card {
+  transform: none !important;
+  left: auto;
+  top: auto;
 }

@@ -1799,14 +1799,8 @@ function openImmDetailByIndex(i) {
     DOM.immMeta.hidden = !metaVisible;
   }
   if (DOM.immLegend) {
-    const legendContent = buildLegendContent(it);
-    if (legendContent) {
-      DOM.immLegend.innerHTML = legendContent;
-      DOM.immLegend.style.display = 'block';
-    } else {
-      DOM.immLegend.innerHTML = '';
-      DOM.immLegend.style.display = 'none';
-    }
+    DOM.immLegend.innerHTML = '';
+    DOM.immLegend.style.display = 'none';
   }
   const fallbackImg = DOM.immVideoFallback || null;
   if (fallbackImg) {

@@ -181,7 +181,7 @@
   },
   {
     "id": "dealer-157",
-    "title": "Dealer #157 — Loop Protocol",
+    "title": "Dealer #157 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_157.gif",
@@ -190,16 +190,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #157.",
-      "kr": "딜러가 프로토콜 #157을 재조정한다."
+      "en": "Halftones smear.",
+      "kr": "하프톤이 번진다."
     }
   },
   {
     "id": "dealer-19",
-    "title": "Dealer #19 — Loop Protocol",
+    "title": "Dealer #19 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_19.gif",
@@ -208,16 +208,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #19.",
-      "kr": "딜러가 프로토콜 #19을 재조정한다."
+      "en": "Fumes bleed.",
+      "kr": "연기가 스며든다."
     }
   },
   {
     "id": "dealer-205",
-    "title": "Dealer #205 — Loop Protocol",
+    "title": "Dealer #205 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_205.gif",
@@ -226,16 +226,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #205.",
-      "kr": "딜러가 프로토콜 #205을 재조정한다."
+      "en": "Glitch shadows trail.",
+      "kr": "글리치 그림자가 흘러간다."
     }
   },
   {
     "id": "dealer-213",
-    "title": "Dealer #213 — Loop Protocol",
+    "title": "Dealer #213 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_213.gif",
@@ -244,16 +244,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #213.",
-      "kr": "딜러가 프로토콜 #213을 재조정한다."
+      "en": "Gaze rewinds.",
+      "kr": "시선이 감긴다."
     }
   },
   {
     "id": "dealer-22",
-    "title": "Dealer #22 — Loop Protocol",
+    "title": "Dealer #22 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_22.gif",
@@ -262,16 +262,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #22.",
-      "kr": "딜러가 프로토콜 #22을 재조정한다."
+      "en": "Circuit melts.",
+      "kr": "회로가 녹아내린다."
     }
   },
   {
     "id": "dealer-223",
-    "title": "Dealer #223 — Loop Protocol",
+    "title": "Dealer #223 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_223.gif",
@@ -280,16 +280,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #223.",
-      "kr": "딜러가 프로토콜 #223을 재조정한다."
+      "en": "Eye parses.",
+      "kr": "눈이 분석한다."
     }
   },
   {
     "id": "dealer-295",
-    "title": "Dealer #295 — Loop Protocol",
+    "title": "Dealer #295 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_295.gif",
@@ -298,16 +298,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #295.",
-      "kr": "딜러가 프로토콜 #295을 재조정한다."
+      "en": "Transmission fails.",
+      "kr": "전송이 실패한다."
     }
   },
   {
     "id": "dealer-354",
-    "title": "Dealer #354 — Loop Protocol",
+    "title": "Dealer #354 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_354.gif",
@@ -316,16 +316,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #354.",
-      "kr": "딜러가 프로토콜 #354을 재조정한다."
+      "en": "Static coils.",
+      "kr": "정적이 감긴다."
     }
   },
   {
     "id": "dealer-471",
-    "title": "Dealer #471 — Loop Protocol",
+    "title": "Dealer #471 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_471.gif",
@@ -334,16 +334,16 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #471.",
-      "kr": "딜러가 프로토콜 #471을 재조정한다."
+      "en": "Clean code.",
+      "kr": "코드는 깨끗하다."
     }
   },
   {
     "id": "dealer-591",
-    "title": "Dealer #591 — Loop Protocol",
+    "title": "Dealer #591 — Loop Glitch",
     "category": "DEALER",
     "archetype": "dealer",
     "thumb": "assets/immortals/Thumbnails_GIF/DEALER/Dealer_591.gif",
@@ -352,11 +352,11 @@
     "tags": [
       "DEALER",
       "GLITCH",
-      "PROTOCOL"
+      "LOOP"
     ],
     "description": {
-      "en": "Dealer reroutes protocol #591.",
-      "kr": "딜러가 프로토콜 #591을 재조정한다."
+      "en": "Corrupted mantra.",
+      "kr": "손상된 만트라."
     }
   },
   {
@@ -1270,11 +1270,7 @@
     "tags": [
       "DEALER",
       "LEGEND"
-    ],
-    "description": {
-      "en": "Fumes bleed.",
-      "kr": "연기가 스며든다."
-    }
+    ]
   },
   {
     "id": "legend-skull",
@@ -1287,11 +1283,7 @@
     "tags": [
       "SKULL",
       "LEGEND"
-    ],
-    "description": {
-      "en": "Sparks ignite.",
-      "kr": "스파크가 튄다."
-    }
+    ]
   },
   {
     "id": "legend-rockstar",
@@ -1304,11 +1296,7 @@
     "tags": [
       "ROCKSTAR",
       "LEGEND"
-    ],
-    "description": {
-      "en": "Smile stalls.",
-      "kr": "미소가 멈춘다."
-    }
+    ]
   },
   {
     "id": "legend-drag",
@@ -1321,11 +1309,7 @@
     "tags": [
       "DRAG",
       "LEGEND"
-    ],
-    "description": {
-      "en": "Everything screams.",
-      "kr": "모든 것이 비명한다."
-    }
+    ]
   },
   {
     "id": "legend-soldier",
@@ -1338,11 +1322,7 @@
     "tags": [
       "SOLDIER",
       "LEGEND"
-    ],
-    "description": {
-      "en": "Target locked.",
-      "kr": "조준이 고정된다."
-    }
+    ]
   },
   {
     "id": "legend-boxer",
@@ -1355,11 +1335,7 @@
     "tags": [
       "BOXER",
       "LEGEND"
-    ],
-    "description": {
-      "en": "Bell rings.",
-      "kr": "종이 울린다."
-    }
+    ]
   },
   {
     "id": "legend-motorcycle",
@@ -1372,10 +1348,6 @@
     "tags": [
       "MOTORCYCLE",
       "LEGEND"
-    ],
-    "description": {
-      "en": "Veins pulse.",
-      "kr": "맥박이 뛴다."
-    }
+    ]
   }
 ]
