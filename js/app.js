@@ -1764,13 +1764,11 @@ function renderImmDescription(entry) {
   }
 
   DOM.immDesc.hidden = false;
-  lines.forEach((text, idx) => {
-    const span = document.createElement('span');
-    span.textContent = text;
-    DOM.immDesc.appendChild(span);
-    if (idx < lines.length - 1) {
-      DOM.immDesc.appendChild(document.createElement('br'));
-    }
+  lines.forEach((text) => {
+    const line = document.createElement('span');
+    line.className = 'imm-desc-line';
+    line.textContent = text;
+    DOM.immDesc.appendChild(line);
   });
 }
 
