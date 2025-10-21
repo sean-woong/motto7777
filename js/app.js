@@ -810,6 +810,126 @@ const DOM = {
   arcDetailCaption: document.getElementById('archiveDetailCaption')
 };
 
+const CURSOR_SCOPE = {
+  raf: null,
+  x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0,
+  y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0,
+  lastX: null,
+  lastY: null,
+  lastTime: null,
+  clickable: false,
+  movingTimer: null
+};
+
+function cursorScopeApply() {
+  CURSOR_SCOPE.raf = null;
+  if (typeof document === 'undefined' || !document.body) return;
+  const style = document.body.style;
+  style.setProperty('--cursor-x', `${CURSOR_SCOPE.x}px`);
+  style.setProperty('--cursor-y', `${CURSOR_SCOPE.y}px`);
+}
+
+function scheduleCursorScopeRender() {
+  if (CURSOR_SCOPE.raf) return;
+  CURSOR_SCOPE.raf = requestAnimationFrame(cursorScopeApply);
+}
+
+function handleCursorMove(event) {
+  CURSOR_SCOPE.x = event.clientX;
+  CURSOR_SCOPE.y = event.clientY;
+  const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+  if (CURSOR_SCOPE.lastTime !== null && CURSOR_SCOPE.lastX !== null && CURSOR_SCOPE.lastY !== null) {
+    const dt = Math.max(now - CURSOR_SCOPE.lastTime, 1);
+    const dist = Math.hypot(event.clientX - CURSOR_SCOPE.lastX, event.clientY - CURSOR_SCOPE.lastY);
+    const speed = dist; // px per frame
+    const fast = speed > 50;
+    if (fast) {
+      const normalized = Math.min((speed - 50) / 150, 1);
+      setCursorSpeed(normalized);
+      toggleCursorMoving(true);
+    } else {
+      setCursorSpeed(0);
+    }
+  }
+  CURSOR_SCOPE.lastX = event.clientX;
+  CURSOR_SCOPE.lastY = event.clientY;
+  CURSOR_SCOPE.lastTime = now;
+
+  const clickableTarget = event.target?.closest?.('a, button, .clickable, [role="button"], input, select, textarea');
+  updateClickableState(Boolean(clickableTarget));
+  scheduleCursorScopeRender();
+}
+
+function handleCursorLeave(event) {
+  if (event && event.relatedTarget) return;
+  updateClickableState(false);
+  toggleCursorMoving(false);
+}
+
+function canUseCursorScope() {
+  if (typeof window === 'undefined') return false;
+  if (typeof document === 'undefined' || !document.body) return false;
+  if (!window.matchMedia) return true;
+  const mq = window.matchMedia('(pointer: fine)');
+  if (typeof mq.matches === 'boolean') return mq.matches;
+  return true;
+}
+
+function setCursorSpeed(value) {
+  if (typeof document === 'undefined' || !document.body) return;
+  document.body.style.setProperty('--cursor-speed', `${value}`);
+}
+
+function updateClickableState(isClickable) {
+  if (CURSOR_SCOPE.clickable === isClickable) return;
+  CURSOR_SCOPE.clickable = isClickable;
+  if (typeof document !== 'undefined' && document.body) {
+    document.body.classList.toggle('cursor-target', isClickable);
+  }
+}
+
+function toggleCursorMoving(isMoving) {
+  if (typeof document === 'undefined' || !document.body) return;
+  if (isMoving) {
+    document.body.classList.add('cursor-moving');
+    if (CURSOR_SCOPE.movingTimer) clearTimeout(CURSOR_SCOPE.movingTimer);
+    CURSOR_SCOPE.movingTimer = setTimeout(() => {
+      document.body.classList.remove('cursor-moving');
+      CURSOR_SCOPE.movingTimer = null;
+      setCursorSpeed(0);
+    }, 200);
+  } else {
+    document.body.classList.remove('cursor-moving');
+    if (CURSOR_SCOPE.movingTimer) {
+      clearTimeout(CURSOR_SCOPE.movingTimer);
+      CURSOR_SCOPE.movingTimer = null;
+    }
+    setCursorSpeed(0);
+  }
+}
+
+function initCursorScope() {
+  if (!canUseCursorScope()) return;
+  if (!document.body) return;
+  document.body.style.setProperty('--cursor-x', `${CURSOR_SCOPE.x}px`);
+  document.body.style.setProperty('--cursor-y', `${CURSOR_SCOPE.y}px`);
+  setCursorSpeed(0);
+  document.addEventListener('mousemove', handleCursorMove, { passive: true });
+  document.addEventListener('mouseleave', handleCursorLeave);
+  window.addEventListener('blur', () => {
+    updateClickableState(false);
+    toggleCursorMoving(false);
+  });
+}
+
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCursorScope, { once: true });
+  } else {
+    initCursorScope();
+  }
+}
+
 const MODALS = [DOM.charModal, DOM.immModal, DOM.immDModal, DOM.arcModal];
 
 MODALS.forEach((el) => {
