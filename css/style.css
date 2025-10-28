@@ -11,6 +11,8 @@
   --dur-short: 120ms;
   --dur-medium: 240ms;
   --dur-long: 480ms;
+  --cursor-x: 50vw;
+  --cursor-y: 50vh;
 }
 .hidden { display: none !important; }
 .active { display: block !important; }
@@ -22,10 +24,6 @@ body {
   color: var(--color-fg);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
   overflow-x: hidden;
-  filter: contrast(1.15) brightness(1.08);
-  --cursor-x: 50vw;
-  --cursor-y: 50vh;
-  --cursor-scale: 1;
   --cursor-brightness: 1;
   --cursor-color: #81f6ff;
   --cursor-glow: rgba(129, 246, 255, 0.9);
@@ -33,20 +31,34 @@ body {
   --cursor-speed: 0;
 }
 
-*, *::before, *::after {
+.site-shell {
+  min-height: 100%;
+  filter: contrast(1.15) brightness(1.08);
+}
+
+body.has-custom-cursor,
+body.has-custom-cursor * {
   cursor: none !important;
 }
 
-body::after {
-  content: "";
+body.has-custom-cursor input,
+body.has-custom-cursor textarea,
+body.has-custom-cursor select,
+body.has-custom-cursor [contenteditable],
+body.has-custom-cursor .allow-native-cursor {
+  cursor: auto !important;
+}
+
+#mottoCursor,
+.motto-cursor {
   position: fixed;
-  left: var(--cursor-x);
-  top: var(--cursor-y);
+  top: 0;
+  left: 0;
   width: 16px;
   height: 16px;
   pointer-events: none;
   mix-blend-mode: difference;
-  transform: translate(-50%, -50%) scale(var(--cursor-scale));
+  transform: translate3d(var(--cursor-x, 0px), var(--cursor-y, 0px), 0) translate(-50%, -50%);
   filter: brightness(var(--cursor-brightness)) blur(1.5px);
   color: var(--cursor-color);
   background:
@@ -61,27 +73,31 @@ body::after {
     transform 0.15s ease-out,
     box-shadow 0.15s ease-out;
   will-change: transform, filter, box-shadow;
+  contain: layout paint style;
   z-index: 9999;
+  opacity: 0;
 }
 
-body::before {
+#mottoCursor::after,
+.motto-cursor::after {
   content: "";
-  position: fixed;
-  left: var(--cursor-x);
-  top: var(--cursor-y);
-  width: 16px;
-  height: 16px;
+  position: absolute;
+  inset: 0;
   pointer-events: none;
   mix-blend-mode: difference;
-  transform: translate(-50%, -50%) scale(calc(var(--cursor-scale) * (1.2 + var(--cursor-speed) * 0.3)));
+  transform: scale(calc(1.2 + var(--cursor-speed) * 0.3));
   opacity: 0;
   background: radial-gradient(circle, rgba(255, 0, 76, 0.45) 0%, rgba(255, 0, 76, 0) 65%);
   transition: opacity 0.15s ease-out, transform 0.15s ease-out;
   will-change: opacity, transform;
-  z-index: 9998;
+  z-index: -1;
 }
 
-body.cursor-moving::before {
+body.has-custom-cursor #mottoCursor {
+  opacity: 1;
+}
+
+body.cursor-moving #mottoCursor::after {
   opacity: clamp(0, calc(var(--cursor-speed) * 0.6), 0.5);
 }
 

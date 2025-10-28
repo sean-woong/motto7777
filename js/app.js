@@ -810,125 +810,8 @@ const DOM = {
   arcDetailCaption: document.getElementById('archiveDetailCaption')
 };
 
-const CURSOR_SCOPE = {
-  raf: null,
-  x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0,
-  y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0,
-  lastX: null,
-  lastY: null,
-  lastTime: null,
-  clickable: false,
-  movingTimer: null
-};
-
-function cursorScopeApply() {
-  CURSOR_SCOPE.raf = null;
-  if (typeof document === 'undefined' || !document.body) return;
-  const style = document.body.style;
-  style.setProperty('--cursor-x', `${CURSOR_SCOPE.x}px`);
-  style.setProperty('--cursor-y', `${CURSOR_SCOPE.y}px`);
-}
-
-function scheduleCursorScopeRender() {
-  if (CURSOR_SCOPE.raf) return;
-  CURSOR_SCOPE.raf = requestAnimationFrame(cursorScopeApply);
-}
-
-function handleCursorMove(event) {
-  CURSOR_SCOPE.x = event.clientX;
-  CURSOR_SCOPE.y = event.clientY;
-  const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
-  if (CURSOR_SCOPE.lastTime !== null && CURSOR_SCOPE.lastX !== null && CURSOR_SCOPE.lastY !== null) {
-    const dt = Math.max(now - CURSOR_SCOPE.lastTime, 1);
-    const dist = Math.hypot(event.clientX - CURSOR_SCOPE.lastX, event.clientY - CURSOR_SCOPE.lastY);
-    const speed = dist; // px per frame
-    const fast = speed > 50;
-    if (fast) {
-      const normalized = Math.min((speed - 50) / 150, 1);
-      setCursorSpeed(normalized);
-      toggleCursorMoving(true);
-    } else {
-      setCursorSpeed(0);
-    }
-  }
-  CURSOR_SCOPE.lastX = event.clientX;
-  CURSOR_SCOPE.lastY = event.clientY;
-  CURSOR_SCOPE.lastTime = now;
-
-  const clickableTarget = event.target?.closest?.('a, button, .clickable, [role="button"], input, select, textarea');
-  updateClickableState(Boolean(clickableTarget));
-  scheduleCursorScopeRender();
-}
-
-function handleCursorLeave(event) {
-  if (event && event.relatedTarget) return;
-  updateClickableState(false);
-  toggleCursorMoving(false);
-}
-
-function canUseCursorScope() {
-  if (typeof window === 'undefined') return false;
-  if (typeof document === 'undefined' || !document.body) return false;
-  if (!window.matchMedia) return true;
-  const mq = window.matchMedia('(pointer: fine)');
-  if (typeof mq.matches === 'boolean') return mq.matches;
-  return true;
-}
-
-function setCursorSpeed(value) {
-  if (typeof document === 'undefined' || !document.body) return;
-  document.body.style.setProperty('--cursor-speed', `${value}`);
-}
-
-function updateClickableState(isClickable) {
-  if (CURSOR_SCOPE.clickable === isClickable) return;
-  CURSOR_SCOPE.clickable = isClickable;
-  if (typeof document !== 'undefined' && document.body) {
-    document.body.classList.toggle('cursor-target', isClickable);
-  }
-}
-
-function toggleCursorMoving(isMoving) {
-  if (typeof document === 'undefined' || !document.body) return;
-  if (isMoving) {
-    document.body.classList.add('cursor-moving');
-    if (CURSOR_SCOPE.movingTimer) clearTimeout(CURSOR_SCOPE.movingTimer);
-    CURSOR_SCOPE.movingTimer = setTimeout(() => {
-      document.body.classList.remove('cursor-moving');
-      CURSOR_SCOPE.movingTimer = null;
-      setCursorSpeed(0);
-    }, 200);
-  } else {
-    document.body.classList.remove('cursor-moving');
-    if (CURSOR_SCOPE.movingTimer) {
-      clearTimeout(CURSOR_SCOPE.movingTimer);
-      CURSOR_SCOPE.movingTimer = null;
-    }
-    setCursorSpeed(0);
-  }
-}
-
-function initCursorScope() {
-  if (!canUseCursorScope()) return;
-  if (!document.body) return;
-  document.body.style.setProperty('--cursor-x', `${CURSOR_SCOPE.x}px`);
-  document.body.style.setProperty('--cursor-y', `${CURSOR_SCOPE.y}px`);
-  setCursorSpeed(0);
-  document.addEventListener('mousemove', handleCursorMove, { passive: true });
-  document.addEventListener('mouseleave', handleCursorLeave);
-  window.addEventListener('blur', () => {
-    updateClickableState(false);
-    toggleCursorMoving(false);
-  });
-}
-
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCursorScope, { once: true });
-  } else {
-    initCursorScope();
-  }
-}
+let MAIN_BOOTED = false;
+let MAIN_BOOT_PROMISE = null;
 
 const MODALS = [DOM.charModal, DOM.immModal, DOM.immDModal, DOM.arcModal];
 
@@ -1116,6 +999,64 @@ const NAV_OVERLAY_DEFAULTS = Object.freeze({
   revealDelay: 240
 });
 
+function fastExitIntro() {
+  if (DOM.intro) {
+    DOM.intro.classList.add('intro--exit');
+    DOM.intro.style.display = 'none';
+  }
+  if (DOM.introClip) {
+    DOM.introClip.hidden = true;
+  }
+}
+
+function ensureMainReady() {
+  if (MAIN_BOOTED) return Promise.resolve();
+  if (MAIN_BOOT_PROMISE) return MAIN_BOOT_PROMISE;
+  MAIN_BOOT_PROMISE = bootMain()
+    .then(() => {
+      MAIN_BOOTED = true;
+    })
+    .finally(() => {
+      MAIN_BOOT_PROMISE = null;
+    });
+  return MAIN_BOOT_PROMISE;
+}
+
+function handleInitialViewRequest() {
+  let viewParam = null;
+  try {
+    const url = new URL(window.location.href);
+    viewParam = (url.searchParams.get('view') || '').toLowerCase();
+    if (!viewParam) return;
+    const nextSearch = new URLSearchParams(url.searchParams);
+    nextSearch.delete('view');
+    const nextSearchString = nextSearch.toString();
+    history.replaceState(
+      null,
+      '',
+      `${url.pathname}${nextSearchString ? `?${nextSearchString}` : ''}${url.hash}`
+    );
+  } catch (err) {
+    console.error('Failed to parse view parameter:', err);
+    return;
+  }
+
+  const actions = {
+    immortals: () => playTransitionOverlay(() => openImmortals(), NAV_OVERLAY_DEFAULTS),
+    archive: () => playTransitionOverlay(() => openArchive(), NAV_OVERLAY_DEFAULTS)
+  };
+
+  const action = actions[viewParam];
+  if (!action) return;
+
+  fastExitIntro();
+  ensureMainReady()
+    .then(() => action())
+    .catch((err) => {
+      console.error('Failed to open requested view:', err);
+    });
+}
+
 // ====== Intro → Main ======
 DOM.enterBtn?.addEventListener('click', () => {
   console.log("ENTER 버튼 클릭됨 ✅");
@@ -1125,7 +1066,7 @@ DOM.enterBtn?.addEventListener('click', () => {
   const finalizeBoot = async () => {
     console.log('bootMain 실행 직전 ✅');
     try {
-      await bootMain();
+      await ensureMainReady();
       console.log('bootMain 실행 완료 ✅');
     } catch (err) {
       console.error('bootMain 실행 오류:', err);
@@ -1352,6 +1293,7 @@ async function bootMain() {
       startOST();
     }
   });
+  MAIN_BOOTED = true;
 }
 
 let portalObserver = null;
@@ -3282,6 +3224,8 @@ ensureImmortalsData().catch((err) => {
 ensureArchiveManifest().catch((err) => {
   console.warn('Archive manifest preload failed:', err);
 });
+
+handleInitialViewRequest();
 
 window.MottoArchive = window.MottoArchive || {};
 window.MottoArchive.setSpotlight = (enabled = true) => {

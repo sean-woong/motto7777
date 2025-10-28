@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MOTTO 7777 — Music</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/music.css"/>
+  <script defer src="js/cursor.js"></script>
+  <script defer src="js/music.js"></script>
+</head>
+<body class="music-page">
+  <div class="site-shell">
+  <header class="nav">
+    <a href="index.html" id="homeBtn" class="brand">
+      <span class="sr-only">MOTTO Home</span>
+      <span class="brand-word" data-text="motto">motto</span>
+      <span class="brand-tag" aria-label="7777 in Japanese">ナナナナ</span>
+    </a>
+    <nav class="links">
+      <a id="immBtn"  class="link-glitch nav-link" href="index.html?view=immortals">IMMORTALS</a>
+      <a id="arcBtn"  class="link-glitch nav-link" href="index.html?view=archive#archive">ARCHIVE</a>
+      <a id="musicBtn" class="link-glitch nav-link" href="music.html" data-music-link aria-current="page">MUSIC</a>
+      <a id="twBtn"   class="link-glitch nav-link" href="https://x.com/motto_7777" target="_blank" rel="noopener">X</a>
+      <a id="igBtn"   class="link-glitch nav-link disabled" href="#">INSTAGRAM</a>
+      <a id="ttBtn"   class="link-glitch nav-link disabled" href="#">TIKTOK</a>
+      <a id="shopBtn" class="link-glitch nav-link" href="#" target="_blank" rel="noopener">SHOP</a>
+    </nav>
+    <div class="nav-eggs">
+      <a id="egg1" class="link-glitch egg" href="https://www.youtube.com/@sean_woong" target="_blank" rel="noopener" aria-label="Visit Sean Woong YouTube channel">SEAN WOONG</a>
+      <a id="egg2" class="link-glitch egg" href="https://www.youtube.com/@hazhaus" target="_blank" rel="noopener" aria-label="Visit Haz Haus YouTube channel">HAZ HAUS</a>
+    </div>
+  </header>
+
+  <!-- MUSIC PAGE MAIN -->
+  <main id="music" class="music-root" aria-labelledby="music-title">
+    <div class="music-inner">
+      <h1 id="music-title" class="sr-only">MOTTO — Music</h1>
+      <p class="music-label">MUSIC — Seven tracks from the MOTTO vault.</p>
+
+      <ul id="musicList" class="tracklist">
+        <!-- js/music.js 가 이 안에 7개 트랙 렌더 -->
+      </ul>
+
+      <!-- 워터마크는 오버랩 방지를 위해 CSS 배경으로만 사용. 이미지 태그 제거 -->
+    </div>
+  </main>
+
+  </div>
+</body>
+</html>
