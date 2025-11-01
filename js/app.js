@@ -1042,8 +1042,8 @@ function handleInitialViewRequest() {
   }
 
   const actions = {
-    immortals: () => playTransitionOverlay(() => openImmortals(), NAV_OVERLAY_DEFAULTS),
-    archive: () => playTransitionOverlay(() => openArchive(), NAV_OVERLAY_DEFAULTS)
+    immortals: () => openImmortals(),
+    archive: () => openArchive()
   };
 
   const action = actions[viewParam];
