@@ -13,6 +13,7 @@ const SHOP_URL = '#';
 const TWITTER_URL = 'https://x.com/motto_7777';
 const IG_URL = '#';
 const TT_URL = '#';
+const NFT_URL = 'https://crypto.com/nft/collection/346735aec03bf116cb270a2f7fb580f0?tab=items';
 
 // ====== Build Version ======
 const SCRIPT_VERSION = (() => {
@@ -729,7 +730,7 @@ const OST_TRACKS = [
 const ARCHIVE_MANIFEST_URL = withAssetVersion('assets/archive/archive.json');
 let ARCHIVE_FILES = [];
 let _archiveManifestPromise = null;
-let ARCHIVE_SPOTLIGHT_ENABLED = true;
+let ARCHIVE_SPOTLIGHT_ENABLED = false;
 const ARCHIVE_ACCENT_CACHE = new Map();
 const ARCHIVE_COLOR_CANVAS = document.createElement('canvas');
 const ARCHIVE_COLOR_CONTEXT = ARCHIVE_COLOR_CANVAS.getContext('2d', { willReadFrequently: true })
@@ -777,6 +778,7 @@ const DOM = {
   shopBtn: document.getElementById('shopBtn'),
   immBtn: document.getElementById('immBtn'),
   arcBtn: document.getElementById('arcBtn'),
+  nftBtn: document.getElementById('nftBtn'),
   homeBtn: document.getElementById('homeBtn'),
   charModal: document.getElementById('charModal'),
   charHero: document.getElementById('charHero'),
@@ -917,6 +919,15 @@ function openModal(target, opts = {}) {
 // ====== Link Setup ======
 if (DOM.spBtn) DOM.spBtn.href = SPOTIFY_URL;
 if (DOM.ytBtn) DOM.ytBtn.href = YOUTUBE_URL;
+if (DOM.nftBtn) {
+  DOM.nftBtn.href = NFT_URL;
+  if (NFT_URL === '#') {
+    DOM.nftBtn.classList.add('disabled');
+  } else {
+    DOM.nftBtn.setAttribute('target', '_blank');
+    DOM.nftBtn.setAttribute('rel', 'noopener');
+  }
+}
 if (DOM.twBtn) DOM.twBtn.href = TWITTER_URL;
 if (DOM.igBtn && IG_URL !== '#') DOM.igBtn.href = IG_URL;
 if (DOM.ttBtn && TT_URL !== '#') DOM.ttBtn.href = TT_URL;
