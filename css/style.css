@@ -720,7 +720,6 @@ body.cursor-target {
   justify-content: space-between;
   gap: 14px;
   padding: 8px clamp(14px, 4vw, 22px);
-  height: 40px;
   border-radius: 999px;
   background: rgba(14, 16, 24, .52);
   backdrop-filter: blur(18px) saturate(130%);
@@ -737,6 +736,12 @@ body.cursor-target {
 .audio-ui::before,
 .audio-ui::after {
   content: none;
+}
+
+@media (min-width: 769px) {
+  .audio-ui {
+    height: 40px;
+  }
 }
 .player-left,
 .player-center,
@@ -1053,6 +1058,8 @@ body.cursor-target {
     width: min(88vw, 440px);
     padding: clamp(10px, 4vw, 14px) clamp(16px, 6vw, 22px);
     gap: clamp(12px, 4vw, 18px);
+    height: auto;
+    min-height: 40px;
   }
   .player-left {
     flex: 1 1 clamp(200px, 48vw, 320px);
@@ -1107,14 +1114,18 @@ body.cursor-target {
     max-width: none;
     padding: clamp(12px, 6vw, 16px) clamp(16px, 8vw, 22px);
     gap: clamp(14px, 6vw, 22px);
+    row-gap: clamp(10px, 5vw, 18px);
+    flex-wrap: wrap;
+    justify-content: center;
     border-radius: 24px;
   }
   .player-left {
     display: none;
   }
   .player-center {
-    flex: 1 1 auto;
+    flex: 1 1 100%;
     gap: clamp(16px, 8vw, 26px);
+    justify-content: center;
   }
   .player-center > .audio-btn {
     width: clamp(44px, 22vw, 62px);
@@ -1125,11 +1136,14 @@ body.cursor-target {
     height: clamp(50px, 26vw, 72px);
   }
   .player-right {
-    flex: 0 0 auto;
+    flex: 1 1 100%;
+    justify-content: center;
     gap: clamp(12px, 6vw, 22px);
   }
   .audio-range {
-    width: clamp(150px, 60vw, 260px);
+    flex: 1 1 clamp(180px, 70vw, 320px);
+    width: auto;
+    max-width: min(100%, 360px);
   }
   .hint {
     font-size: 11px;
