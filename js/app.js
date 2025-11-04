@@ -3021,10 +3021,14 @@ function togglePlay() {
   });
 }
 function updatePlayBtn() {
-  const icon = playing ? '⏸' : '▶︎';
-  const span = DOM.playBtn?.querySelector('span');
-  if (span) span.textContent = icon;
-  if (DOM.playBtn) DOM.playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+  if (!DOM.playBtn) return;
+  const iconEl = DOM.playBtn.querySelector('.audio-icon');
+  if (iconEl) {
+    iconEl.classList.toggle('audio-icon--pause', playing);
+    iconEl.classList.toggle('audio-icon--play', !playing);
+  }
+  DOM.playBtn.classList.toggle('is-playing', playing);
+  DOM.playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
 }
 function updateMuteBtn() {
   const muted = Boolean(A && A.muted);

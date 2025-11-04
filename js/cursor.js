@@ -17,7 +17,9 @@
     cursorEl: null,
     handleMouseMove: null,
     handleMouseLeave: null,
-    handleWindowBlur: null
+    handleWindowBlur: null,
+    prevBodyCursor: '',
+    prevRootCursor: ''
   };
 
   const prefersPointerFine = () => {
@@ -139,8 +141,8 @@
   };
 
   const removeListeners = () => {
-    if (state.handleMouseMove) doc.removeEventListener('mousemove', state.handleMouseMove);
-    if (state.handleMouseLeave) doc.removeEventListener('mouseleave', state.handleMouseLeave);
+    if (state.handleMouseMove) doc.removeEventListener('pointermove', state.handleMouseMove);
+    if (state.handleMouseLeave) doc.removeEventListener('pointerleave', state.handleMouseLeave);
     if (state.handleWindowBlur) global.removeEventListener('blur', state.handleWindowBlur);
     state.handleMouseMove = null;
     state.handleMouseLeave = null;
@@ -153,7 +155,12 @@
     if (!prefersPointerFine()) return;
     ensureCursorElement();
     applyCursorPosition();
+    state.prevBodyCursor = doc.body.style.cursor;
+    state.prevRootCursor = doc.documentElement.style.cursor;
+    doc.body.style.cursor = 'none';
+    doc.documentElement.style.cursor = 'none';
     doc.body.classList.add('has-custom-cursor');
+    doc.documentElement.classList.add('has-custom-cursor');
     setCursorSpeed(0);
     addListeners();
     state.initialized = true;
@@ -163,6 +170,9 @@
     if (!state.initialized) return;
     removeListeners();
     doc.body?.classList?.remove('has-custom-cursor', 'cursor-moving', 'cursor-target');
+    doc.documentElement?.classList?.remove('has-custom-cursor');
+    if (doc.body) doc.body.style.cursor = state.prevBodyCursor || '';
+    if (doc.documentElement) doc.documentElement.style.cursor = state.prevRootCursor || '';
     if (state.cursorEl && state.cursorEl.parentNode) {
       state.cursorEl.parentNode.removeChild(state.cursorEl);
     }

@@ -56,9 +56,15 @@
       </span>
     </div>
     <div class="player-center">
-      <button id="prevBtn" class="audio-btn" title="Previous Track" aria-label="Previous Track"><span aria-hidden="true">⏮</span></button>
-      <button id="playBtn" class="audio-btn audio-btn--primary" title="Play/Pause" aria-label="Play or Pause"><span aria-hidden="true">▶︎</span></button>
-      <button id="nextBtn" class="audio-btn" title="Next Track" aria-label="Next Track"><span aria-hidden="true">⏭</span></button>
+      <button id="prevBtn" class="audio-btn" title="Previous Track" aria-label="Previous Track">
+        <span class="audio-icon audio-icon--prev" aria-hidden="true"></span>
+      </button>
+      <button id="playBtn" class="audio-btn audio-btn--primary" title="Play/Pause" aria-label="Play or Pause">
+        <span class="audio-icon audio-icon--play" aria-hidden="true"></span>
+      </button>
+      <button id="nextBtn" class="audio-btn" title="Next Track" aria-label="Next Track">
+        <span class="audio-icon audio-icon--next" aria-hidden="true"></span>
+      </button>
     </div>
     <div class="player-right">
       <input id="vol" class="audio-range" type="range" min="0" max="1" step="0.01" value="0.9" title="Volume" />
