@@ -3113,6 +3113,83 @@ DOM.arcBtn?.addEventListener('click', (e) => {
   playTransitionOverlay(() => openArchive(), NAV_OVERLAY_DEFAULTS);
 });
 
+let brandGlitchTimer = null;
+function triggerBrandGlitch(duration = 3200) {
+  if (!DOM.homeBtn) return;
+  if (DOM.homeBtn.classList.contains('is-glitching')) {
+    DOM.homeBtn.classList.remove('is-glitching');
+    // Force reflow to restart CSS animations
+    void DOM.homeBtn.offsetWidth;
+  }
+  DOM.homeBtn.classList.add('is-glitching');
+  if (brandGlitchTimer) clearTimeout(brandGlitchTimer);
+  brandGlitchTimer = setTimeout(() => {
+    DOM.homeBtn?.classList.remove('is-glitching');
+    brandGlitchTimer = null;
+  }, duration);
+}
+function endBrandGlitch() {
+  if (!DOM.homeBtn) return;
+  if (brandGlitchTimer) {
+    clearTimeout(brandGlitchTimer);
+    brandGlitchTimer = null;
+  }
+  DOM.homeBtn.classList.remove('is-glitching');
+}
+function initMobileBrandGlitch() {
+  if (!DOM.homeBtn || typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+  const mediaQueries = [
+    window.matchMedia('(pointer: coarse)'),
+    window.matchMedia('(hover: none)')
+  ];
+  const shouldEnable = () => mediaQueries.some((mq) => mq.matches);
+
+  const unbind = () => {
+    if (!DOM.homeBtn._glitchBound) return;
+    const events = DOM.homeBtn._glitchEvents || [];
+    events.forEach(([type, handler, opts]) => DOM.homeBtn.removeEventListener(type, handler, opts));
+    DOM.homeBtn._glitchEvents = null;
+    DOM.homeBtn._glitchBound = false;
+    endBrandGlitch();
+  };
+
+  const glitchHandler = () => triggerBrandGlitch();
+  const bind = () => {
+    if (DOM.homeBtn._glitchBound) return;
+    const events = [
+      ['pointerdown', glitchHandler, false],
+      ['touchstart', glitchHandler, { passive: true }],
+      ['focus', glitchHandler, false],
+      ['pointerup', endBrandGlitch, false],
+      ['pointercancel', endBrandGlitch, false],
+      ['pointerleave', endBrandGlitch, false],
+      ['blur', endBrandGlitch, false]
+    ];
+    events.forEach(([type, handler, opts]) => DOM.homeBtn.addEventListener(type, handler, opts));
+    DOM.homeBtn._glitchEvents = events;
+    DOM.homeBtn._glitchBound = true;
+  };
+
+  const apply = () => {
+    if (shouldEnable()) {
+      bind();
+    } else {
+      unbind();
+    }
+  };
+
+  apply();
+  const handleChange = () => apply();
+  mediaQueries.forEach((mq) => {
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', handleChange);
+    } else if (typeof mq.addListener === 'function') {
+      mq.addListener(handleChange);
+    }
+  });
+}
+initMobileBrandGlitch();
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && DOM.intro && DOM.intro.style.display !== 'none') { DOM.enterBtn?.click(); }
   if (e.key === 'Escape') {
