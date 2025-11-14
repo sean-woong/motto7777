@@ -1846,7 +1846,7 @@ body.cursor-target {
 #immDetailModal .modal-card {
   position: relative;
   z-index: 1;
-  width: min(92vw, 980px) !important;
+  width: min(100%, 980px) !important;
   padding: clamp(28px, 6vh, 54px) clamp(20px, 4vw, 42px) clamp(36px, 8vh, 72px) !important;
   background: rgba(8, 8, 12, .86);
   border: none;
