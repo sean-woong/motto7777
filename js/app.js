@@ -824,6 +824,83 @@ MODALS.forEach((el) => {
   el.classList.remove('active');
 });
 
+const IMMORTALS_ACCESS_MODES = Object.freeze({
+  LOCKED: 'locked',
+  OPEN: 'open'
+});
+const IMMORTALS_ACCESS_STORAGE_KEY = 'motto:immortals-access';
+let IMMORTALS_ACCESS_MODE = IMMORTALS_ACCESS_MODES.LOCKED;
+
+function readStoredImmortalsAccessMode() {
+  if (typeof window === 'undefined') return IMMORTALS_ACCESS_MODES.LOCKED;
+  try {
+    const stored = window.localStorage?.getItem(IMMORTALS_ACCESS_STORAGE_KEY);
+    if (stored === IMMORTALS_ACCESS_MODES.OPEN || stored === IMMORTALS_ACCESS_MODES.LOCKED) {
+      return stored;
+    }
+  } catch (err) {
+    console.warn('Unable to read Immortals access mode:', err);
+  }
+  return IMMORTALS_ACCESS_MODES.LOCKED;
+}
+
+function persistImmortalsAccessMode(mode) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage?.setItem(IMMORTALS_ACCESS_STORAGE_KEY, mode);
+  } catch (err) {
+    console.warn('Unable to store Immortals access mode:', err);
+  }
+}
+
+function applyImmortalsAccessMode(mode) {
+  const normalized = mode === IMMORTALS_ACCESS_MODES.OPEN
+    ? IMMORTALS_ACCESS_MODES.OPEN
+    : IMMORTALS_ACCESS_MODES.LOCKED;
+  IMMORTALS_ACCESS_MODE = normalized;
+  persistImmortalsAccessMode(normalized);
+  if (document?.documentElement) {
+    document.documentElement.classList.toggle('immortals-locked', normalized === IMMORTALS_ACCESS_MODES.LOCKED);
+  }
+  if (DOM.immBtn) {
+    DOM.immBtn.classList.toggle('is-locked', normalized === IMMORTALS_ACCESS_MODES.LOCKED);
+    DOM.immBtn.setAttribute('data-immortals-access', normalized);
+  }
+  return normalized;
+}
+
+function isImmortalsUnlocked() {
+  return IMMORTALS_ACCESS_MODE === IMMORTALS_ACCESS_MODES.OPEN;
+}
+
+function lockImmortalsAccess() {
+  return applyImmortalsAccessMode(IMMORTALS_ACCESS_MODES.LOCKED);
+}
+
+function unlockImmortalsAccess() {
+  return applyImmortalsAccessMode(IMMORTALS_ACCESS_MODES.OPEN);
+}
+
+function toggleImmortalsAccess() {
+  return applyImmortalsAccessMode(isImmortalsUnlocked()
+    ? IMMORTALS_ACCESS_MODES.LOCKED
+    : IMMORTALS_ACCESS_MODES.OPEN);
+}
+
+function initImmortalsAccessMode() {
+  const stored = readStoredImmortalsAccessMode();
+  applyImmortalsAccessMode(stored);
+}
+
+initImmortalsAccessMode();
+
+window.MottoImmortals = Object.assign(window.MottoImmortals || {}, {
+  lock: () => lockImmortalsAccess(),
+  unlock: () => unlockImmortalsAccess(),
+  toggle: () => toggleImmortalsAccess(),
+  mode: () => IMMORTALS_ACCESS_MODE
+});
+
 function activateModal(el) {
   if (!el) return;
   if (el._hideTimer) {
@@ -1052,6 +1129,11 @@ function handleInitialViewRequest() {
     return;
   }
 
+  if (viewParam === 'immortals' && !isImmortalsUnlocked()) {
+    console.info('Immortals view request ignored because access is locked.');
+    return;
+  }
+
   const actions = {
     immortals: () => openImmortals(),
     archive: () => openArchive()
@@ -1271,14 +1353,15 @@ async function renderTodayGallery() {
     }
 
     const footer = document.createElement('div');
-    footer.className = 'today-footer';
-    const viewAllLink = document.createElement('a');
-    viewAllLink.href = '#';
-    viewAllLink.className = 'today-nav-link';
-    viewAllLink.textContent = 'Explore All Immortals';
+   footer.className = 'today-footer';
+   const viewAllLink = document.createElement('a');
+   viewAllLink.href = '#';
+   viewAllLink.className = 'today-nav-link';
+   viewAllLink.textContent = 'Explore All Immortals';
+    viewAllLink.dataset.mode = isImmortalsUnlocked() ? 'open' : 'locked';
     viewAllLink.addEventListener('click', (e) => {
       e.preventDefault();
-      playTransitionOverlay(() => openImmortals(), NAV_OVERLAY_DEFAULTS);
+      handleImmortalsEntryRequest('today-link');
     });
     footer.appendChild(viewAllLink);
     section.appendChild(footer);
@@ -1292,6 +1375,37 @@ async function renderTodayGallery() {
     DOM.stage.innerHTML = '';
     DOM.stage.appendChild(error);
   }
+}
+
+function handleImmortalsEntryRequest(source = 'nav') {
+  const runAction = () => {
+    const action = isImmortalsUnlocked()
+      ? () => openImmortals()
+      : () => renderTodayGallery();
+    try {
+      trackEvent('Immortals', isImmortalsUnlocked() ? 'Open' : 'Shuffle', source);
+    } catch (err) {
+      console.warn('Immortals tracking failed:', err);
+    }
+    playTransitionOverlay(() => {
+      try {
+        action();
+      } catch (err) {
+        console.error('Immortals entry action failed:', err);
+      }
+    }, NAV_OVERLAY_DEFAULTS);
+  };
+
+  if (MAIN_BOOTED) {
+    runAction();
+    return;
+  }
+
+  ensureMainReady()
+    .then(() => runAction())
+    .catch((err) => {
+      console.error('Failed to prepare Immortals action:', err);
+    });
 }
 
 // ====== Boot Main ======
@@ -3106,7 +3220,7 @@ DOM.homeBtn?.addEventListener('click', (e) => {
 });
 DOM.immBtn?.addEventListener('click', (e) => {
   e.preventDefault();
-  playTransitionOverlay(() => openImmortals(), NAV_OVERLAY_DEFAULTS);
+  handleImmortalsEntryRequest('nav-link');
 });
 DOM.arcBtn?.addEventListener('click', (e) => {
   e.preventDefault();
