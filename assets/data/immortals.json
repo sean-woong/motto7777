@@ -373,8 +373,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #1.",
-      "kr": "드랙이 글램 #1을 다시 쓴다."
+      "en": "Eyes shimmer.",
+      "kr": "눈이 반짝인다."
     }
   },
   {
@@ -391,8 +391,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #17.",
-      "kr": "드랙이 글램 #17을 다시 쓴다."
+      "en": "Beauty ruptures.",
+      "kr": "아름다움이 파열된다."
     }
   },
   {
@@ -409,8 +409,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #233.",
-      "kr": "드랙이 글램 #233을 다시 쓴다."
+      "en": "Smile twists.",
+      "kr": "미소가 뒤틀린다."
     }
   },
   {
@@ -427,8 +427,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #24.",
-      "kr": "드랙이 글램 #24을 다시 쓴다."
+      "en": "Shell pulses.",
+      "kr": "쉘이 고동친다."
     }
   },
   {
@@ -445,8 +445,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #285.",
-      "kr": "드랙이 글램 #285을 다시 쓴다."
+      "en": "Pixels defy.",
+      "kr": "픽셀이 저항한다."
     }
   },
   {
@@ -463,8 +463,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #286.",
-      "kr": "드랙이 글램 #286을 다시 쓴다."
+      "en": "Armor reboot.",
+      "kr": "갑옷이 재부팅된다."
     }
   },
   {
@@ -481,8 +481,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #325.",
-      "kr": "드랙이 글램 #325을 다시 쓴다."
+      "en": "Face rewrites.",
+      "kr": "얼굴이 다시 쓰인다."
     }
   },
   {
@@ -499,8 +499,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #402.",
-      "kr": "드랙이 글램 #402을 다시 쓴다."
+      "en": "Spikes shimmer.",
+      "kr": "스파이크가 반짝인다."
     }
   },
   {
@@ -517,8 +517,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #404.",
-      "kr": "드랙이 글램 #404을 다시 쓴다."
+      "en": "Lace glitch.",
+      "kr": "레이스가 글리치한다."
     }
   },
   {
@@ -535,8 +535,8 @@
       "RECODE"
     ],
     "description": {
-      "en": "Drag rewrites glam #419.",
-      "kr": "드랙이 글램 #419을 다시 쓴다."
+      "en": "Pink errors.",
+      "kr": "분홍 오류가 번진다."
     }
   },
   {
@@ -553,8 +553,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #170.",
-      "kr": "모터사이클이 트랙 #170을 태운다."
+      "en": "Engine prophecy.",
+      "kr": "엔진이 예언한다."
     }
   },
   {
@@ -571,8 +571,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #233.",
-      "kr": "모터사이클이 트랙 #233을 태운다."
+      "en": "Helmet hums.",
+      "kr": "헬멧이 윙윙댄다."
     }
   },
   {
@@ -589,8 +589,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #267.",
-      "kr": "모터사이클이 트랙 #267을 태운다."
+      "en": "Pixel smoke.",
+      "kr": "픽셀 연기가 흐른다."
     }
   },
   {
@@ -607,8 +607,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #28.",
-      "kr": "모터사이클이 트랙 #28을 태운다."
+      "en": "Veins pulse.",
+      "kr": "맥박이 뛴다."
     }
   },
   {
@@ -625,8 +625,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #302.",
-      "kr": "모터사이클이 트랙 #302을 태운다."
+      "en": "Cracked gaze.",
+      "kr": "시선이 금 간다."
     }
   },
   {
@@ -643,8 +643,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #313.",
-      "kr": "모터사이클이 트랙 #313을 태운다."
+      "en": "Sealed soul.",
+      "kr": "영혼이 봉인된다."
     }
   },
   {
@@ -661,8 +661,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #352.",
-      "kr": "모터사이클이 트랙 #352을 태운다."
+      "en": "Gear instinct.",
+      "kr": "기어가 본능으로 변한다."
     }
   },
   {
@@ -679,8 +679,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #380.",
-      "kr": "모터사이클이 트랙 #380을 태운다."
+      "en": "Crash sim.",
+      "kr": "충돌이 시뮬된다."
     }
   },
   {
@@ -697,8 +697,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #466.",
-      "kr": "모터사이클이 트랙 #466을 태운다."
+      "en": "Sparks drag.",
+      "kr": "불꽃이 끌린다."
     }
   },
   {
@@ -715,8 +715,8 @@
       "SKID"
     ],
     "description": {
-      "en": "Motorcycle burns track #505.",
-      "kr": "모터사이클이 트랙 #505을 태운다."
+      "en": "Helmet smirk.",
+      "kr": "헬멧이 비웃는다."
     }
   },
   {
@@ -733,8 +733,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #170.",
-      "kr": "록스타가 스테이지 #170을 얼린다."
+      "en": "Chrome joy.",
+      "kr": "크롬빛 기쁨."
     }
   },
   {
@@ -751,8 +751,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #20.",
-      "kr": "록스타가 스테이지 #20을 얼린다."
+      "en": "Smile glitches.",
+      "kr": "미소가 글리치한다."
     }
   },
   {
@@ -769,8 +769,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #22.",
-      "kr": "록스타가 스테이지 #22을 얼린다."
+      "en": "Laugh cuts.",
+      "kr": "웃음이 가른다."
     }
   },
   {
@@ -787,8 +787,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #251.",
-      "kr": "록스타가 스테이지 #251을 얼린다."
+      "en": "Swagger mute.",
+      "kr": "스웨거만 있다."
     }
   },
   {
@@ -805,8 +805,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #35.",
-      "kr": "록스타가 스테이지 #35을 얼린다."
+      "en": "Noise flitters.",
+      "kr": "잡음이 깜빡인다."
     }
   },
   {
@@ -823,8 +823,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #51.",
-      "kr": "록스타가 스테이지 #51을 얼린다."
+      "en": "Signal spikes.",
+      "kr": "신호가 치솟는다."
     }
   },
   {
@@ -841,8 +841,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #569.",
-      "kr": "록스타가 스테이지 #569을 얼린다."
+      "en": "Gestures pre-recorded.",
+      "kr": "몸짓이 녹화됐다."
     }
   },
   {
@@ -859,8 +859,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #597.",
-      "kr": "록스타가 스테이지 #597을 얼린다."
+      "en": "Laugh loops.",
+      "kr": "웃음이 반복된다."
     }
   },
   {
@@ -877,8 +877,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #650.",
-      "kr": "록스타가 스테이지 #650을 얼린다."
+      "en": "Highlight reel.",
+      "kr": "하이라이트 릴."
     }
   },
   {
@@ -895,8 +895,8 @@
       "ECHO"
     ],
     "description": {
-      "en": "Rockstar freezes stage #696.",
-      "kr": "록스타가 스테이지 #696을 얼린다."
+      "en": "Neon twitch.",
+      "kr": "네온이 떨린다."
     }
   },
   {
@@ -913,8 +913,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #1098.",
-      "kr": "스컬이 프래그먼트 #1098을 굴절시킨다."
+      "en": "Charred code.",
+      "kr": "탄 코드가 흐른다."
     }
   },
   {
@@ -931,8 +931,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #19.",
-      "kr": "스컬이 프래그먼트 #19을 굴절시킨다."
+      "en": "Fuel ignites.",
+      "kr": "연료가 점화된다."
     }
   },
   {
@@ -949,8 +949,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #262.",
-      "kr": "스컬이 프래그먼트 #262을 굴절시킨다."
+      "en": "Signal screams.",
+      "kr": "신호가 비명한다."
     }
   },
   {
@@ -967,8 +967,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #312.",
-      "kr": "스컬이 프래그먼트 #312을 굴절시킨다."
+      "en": "War replays.",
+      "kr": "전쟁이 재생된다."
     }
   },
   {
@@ -985,8 +985,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #438.",
-      "kr": "스컬이 프래그먼트 #438을 굴절시킨다."
+      "en": "Shell cracked.",
+      "kr": "껍질이 깨진다."
     }
   },
   {
@@ -1003,8 +1003,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #547.",
-      "kr": "스컬이 프래그먼트 #547을 굴절시킨다."
+      "en": "Rust leaks.",
+      "kr": "녹이 스며든다."
     }
   },
   {
@@ -1021,8 +1021,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #57.",
-      "kr": "스컬이 프래그먼트 #57을 굴절시킨다."
+      "en": "Protocol drills.",
+      "kr": "프로토콜이 관통한다."
     }
   },
   {
@@ -1039,8 +1039,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #76.",
-      "kr": "스컬이 프래그먼트 #76을 굴절시킨다."
+      "en": "Frame twitches.",
+      "kr": "몸이 경련한다."
     }
   },
   {
@@ -1057,8 +1057,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #885.",
-      "kr": "스컬이 프래그먼트 #885을 굴절시킨다."
+      "en": "Scream loops.",
+      "kr": "비명이 반복된다."
     }
   },
   {
@@ -1075,8 +1075,8 @@
       "SIGNAL"
     ],
     "description": {
-      "en": "Skull refracts fragment #91.",
-      "kr": "스컬이 프래그먼트 #91을 굴절시킨다."
+      "en": "Blood denied.",
+      "kr": "피가 거부된다."
     }
   },
   {
@@ -1093,8 +1093,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #126.",
-      "kr": "솔저가 전투 #126을 고정한다."
+      "en": "Memory erased.",
+      "kr": "기억이 지워진다."
     }
   },
   {
@@ -1111,8 +1111,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #245.",
-      "kr": "솔저가 전투 #245을 고정한다."
+      "en": "Blade hums.",
+      "kr": "칼날이 윙윙댄다."
     }
   },
   {
@@ -1129,8 +1129,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #258.",
-      "kr": "솔저가 전투 #258을 고정한다."
+      "en": "Violence repeats.",
+      "kr": "폭력이 반복된다."
     }
   },
   {
@@ -1147,8 +1147,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #348.",
-      "kr": "솔저가 전투 #348을 고정한다."
+      "en": "Battlefield reloads.",
+      "kr": "전장이 리로드된다."
     }
   },
   {
@@ -1165,8 +1165,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #375.",
-      "kr": "솔저가 전투 #375을 고정한다."
+      "en": "Grief leaks.",
+      "kr": "슬픔이 새어난다."
     }
   },
   {
@@ -1183,8 +1183,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #377.",
-      "kr": "솔저가 전투 #377을 고정한다."
+      "en": "Protocol execute.",
+      "kr": "프로토콜 실행."
     }
   },
   {
@@ -1201,8 +1201,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #396.",
-      "kr": "솔저가 전투 #396을 고정한다."
+      "en": "Metrics only.",
+      "kr": "지표만 뜬다."
     }
   },
   {
@@ -1219,8 +1219,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #397.",
-      "kr": "솔저가 전투 #397을 고정한다."
+      "en": "Code motion.",
+      "kr": "코드처럼 움직인다."
     }
   },
   {
@@ -1237,8 +1237,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #486.",
-      "kr": "솔저가 전투 #486을 고정한다."
+      "en": "Orders echo.",
+      "kr": "명령이 울린다."
     }
   },
   {
@@ -1255,8 +1255,8 @@
       "RELOAD"
     ],
     "description": {
-      "en": "Soldier locks combat #59.",
-      "kr": "솔저가 전투 #59을 고정한다."
+      "en": "Target locked.",
+      "kr": "조준이 고정된다."
     }
   },
   {
