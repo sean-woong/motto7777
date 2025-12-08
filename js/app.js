@@ -13,7 +13,7 @@ const SHOP_URL = '#';
 const TWITTER_URL = 'https://x.com/motto_7777';
 const IG_URL = '#';
 const TT_URL = '#';
-const NFT_URL = 'https://crypto.com/nft/collection/346735aec03bf116cb270a2f7fb580f0?tab=items';
+const NFT_URL = 'https://crypto.com/nft/collection/e5d6b1c9197704a5cca12036062263f2?tab=items';
 
 // ====== Build Version ======
 const SCRIPT_VERSION = (() => {
