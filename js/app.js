@@ -1232,58 +1232,15 @@ function createTodayHeroCard(entry) {
   const tags = Array.isArray(entry.tags) ? entry.tags : [];
   const overlayTags = formatTagList(tags);
 
-  const hasVideo = Boolean(entry.video);
-
   const media = document.createElement('div');
   media.className = 'today-hero-media';
 
-  const addFallbackImage = () => {
-    if (!entry.thumb) return;
-    const fallbackImg = createFallbackImage(entry.thumb, title);
-    media.appendChild(fallbackImg);
-    return fallbackImg;
-  };
-
-  if (hasVideo) {
-    const videoEl = document.createElement('video');
-    videoEl.src = entry.video;
-    videoEl.muted = true;
-    videoEl.loop = true;
-    videoEl.playsInline = true;
-    videoEl.autoplay = true;
-    videoEl.preload = 'metadata';
-    if (entry.thumb) {
-      videoEl.setAttribute('poster', entry.thumb);
-    }
-
-    let fallbackImg = null;
-    const ensureFallbackVisible = () => {
-      fallbackImg = fallbackImg || addFallbackImage();
-      if (fallbackImg) {
-        fallbackImg.hidden = false;
-      }
-      try {
-        videoEl.pause();
-      } catch (err) {
-        // noop
-      }
-      videoEl.remove();
-    };
-
-    attachVideoFallback(videoEl, () => {
-      console.warn('Hero video failed, showing thumbnail instead:', entry.video);
-      ensureFallbackVisible();
-    });
-
-    videoEl.addEventListener('loadeddata', () => {
-      if (fallbackImg) {
-        fallbackImg.hidden = true;
-      }
-    }, { once: true });
-
-    media.appendChild(videoEl);
-  } else if (entry.thumb) {
-    addFallbackImage();
+  const previewSrc = entry.thumb || '';
+  if (previewSrc) {
+    const previewImg = createFallbackImage(previewSrc, title);
+    media.appendChild(previewImg);
+  } else {
+    media.innerHTML = '<div class="imm-thumb-placeholder" aria-hidden="true"></div>';
   }
 
   const info = document.createElement('div');
