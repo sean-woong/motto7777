@@ -11,9 +11,9 @@ const SPOTIFY_URL = '#';
 const YOUTUBE_URL = '#';
 const SHOP_URL = '#';
 const TWITTER_URL = 'https://x.com/motto_7777';
-const IG_URL = '#';
-const TT_URL = '#';
-const NFT_URL = 'https://crypto.com/nft/collection/e5d6b1c9197704a5cca12036062263f2?tab=items';
+const IG_URL = 'https://www.instagram.com/mottttooooooo/';
+const TT_URL = 'https://www.youtube.com/@motto_7777';
+const NFT_URL = 'nft.html';
 
 // ====== Build Version ======
 const SCRIPT_VERSION = (() => {
@@ -159,6 +159,79 @@ const CHAR_CLIPS = {
   boxer: [],
   kia: []
 };
+
+const ABOUT_HERO = Object.freeze({
+  eyebrow: 'ABOUT · PROJECT 7777',
+  title: 'MOTTO 7777',
+  sublines: [
+    'Audio-visual project by Sean Woong & Haz Haus.',
+    '7 archetypes · 7,777 artworks · 7-track OST.'
+  ]
+});
+
+const ABOUT_CREDITS = Object.freeze([
+  'Created by Sean Woong (oo.sean) & Haz Haus',
+  'Worldbuilding · Sean Woong & Haz Haus',
+  'Visual direction · Sean Woong',
+  'Music & sound direction · Haz Haus'
+]);
+
+const ABOUT_STATS = Object.freeze([
+  { label: 'IMMORTALS', value: '77', caption: 'Motion portrait NFTs at the visible core of MOTTO 7777.' },
+  { label: 'PACKS', value: '7', caption: 'Skull, Motorcycle, Rockstar, Boxer, Drag, Dealer, Military.' },
+  { label: 'OST', value: '7', caption: 'Original tracks by Haz Haus & oo.sean.' },
+  { label: 'SUPPLY', value: '7,777', caption: '7,700 main collection NFTs + 77 Immortals motion portrait NFTs.' }
+]);
+
+const ABOUT_SUMMARY = 'This site is the main stage and archive for MOTTO 7777, a Cronos-based NFT project. Immortals show the core motion portrait NFTs, the archive holds posters and behind-the-scenes work, and the OST keeps the world moving in the background. The NFT tab links straight to the full 7,777-piece collection on Crypto.com NFT — 7,700 main collection NFTs plus 77 Immortals motion portrait NFTs.';
+
+const ABOUT_LORE = Object.freeze([
+  'In the year 7,777, humanity’s last echoes dissolve into glitch and loop. Seven archetypes — Skull, Motorcycle, Rockstar, Drag, Military, Dealer, Boxer — drift through signal, circuit, and emotion. Their identities fragment and repeat, asking a simple question: what remains when memory fractures?',
+  'MOTTO 7777 lives on sevens — set in the year 7,777, shaped by seven archetypes, 7,777 NFTs, and a 7-track OST that scores this world.',
+  'The 77 Immortals are animated motion portrait NFTs that sit at the core of MOTTO 7777. Each Immortal loops an 8-bit reimagining of the original MOTTO OST, as if the soundtrack survived only as game-console memory. Within the 77, seven Legend pieces form the innermost core: images that refuse to fade, replaying the question of who stays, who is erased, and who turns into myth.'
+]);
+
+const ABOUT_PILLARS = [
+  {
+    id: 'immortals',
+    eyebrow: 'IMMORTALS GRID',
+    title: 'IMMORTALS GRID',
+    body: [
+      'Looping motion portraits built from the seven packs.',
+      'This grid is where you explore the 77 Immortals and their key cuts in one place.'
+    ]
+  },
+  {
+    id: 'archive',
+    eyebrow: 'ARCHIVE WALL',
+    title: 'ARCHIVE WALL',
+    body: [
+      'Posters, behind-the-scenes cuts, memes and side experiments from MOTTO 7777.',
+      'This is where the messy process stays visible instead of being hidden.'
+    ]
+  },
+  {
+    id: 'sound',
+    eyebrow: 'SOUND / OST',
+    title: 'SOUND / OST',
+    body: [
+      'A custom score for this world by Haz Haus in collaboration with oo.sean.',
+      'The OST and live edits sit here so every loop and drop has a mood under it.'
+    ]
+  },
+  {
+    id: 'drops',
+    eyebrow: 'DROPS / COLLECTORS',
+    title: 'DROPS / COLLECTORS',
+    body: [
+      'MOTTO 7777 lives here as high-res motion and sound, and on-chain as a 7,777-piece NFT collection on the Cronos chain via Crypto.com NFT: 7,700 main collection NFTs plus 77 Immortals motion portrait NFTs.',
+      'Immortals sit at the rarest layer of the world, while the main drop is available to collectors via the NFT tab.'
+    ]
+  }
+];
+
+const ABOUT_TEASER_URL = 'https://www.youtube.com/embed/0j9Vhhuz5PA';
+const ABOUT_CTA_NOTE = 'Pick where to enter: characters through IMMORTALS, process through ARCHIVE, or the sound of the world through the OST.';
 
 function getPortalById(id) {
   return PORTALS.find(p => p.id === id);
@@ -778,6 +851,7 @@ const DOM = {
   shopBtn: document.getElementById('shopBtn'),
   immBtn: document.getElementById('immBtn'),
   arcBtn: document.getElementById('arcBtn'),
+  aboutBtn: document.getElementById('aboutBtn'),
   nftBtn: document.getElementById('nftBtn'),
   homeBtn: document.getElementById('homeBtn'),
   charModal: document.getElementById('charModal'),
@@ -998,11 +1072,17 @@ if (DOM.spBtn) DOM.spBtn.href = SPOTIFY_URL;
 if (DOM.ytBtn) DOM.ytBtn.href = YOUTUBE_URL;
 if (DOM.nftBtn) {
   DOM.nftBtn.href = NFT_URL;
-  if (NFT_URL === '#') {
-    DOM.nftBtn.classList.add('disabled');
-  } else {
+  const isDisabled = NFT_URL === '#';
+  DOM.nftBtn.classList.toggle('disabled', isDisabled);
+  if (isDisabled) {
+    DOM.nftBtn.removeAttribute('target');
+    DOM.nftBtn.removeAttribute('rel');
+  } else if (/^(?:https?:)?\/\//i.test(NFT_URL)) {
     DOM.nftBtn.setAttribute('target', '_blank');
     DOM.nftBtn.setAttribute('rel', 'noopener');
+  } else {
+    DOM.nftBtn.removeAttribute('target');
+    DOM.nftBtn.removeAttribute('rel');
   }
 }
 if (DOM.twBtn) DOM.twBtn.href = TWITTER_URL;
@@ -1136,7 +1216,8 @@ function handleInitialViewRequest() {
 
   const actions = {
     immortals: () => openImmortals(),
-    archive: () => openArchive()
+    archive: () => openArchive(),
+    about: () => renderAboutView()
   };
 
   const action = actions[viewParam];
@@ -1284,6 +1365,7 @@ function createTodayHeroCard(entry) {
 
 async function renderTodayGallery() {
   if (!DOM.stage) return;
+  DOM.stage.classList.remove('stage--about');
   DOM.stage.classList.add('stage--hero');
   DOM.stage.innerHTML = '<div class="today-loading">Loading...</div>';
   try {
@@ -1331,6 +1413,200 @@ async function renderTodayGallery() {
     error.textContent = 'Unable to load art right now.';
     DOM.stage.innerHTML = '';
     DOM.stage.appendChild(error);
+  }
+}
+
+function collectAboutStats() {
+  return ABOUT_STATS.map((stat) => ({ ...stat }));
+}
+
+function navigateAboutAction(action, source = 'about-cta') {
+  switch (action) {
+    case 'immortals':
+      handleImmortalsEntryRequest(source);
+      break;
+    case 'archive':
+      playTransitionOverlay(() => openArchive(), NAV_OVERLAY_DEFAULTS);
+      break;
+    case 'music':
+      window.location.href = 'music.html';
+      break;
+    case 'nft': {
+      const target = NFT_URL && NFT_URL !== '#' ? NFT_URL : 'nft.html';
+      window.location.href = target;
+      break;
+    }
+    default:
+      break;
+  }
+}
+
+async function renderAboutView() {
+  if (!DOM.stage) return;
+  DOM.stage.classList.remove('stage--hero');
+  DOM.stage.classList.add('stage--about');
+  DOM.stage.innerHTML = '';
+
+  const section = document.createElement('section');
+  section.className = 'about';
+
+  const hero = document.createElement('header');
+  hero.className = 'about-hero';
+  const heroEyebrow = document.createElement('p');
+  heroEyebrow.className = 'about-eyebrow';
+  heroEyebrow.textContent = ABOUT_HERO.eyebrow;
+  hero.appendChild(heroEyebrow);
+
+  const heroTitle = document.createElement('h1');
+  heroTitle.textContent = ABOUT_HERO.title || ABOUT_HERO.line;
+  hero.appendChild(heroTitle);
+  if (Array.isArray(ABOUT_HERO.sublines)) {
+    ABOUT_HERO.sublines.forEach((text) => {
+      if (!text) return;
+      const sub = document.createElement('p');
+      sub.className = 'about-subhead';
+      sub.textContent = text;
+      hero.appendChild(sub);
+    });
+  }
+  section.appendChild(hero);
+
+  const teaser = document.createElement('div');
+  teaser.className = 'about-teaser';
+  const teaserFrame = document.createElement('div');
+  teaserFrame.className = 'about-teaser__frame';
+  const teaserIframe = document.createElement('iframe');
+  teaserIframe.src = ABOUT_TEASER_URL;
+  teaserIframe.title = 'MOTTO 7777 teaser';
+  teaserIframe.setAttribute('frameborder', '0');
+  teaserIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+  teaserIframe.setAttribute('allowfullscreen', '');
+  teaserFrame.appendChild(teaserIframe);
+  teaser.appendChild(teaserFrame);
+  section.appendChild(teaser);
+
+  const credits = document.createElement('div');
+  credits.className = 'about-credits';
+  ABOUT_CREDITS.forEach((line, idx) => {
+    const p = document.createElement('p');
+    p.textContent = line;
+    if (idx === 0) {
+      p.classList.add('about-credits__lead');
+    }
+    credits.appendChild(p);
+  });
+  section.appendChild(credits);
+
+  const statsWrap = document.createElement('div');
+  statsWrap.className = 'about-stats';
+  collectAboutStats().forEach((stat) => {
+    const card = document.createElement('div');
+    card.className = 'about-stat';
+
+    const label = document.createElement('span');
+    label.className = 'about-stat-label';
+    label.textContent = stat.label;
+    card.appendChild(label);
+
+    const value = document.createElement('strong');
+    value.className = 'about-stat-value';
+    value.textContent = stat.value;
+    card.appendChild(value);
+
+    const caption = document.createElement('span');
+    caption.className = 'about-stat-caption';
+    caption.textContent = stat.caption;
+    card.appendChild(caption);
+
+    statsWrap.appendChild(card);
+  });
+  section.appendChild(statsWrap);
+
+  if (ABOUT_LORE.length) {
+    const loreWrap = document.createElement('div');
+    loreWrap.className = 'about-lore';
+    ABOUT_LORE.forEach((text) => {
+      if (!text) return;
+      const p = document.createElement('p');
+      p.className = 'about-main-copy';
+      p.textContent = text;
+      loreWrap.appendChild(p);
+    });
+    section.appendChild(loreWrap);
+  }
+
+  const summary = document.createElement('div');
+  summary.className = 'about-summary';
+  const summaryP = document.createElement('p');
+  summaryP.className = 'about-main-copy';
+  summaryP.textContent = ABOUT_SUMMARY;
+  summary.appendChild(summaryP);
+  section.appendChild(summary);
+
+  const grid = document.createElement('div');
+  grid.className = 'about-grid';
+  ABOUT_PILLARS.forEach((pillar) => {
+    const card = document.createElement('article');
+    card.className = 'about-card';
+
+    if (pillar.eyebrow) {
+      const eyebrow = document.createElement('p');
+      eyebrow.className = 'about-card-eyebrow';
+      eyebrow.textContent = pillar.eyebrow;
+      card.appendChild(eyebrow);
+    }
+
+    const title = document.createElement('h3');
+    title.textContent = pillar.title;
+    card.appendChild(title);
+
+    const bodyLines = Array.isArray(pillar.body)
+      ? pillar.body
+      : pillar.body
+        ? [pillar.body]
+        : [];
+    bodyLines.forEach((text) => {
+      const copy = document.createElement('p');
+      copy.textContent = text;
+      card.appendChild(copy);
+    });
+
+    grid.appendChild(card);
+  });
+  section.appendChild(grid);
+
+  const ctaNote = document.createElement('p');
+  ctaNote.className = 'about-cta-note';
+  ctaNote.textContent = ABOUT_CTA_NOTE;
+  section.appendChild(ctaNote);
+
+  const ctas = [
+    { label: 'ENTER IMMORTALS', action: 'immortals' },
+    { label: 'BROWSE ARCHIVE', action: 'archive' },
+    { label: 'LISTEN TO OST', action: 'music' },
+    { label: 'GO TO NFT DROP', action: 'nft' }
+  ];
+
+  const actions = document.createElement('div');
+  actions.className = 'about-actions';
+  ctas.forEach((cta) => {
+    const node = document.createElement('button');
+    node.className = 'about-btn';
+    node.type = 'button';
+    node.textContent = cta.label;
+    node.addEventListener('click', (e) => {
+      e.preventDefault();
+      navigateAboutAction(cta.action, 'about-cta');
+    });
+
+    actions.appendChild(node);
+  });
+  section.appendChild(actions);
+
+  DOM.stage.innerHTML = '';
+  DOM.stage.appendChild(section);
+  if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
@@ -1382,6 +1658,7 @@ let portalObserver = null;
 
 function spawnPortals() {
   DOM.stage?.classList.remove('stage--hero');
+  DOM.stage?.classList.remove('stage--about');
   if (portalObserver) {
     portalObserver.disconnect();
     portalObserver = null;
@@ -3182,6 +3459,27 @@ DOM.immBtn?.addEventListener('click', (e) => {
 DOM.arcBtn?.addEventListener('click', (e) => {
   e.preventDefault();
   playTransitionOverlay(() => openArchive(), NAV_OVERLAY_DEFAULTS);
+});
+DOM.aboutBtn?.addEventListener('click', (e) => {
+  e.preventDefault();
+  const openAbout = () => {
+    trackEvent('Nav', 'Open', 'About');
+    playTransitionOverlay(() => {
+      closeArchiveDetail();
+      document.querySelectorAll('.modal').forEach((mod) => closeModal(mod, { reopenImm: false }));
+      renderAboutView();
+    }, NAV_OVERLAY_DEFAULTS);
+  };
+
+  if (MAIN_BOOTED) {
+    openAbout();
+    return;
+  }
+  ensureMainReady()
+    .then(() => openAbout())
+    .catch((err) => {
+      console.error('Failed to open About view:', err);
+    });
 });
 
 let brandGlitchTimer = null;
