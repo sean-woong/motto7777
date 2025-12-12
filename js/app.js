@@ -13,7 +13,7 @@ const SHOP_URL = '#';
 const TWITTER_URL = 'https://x.com/motto_7777';
 const IG_URL = 'https://www.instagram.com/mottttooooooo/';
 const TT_URL = 'https://www.youtube.com/@motto_7777';
-const NFT_URL = 'nft.html';
+const NFT_COLLECTION_URL = 'https://crypto.com/nft/collection/e5d6b1c9197704a5cca12036062263f2?tab=items';
 
 // ====== Build Version ======
 const SCRIPT_VERSION = (() => {
@@ -170,7 +170,7 @@ const ABOUT_HERO = Object.freeze({
 });
 
 const ABOUT_CREDITS = Object.freeze([
-  'Created by Sean Woong (oo.sean) & Haz Haus',
+  'Created by Sean Woong & Haz Haus',
   'Worldbuilding · Sean Woong & Haz Haus',
   'Visual direction · Sean Woong',
   'Music & sound direction · Haz Haus'
@@ -178,16 +178,16 @@ const ABOUT_CREDITS = Object.freeze([
 
 const ABOUT_STATS = Object.freeze([
   { label: 'IMMORTALS', value: '77', caption: 'Motion portrait NFTs at the visible core of MOTTO 7777.' },
-  { label: 'PACKS', value: '7', caption: 'Skull, Motorcycle, Rockstar, Boxer, Drag, Dealer, Military.' },
+  { label: 'PACKS', value: '7', caption: 'Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer.' },
   { label: 'OST', value: '7', caption: 'Original tracks by Haz Haus & oo.sean.' },
   { label: 'SUPPLY', value: '7,777', caption: '7,700 main collection NFTs + 77 Immortals motion portrait NFTs.' }
 ]);
 
-const ABOUT_SUMMARY = 'This site is the main stage and archive for MOTTO 7777, a Cronos-based NFT project. Immortals show the core motion portrait NFTs, the archive holds posters and behind-the-scenes work, and the OST keeps the world moving in the background. The NFT tab links straight to the full 7,777-piece collection on Crypto.com NFT — 7,700 main collection NFTs plus 77 Immortals motion portrait NFTs.';
+const ABOUT_SUMMARY = 'This site is the main stage and archive for MOTTO 7777. Immortals show the core motion portrait NFTs, the archive holds posters and behind-the-scenes work, and the OST keeps the world moving in the background. The NFT tab links straight to the full 7,777-piece collection on Crypto.com NFT.';
 
 const ABOUT_LORE = Object.freeze([
-  'In the year 7,777, humanity’s last echoes dissolve into glitch and loop. Seven archetypes — Skull, Motorcycle, Rockstar, Drag, Military, Dealer, Boxer — drift through signal, circuit, and emotion. Their identities fragment and repeat, asking a simple question: what remains when memory fractures?',
-  'MOTTO 7777 lives on sevens — set in the year 7,777, shaped by seven archetypes, 7,777 NFTs, and a 7-track OST that scores this world.',
+  'In the year 7,777, humanity’s last echoes dissolve into glitch and loop. Seven archetypes — Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer — drift through signal, circuit, and emotion. Their identities fragment and repeat, asking a simple question: what remains when memory fractures?',
+  'MOTTO 7777 lives on sevens — set in the year 7,777, shaped by seven archetypes, 7,777 NFTs, and a 7-track OST that scores this world. The 7,700-piece MOTTO pack is a curated generative set of hand-drawn helmets, riders and glitches spread across those seven archetypes.',
   'The 77 Immortals are animated motion portrait NFTs that sit at the core of MOTTO 7777. Each Immortal loops an 8-bit reimagining of the original MOTTO OST, as if the soundtrack survived only as game-console memory. Within the 77, seven Legend pieces form the innermost core: images that refuse to fade, replaying the question of who stays, who is erased, and who turns into myth.'
 ]);
 
@@ -224,8 +224,8 @@ const ABOUT_PILLARS = [
     eyebrow: 'DROPS / COLLECTORS',
     title: 'DROPS / COLLECTORS',
     body: [
-      'MOTTO 7777 lives here as high-res motion and sound, and on-chain as a 7,777-piece NFT collection on the Cronos chain via Crypto.com NFT: 7,700 main collection NFTs plus 77 Immortals motion portrait NFTs.',
-      'Immortals sit at the rarest layer of the world, while the main drop is available to collectors via the NFT tab.'
+      'MOTTO 7777 lives here as high-res motion and sound, and on-chain as a 7,777-piece NFT collection on the Cronos chain via Crypto.com NFT. The main MOTTO pack holds 7,700 hand-built generative portraits, with 77 Immortal motion portraits sitting at the top layer.',
+      'Immortals are the rarest visible layer of the world, while the main drop is available to collectors via the NFT tab.'
     ]
   }
 ];
@@ -1070,21 +1070,6 @@ function openModal(target, opts = {}) {
 // ====== Link Setup ======
 if (DOM.spBtn) DOM.spBtn.href = SPOTIFY_URL;
 if (DOM.ytBtn) DOM.ytBtn.href = YOUTUBE_URL;
-if (DOM.nftBtn) {
-  DOM.nftBtn.href = NFT_URL;
-  const isDisabled = NFT_URL === '#';
-  DOM.nftBtn.classList.toggle('disabled', isDisabled);
-  if (isDisabled) {
-    DOM.nftBtn.removeAttribute('target');
-    DOM.nftBtn.removeAttribute('rel');
-  } else if (/^(?:https?:)?\/\//i.test(NFT_URL)) {
-    DOM.nftBtn.setAttribute('target', '_blank');
-    DOM.nftBtn.setAttribute('rel', 'noopener');
-  } else {
-    DOM.nftBtn.removeAttribute('target');
-    DOM.nftBtn.removeAttribute('rel');
-  }
-}
 if (DOM.twBtn) DOM.twBtn.href = TWITTER_URL;
 if (DOM.igBtn && IG_URL !== '#') DOM.igBtn.href = IG_URL;
 if (DOM.ttBtn && TT_URL !== '#') DOM.ttBtn.href = TT_URL;
@@ -1167,6 +1152,21 @@ const NAV_OVERLAY_DEFAULTS = Object.freeze({
   revealDelay: 240
 });
 
+function resetStageForView() {
+  try {
+    closeArchiveDetail();
+  } catch (err) {
+    console.warn('Failed to close archive detail before view change:', err);
+  }
+  try {
+    document.querySelectorAll('.modal').forEach((mod) => {
+      closeModal(mod, { reopenImm: false });
+    });
+  } catch (err) {
+    console.warn('Failed to close modal before view change:', err);
+  }
+}
+
 function fastExitIntro() {
   if (DOM.intro) {
     DOM.intro.classList.add('intro--exit');
@@ -1217,7 +1217,11 @@ function handleInitialViewRequest() {
   const actions = {
     immortals: () => openImmortals(),
     archive: () => openArchive(),
-    about: () => renderAboutView()
+    about: () => renderAboutView(),
+    nft: () => {
+      resetStageForView();
+      renderNftView();
+    }
   };
 
   const action = actions[viewParam];
@@ -1366,6 +1370,7 @@ function createTodayHeroCard(entry) {
 async function renderTodayGallery() {
   if (!DOM.stage) return;
   DOM.stage.classList.remove('stage--about');
+  DOM.stage.classList.remove('stage--nft');
   DOM.stage.classList.add('stage--hero');
   DOM.stage.innerHTML = '<div class="today-loading">Loading...</div>';
   try {
@@ -1431,11 +1436,9 @@ function navigateAboutAction(action, source = 'about-cta') {
     case 'music':
       window.location.href = 'music.html';
       break;
-    case 'nft': {
-      const target = NFT_URL && NFT_URL !== '#' ? NFT_URL : 'nft.html';
-      window.location.href = target;
+    case 'nft':
+      openNftView(source);
       break;
-    }
     default:
       break;
   }
@@ -1444,6 +1447,7 @@ function navigateAboutAction(action, source = 'about-cta') {
 async function renderAboutView() {
   if (!DOM.stage) return;
   DOM.stage.classList.remove('stage--hero');
+  DOM.stage.classList.remove('stage--nft');
   DOM.stage.classList.add('stage--about');
   DOM.stage.innerHTML = '';
 
@@ -1610,6 +1614,176 @@ async function renderAboutView() {
   }
 }
 
+function renderNftView() {
+  if (!DOM.stage) return;
+  DOM.stage.classList.remove('stage--hero');
+  DOM.stage.classList.remove('stage--about');
+  DOM.stage.classList.add('stage--nft');
+  DOM.stage.innerHTML = '';
+
+  const root = document.createElement('section');
+  root.className = 'nft-root';
+  root.setAttribute('aria-labelledby', 'nft-title');
+
+  const hero = document.createElement('section');
+  hero.className = 'nft-hero';
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'nft-eyebrow';
+  eyebrow.textContent = 'NFT';
+  hero.appendChild(eyebrow);
+
+  const heroTitle = document.createElement('h1');
+  heroTitle.id = 'nft-title';
+  heroTitle.textContent = 'MOTTO 7777 · NFT DROP';
+  hero.appendChild(heroTitle);
+
+  const heroSubtext = document.createElement('p');
+  heroSubtext.className = 'nft-subtext';
+  heroSubtext.textContent = 'Survival Battle: MOTTO 7777 on the Cronos chain via Crypto.com NFT.';
+  hero.appendChild(heroSubtext);
+
+  const heroIntro = document.createElement('p');
+  heroIntro.className = 'nft-intro';
+  heroIntro.textContent = 'MOTTO 7777 is an audio-visual Cronos collection by Sean Woong and Haz Haus. Seven archetypes, 7,777 NFTs and a 7-track OST are tied into one world called “Survival Battle: MOTTO 7777.”';
+  hero.appendChild(heroIntro);
+
+  root.appendChild(hero);
+
+  const content = document.createElement('div');
+  content.className = 'nft-content';
+
+  const makeSection = (titleText) => {
+    const section = document.createElement('section');
+    section.className = 'nft-section';
+    if (titleText) {
+      const heading = document.createElement('h2');
+      heading.textContent = titleText;
+      section.appendChild(heading);
+    }
+    return section;
+  };
+
+  const mainSection = makeSection('Main drop — MOTTO pack (7,700)');
+  [
+    'The main drop is a 7,700-piece MOTTO pack drawn by Sean Woong. Each NFT is a hand-drawn composite portrait built from helmets, riders, suits, glitches and backgrounds across the seven archetypes.',
+    'Traits are assembled through a generative system, then curated down into 7,700 final pieces — not auto-generated noise, but a selected layer of the world.'
+  ].forEach((text) => {
+    const p = document.createElement('p');
+    p.textContent = text;
+    mainSection.appendChild(p);
+  });
+  content.appendChild(mainSection);
+
+  const immortalsSection = makeSection('Immortals & legends (77)');
+  [
+    'Alongside the MOTTO pack, 77 Immortal NFTs sit at the core of MOTTO 7777. They are animated motion portraits that loop an 8-bit reimagining of the original MOTTO OST, as if the soundtrack survived only as game-console memory.',
+    'Within the 77, seven Legend pieces form the innermost core — images that refuse to fade, replaying the question of who stays, who is erased, and who turns into myth.'
+  ].forEach((text) => {
+    const p = document.createElement('p');
+    p.textContent = text;
+    immortalsSection.appendChild(p);
+  });
+  content.appendChild(immortalsSection);
+
+  const rulesSection = makeSection('Game rules — Survival Battle');
+  const rulesIntro = document.createElement('p');
+  rulesIntro.textContent = 'Total supply is 7,777 NFTs across the collection: 7,700 MOTTO pack NFTs plus 77 Immortals and legends. The pack is where the Survival Battle rules actually move.';
+  rulesSection.appendChild(rulesIntro);
+
+  const rulesLabel = document.createElement('p');
+  const strong = document.createElement('strong');
+  strong.textContent = 'Key rules:';
+  rulesLabel.appendChild(strong);
+  rulesSection.appendChild(rulesLabel);
+
+  const rulesList = document.createElement('ul');
+  rulesList.className = 'nft-list';
+  [
+    'Two weeks after the drop window closes, 50% of the MOTTO pack (non-Immortals) will be updated on-chain with “Killed in Action” (KIA) artwork.',
+    'Until that KIA update, all assets can be traded freely inside the “Survival Battle: MOTTO 7777” collection on Crypto.com NFT.',
+    'After the KIA update, these NFTs will not be withdrawable outside Crypto.com NFT. Check the official event details on Crypto.com for the full terms.'
+  ].forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    rulesList.appendChild(li);
+  });
+  rulesSection.appendChild(rulesList);
+  content.appendChild(rulesSection);
+
+  const utilitySection = makeSection('Holder utilities');
+  const utilityCopy = document.createElement('p');
+  utilityCopy.textContent = 'MOTTO 7777 NFTs come with more than just artwork. Holders can expect utilities such as soundtrack download access, future mini-game entries, occasional physical merchandise packages, and future governance-related rewards. Exact amounts, conditions and timelines are explained on Crypto.com NFT and in the official “Motto 7777 NFT Collection – Reward Utility Terms & Conditions.”';
+  utilitySection.appendChild(utilityCopy);
+  content.appendChild(utilitySection);
+
+  const ctaSection = makeSection('');
+  ctaSection.classList.add('nft-cta-section');
+  const ctaCopy = document.createElement('p');
+  ctaCopy.className = 'nft-cta-copy';
+  ctaCopy.textContent = 'Enter the drop from here — view the full collection while the rest of the site stays active.';
+  ctaSection.appendChild(ctaCopy);
+  const ctaRow = document.createElement('div');
+  ctaRow.className = 'nft-cta-row';
+  const ctaLink = document.createElement('a');
+  ctaLink.className = 'nft-cta nft-cta--primary';
+  ctaLink.href = NFT_COLLECTION_URL;
+  ctaLink.target = '_blank';
+  ctaLink.rel = 'noopener';
+  ctaLink.textContent = 'View collection on Crypto.com NFT';
+  ctaRow.appendChild(ctaLink);
+  ctaSection.appendChild(ctaRow);
+  content.appendChild(ctaSection);
+
+  root.appendChild(content);
+  DOM.stage.appendChild(root);
+
+  if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function openAboutSection(source = 'nav-link') {
+  const open = () => {
+    trackEvent('Nav', 'Open', `About:${source}`);
+    playTransitionOverlay(() => {
+      resetStageForView();
+      renderAboutView();
+    }, NAV_OVERLAY_DEFAULTS);
+  };
+
+  if (MAIN_BOOTED) {
+    open();
+    return;
+  }
+
+  ensureMainReady()
+    .then(() => open())
+    .catch((err) => {
+      console.error('Failed to open About view:', err);
+    });
+}
+
+function openNftView(source = 'nav-link') {
+  const open = () => {
+    trackEvent('Nav', 'Open', `NFT:${source}`);
+    playTransitionOverlay(() => {
+      resetStageForView();
+      renderNftView();
+    }, NAV_OVERLAY_DEFAULTS);
+  };
+
+  if (MAIN_BOOTED) {
+    open();
+    return;
+  }
+
+  ensureMainReady()
+    .then(() => open())
+    .catch((err) => {
+      console.error('Failed to open NFT view:', err);
+    });
+}
+
 function handleImmortalsEntryRequest(source = 'nav') {
   const runAction = () => {
     const action = isImmortalsUnlocked()
@@ -1659,6 +1833,7 @@ let portalObserver = null;
 function spawnPortals() {
   DOM.stage?.classList.remove('stage--hero');
   DOM.stage?.classList.remove('stage--about');
+  DOM.stage?.classList.remove('stage--nft');
   if (portalObserver) {
     portalObserver.disconnect();
     portalObserver = null;
@@ -3446,11 +3621,7 @@ function trackEvent(category, action, label) {
 
 DOM.homeBtn?.addEventListener('click', (e) => {
   e.preventDefault();
-  playTransitionOverlay(() => {
-    closeArchiveDetail();
-    document.querySelectorAll('.modal').forEach(mod => closeModal(mod, { reopenImm: false }));
-    renderTodayGallery();
-  }, NAV_OVERLAY_DEFAULTS);
+  openAboutSection('brand-home');
 });
 DOM.immBtn?.addEventListener('click', (e) => {
   e.preventDefault();
@@ -3462,24 +3633,11 @@ DOM.arcBtn?.addEventListener('click', (e) => {
 });
 DOM.aboutBtn?.addEventListener('click', (e) => {
   e.preventDefault();
-  const openAbout = () => {
-    trackEvent('Nav', 'Open', 'About');
-    playTransitionOverlay(() => {
-      closeArchiveDetail();
-      document.querySelectorAll('.modal').forEach((mod) => closeModal(mod, { reopenImm: false }));
-      renderAboutView();
-    }, NAV_OVERLAY_DEFAULTS);
-  };
-
-  if (MAIN_BOOTED) {
-    openAbout();
-    return;
-  }
-  ensureMainReady()
-    .then(() => openAbout())
-    .catch((err) => {
-      console.error('Failed to open About view:', err);
-    });
+  openAboutSection('nav-link');
+});
+DOM.nftBtn?.addEventListener('click', (e) => {
+  e.preventDefault();
+  openNftView('nav-link');
 });
 
 let brandGlitchTimer = null;

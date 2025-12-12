@@ -6,16 +6,31 @@
 .nft-root {
   min-height: calc(100vh - 80px);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: clamp(40px, 6vw, 72px);
   padding: clamp(80px, 12vw, 160px) clamp(20px, 8vw, 80px);
 }
+.stage--nft .nft-root {
+  padding: 0;
+  min-height: 0;
+  width: 100%;
+}
 .nft-hero {
-  max-width: 720px;
+  max-width: 760px;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 18px;
+  margin: 0 auto;
+}
+.stage--nft .nft-hero {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+.stage--nft .nft-eyebrow,
+.stage--nft .nft-hero h1 {
+  text-align: left;
 }
 .nft-eyebrow {
   margin: 0;
@@ -36,6 +51,46 @@
   line-height: 1.6;
   color: var(--color-about-muted);
 }
+.nft-intro {
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.7;
+  color: var(--color-fg);
+}
+.nft-content {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5vw, 56px);
+}
+.nft-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.nft-section h2 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.nft-section p {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--color-fg);
+}
+.nft-list {
+  margin: 0;
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--color-fg);
+}
+.nft-list li {
+  line-height: 1.7;
+}
 .nft-cta {
   align-self: center;
   margin-top: 10px;
@@ -49,6 +104,31 @@
   font-size: 12px;
   background: rgba(255,0,170,.08);
   transition: transform var(--dur-short) var(--ease-standard), box-shadow var(--dur-short) var(--ease-standard);
+}
+.stage--nft .nft-cta {
+  align-self: flex-start;
+}
+.nft-cta--primary {
+  background: rgba(255,0,170,.18);
+  border-width: 2px;
+}
+.nft-cta--secondary {
+  background: transparent;
+  border-color: rgba(255,255,255,.4);
+}
+.nft-cta-section {
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: clamp(20px, 4vw, 36px);
+}
+.nft-cta-copy {
+  margin: 0 0 18px;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.6;
+}
+.nft-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 .nft-cta:hover,
 .nft-cta:focus-visible {
@@ -68,8 +148,14 @@
   .nft-hero h1 {
     text-align: left;
   }
+  .nft-content {
+    gap: 28px;
+  }
   .nft-cta {
     width: 100%;
     justify-content: center;
+  }
+  .nft-cta-row {
+    flex-direction: column;
   }
 }

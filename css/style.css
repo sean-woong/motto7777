@@ -616,7 +616,8 @@ body.cursor-target {
 .today-loading {
   animation: todayPulse 1.6s ease-in-out infinite;
 }
-.stage--about {
+.stage--about,
+.stage--nft {
   display: block;
   padding: clamp(90px, 10vw, 150px) clamp(24px, 7vw, 64px) clamp(170px, 14vw, 210px);
   max-width: min(1080px, 92vw);
@@ -832,7 +833,8 @@ body.cursor-target {
     max-width: min(960px, 94vw);
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .stage.stage--about {
+  .stage.stage--about,
+  .stage.stage--nft {
     padding: clamp(72px, 14vw, 120px) clamp(16px, 9vw, 38px) clamp(150px, 20vw, 210px);
     max-width: 100%;
   }
@@ -859,7 +861,8 @@ body.cursor-target {
     padding: clamp(70px, 16vw, 120px) clamp(18px, 8vw, 32px);
     max-width: 100%;
   }
-  .stage.stage--about {
+  .stage.stage--about,
+  .stage.stage--nft {
     padding: clamp(60px, 18vw, 110px) clamp(14px, 8vw, 26px) clamp(130px, 22vw, 180px);
   }
   .about-grid {
