@@ -1784,6 +1784,27 @@ function openNftView(source = 'nav-link') {
     });
 }
 
+function openHomeStage(source = 'nav-home') {
+  const open = () => {
+    trackEvent('Nav', 'Open', `Home:${source}`);
+    playTransitionOverlay(() => {
+      resetStageForView();
+      renderTodayGallery();
+    }, NAV_OVERLAY_DEFAULTS);
+  };
+
+  if (MAIN_BOOTED) {
+    open();
+    return;
+  }
+
+  ensureMainReady()
+    .then(() => open())
+    .catch((err) => {
+      console.error('Failed to open home stage:', err);
+    });
+}
+
 function handleImmortalsEntryRequest(source = 'nav') {
   const runAction = () => {
     const action = isImmortalsUnlocked()
@@ -3621,7 +3642,7 @@ function trackEvent(category, action, label) {
 
 DOM.homeBtn?.addEventListener('click', (e) => {
   e.preventDefault();
-  openAboutSection('brand-home');
+  openHomeStage('brand-home');
 });
 DOM.immBtn?.addEventListener('click', (e) => {
   e.preventDefault();
