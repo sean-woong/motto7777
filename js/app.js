@@ -92,7 +92,6 @@ let IMM_TAG_OPTIONS = [];
 let immDataPromise = null;
 let immDataError = null;
 
-const ARCHIVE_BACKDROP_CACHE = new Map();
 function normalizeImmItem(item = {}) {
   const clone = { ...item };
   const tags = Array.isArray(clone.tags) ? clone.tags.slice() : [];
@@ -425,186 +424,6 @@ function sampleAverageColor(drawable, width, height) {
   ];
 }
 
-function computeAverageColorFromImage(src) {
-  return new Promise((resolve) => {
-    if (!src) {
-      resolve(null);
-      return;
-    }
-    const img = new Image();
-    if (!/^data:/i.test(src)) {
-      img.crossOrigin = 'anonymous';
-    }
-    const cleanup = () => {
-      img.onload = null;
-      img.onerror = null;
-    };
-    const handleReady = () => {
-      cleanup();
-      try {
-        const color = sampleAverageColor(img, img.naturalWidth || img.width, img.naturalHeight || img.height);
-        resolve(color);
-      } catch (err) {
-        console.warn('Image sampling failed:', err);
-        resolve(null);
-      }
-    };
-    img.onload = handleReady;
-    img.onerror = () => {
-      cleanup();
-      resolve(null);
-    };
-    img.src = src;
-    if (img.complete && (img.naturalWidth || img.width)) {
-      handleReady();
-    }
-  });
-}
-
-function computeAverageColorFromVideo(src) {
-  return new Promise((resolve) => {
-    if (!src) {
-      resolve(null);
-      return;
-    }
-    const video = document.createElement('video');
-    if (!/^data:/i.test(src)) {
-      video.crossOrigin = 'anonymous';
-    }
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'auto';
-    let settled = false;
-    let timeoutId = null;
-    const cleanup = () => {
-      video.removeEventListener('loadeddata', handleLoaded);
-      video.removeEventListener('error', handleError);
-      video.pause();
-      video.removeAttribute('src');
-      video.load();
-    };
-    const settle = (color) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timeoutId);
-      cleanup();
-      resolve(color);
-    };
-    const handleLoaded = () => {
-      try {
-        const color = sampleAverageColor(video, video.videoWidth || video.width, video.videoHeight || video.height);
-        settle(color);
-      } catch (err) {
-        console.warn('Video sampling failed:', err);
-        settle(null);
-      }
-    };
-    const handleError = () => settle(null);
-    video.addEventListener('loadeddata', handleLoaded, { once: true });
-    video.addEventListener('error', handleError, { once: true });
-    video.src = src;
-    video.load();
-    timeoutId = setTimeout(() => settle(null), 2000);
-  });
-}
-
-function mixChannel(channel, target, weight) {
-  return Math.max(0, Math.min(255, Math.round(channel + (target - channel) * weight)));
-}
-
-function lightenColor(rgb, weight = 0.3) {
-  return rgb.map((channel) => mixChannel(channel, 255, weight));
-}
-
-function darkenColor(rgb, weight = 0.4) {
-  return rgb.map((channel) => mixChannel(channel, 0, weight));
-}
-
-function toRgba(rgb, alpha = 1) {
-  const [r, g, b] = rgb.map((channel) => Math.max(0, Math.min(255, Math.round(channel))));
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-function escapeCssUrl(input) {
-  return (input || '').replace(/["\\]/g, '\\$&');
-}
-
-function buildArchiveBackdropValue(color, src) {
-  const accent = lightenColor(color, 0.35);
-  const shadow = darkenColor(color, 0.6);
-  const gradient = `linear-gradient(125deg, ${toRgba(accent, 0.45)} 0%, ${toRgba(shadow, 0.94)} 100%)`;
-  const imageLayer = src ? `, url("${escapeCssUrl(src)}") center / cover no-repeat` : '';
-  return {
-    imageValue: `${gradient}${imageLayer}`,
-    accentValue: toRgba(accent, 0.55)
-  };
-}
-
-function deriveArchiveBackdrop(src, { isVideo } = {}) {
-  if (!src) return Promise.resolve(null);
-  const key = `${isVideo ? 'v' : 'i'}:${src}`;
-  if (ARCHIVE_BACKDROP_CACHE.has(key)) {
-    const cached = ARCHIVE_BACKDROP_CACHE.get(key);
-    return cached instanceof Promise ? cached : Promise.resolve(cached);
-  }
-  const loader = (isVideo ? computeAverageColorFromVideo(src) : computeAverageColorFromImage(src))
-    .then((rgb) => {
-      if (!rgb) {
-        ARCHIVE_BACKDROP_CACHE.set(key, null);
-        return null;
-      }
-      const values = buildArchiveBackdropValue(rgb, src);
-      ARCHIVE_BACKDROP_CACHE.set(key, values);
-      return values;
-    })
-    .catch((err) => {
-      console.warn('Backdrop derive failed:', err);
-      ARCHIVE_BACKDROP_CACHE.set(key, null);
-      return null;
-    });
-  ARCHIVE_BACKDROP_CACHE.set(key, loader);
-  return loader;
-}
-
-function applyArchiveBackdrop(container, { src, isVideo } = {}) {
-  if (!container) return;
-  const token = Symbol('backdrop');
-  container._backdropToken = token;
-  container.style.removeProperty('--archive-detail-image');
-  container.style.removeProperty('--archive-detail-accent');
-  if (!src) return;
-  deriveArchiveBackdrop(src, { isVideo }).then((values) => {
-    if (!values || container._backdropToken !== token) return;
-    if (values.imageValue) {
-      container.style.setProperty('--archive-detail-image', values.imageValue);
-    }
-    if (values.accentValue) {
-      container.style.setProperty('--archive-detail-accent', values.accentValue);
-    }
-  });
-}
-
-function updateArchiveOrientation(container, mediaEl) {
-  if (!container || !mediaEl) return;
-  let width = 0;
-  let height = 0;
-  if (mediaEl.tagName === 'IMG') {
-    width = mediaEl.naturalWidth || mediaEl.width;
-    height = mediaEl.naturalHeight || mediaEl.height;
-  } else if (mediaEl.tagName === 'VIDEO') {
-    width = mediaEl.videoWidth || mediaEl.clientWidth;
-    height = mediaEl.videoHeight || mediaEl.clientHeight;
-  }
-  if (!width || !height) return;
-  const delta = Math.abs(width - height);
-  const orientation = delta / Math.max(width, height) < 0.08
-    ? 'square'
-    : width > height
-      ? 'landscape'
-      : 'portrait';
-  container.dataset.orientation = orientation;
-}
-
 function sanitizeImmTags(tags) {
   if (!tags) return [];
   if (Array.isArray(tags)) {
@@ -880,10 +699,13 @@ const DOM = {
   immIndex: document.getElementById('immIndex'),
   arcModal: document.getElementById('archiveModal'),
   arcGrid: document.getElementById('archiveGrid'),
-  arcDetail: document.getElementById('archiveDetail'),
-  arcDetailGuide: document.getElementById('archiveDetailGuide'),
-  arcDetailMedia: document.getElementById('archiveDetailMedia'),
-  arcDetailCaption: document.getElementById('archiveDetailCaption')
+  arcFilterButtons: document.querySelectorAll('[data-archive-filter]'),
+  arcSpotlightToggle: document.getElementById('archiveSpotlightToggle'),
+  arcShuffle: document.getElementById('archiveShuffle'),
+  arcStatTotal: document.getElementById('archiveStatTotal'),
+  arcStatMotion: document.getElementById('archiveStatMotion'),
+  arcStatStill: document.getElementById('archiveStatStill'),
+  arcTimelineItems: document.querySelectorAll('[data-archive-jump]')
 };
 
 let MAIN_BOOTED = false;
@@ -1700,8 +1522,9 @@ function renderNftView() {
   rulesList.className = 'nft-list';
   [
     'Two weeks after the drop window closes, 50% of the MOTTO pack (non-Immortals) will be updated on-chain with “Killed in Action” (KIA) artwork.',
+    'The remaining 50% of the MOTTO pack effectively “Survive” the battle and retain their original artwork.',
     'Until that KIA update, all assets can be traded freely inside the “Survival Battle: MOTTO 7777” collection on Crypto.com NFT.',
-    'After the KIA update, these NFTs will not be withdrawable outside Crypto.com NFT. Check the official event details on Crypto.com for the full terms.'
+    'After the KIA update, MOTTO pack NFTs will not be withdrawable outside Crypto.com NFT. Immortals and Legends may follow separate rules as defined on Crypto.com NFT. Check the official event details on Crypto.com for the full terms.'
   ].forEach((text) => {
     const li = document.createElement('li');
     li.textContent = text;
@@ -1712,7 +1535,7 @@ function renderNftView() {
 
   const utilitySection = makeSection('Holder utilities');
   const utilityCopy = document.createElement('p');
-  utilityCopy.textContent = 'MOTTO 7777 NFTs come with more than just artwork. Holders can expect utilities such as soundtrack download access, future mini-game entries, occasional physical merchandise packages, and future governance-related rewards. Exact amounts, conditions and timelines are explained on Crypto.com NFT and in the official “Motto 7777 NFT Collection – Reward Utility Terms & Conditions.”';
+  utilityCopy.textContent = 'MOTTO 7777 NFTs come with more than just artwork. Holders may gain access to utilities such as soundtrack download links, future mini-game entries, occasional physical merchandise packages, and future governance-related rewards, depending on eligibility and conditions. Exact amounts, conditions and timelines are explained on Crypto.com NFT and in the official “Motto 7777 NFT Collection – Reward Utility Terms & Conditions.”';
   utilitySection.appendChild(utilityCopy);
   content.appendChild(utilitySection);
 
@@ -2525,6 +2348,7 @@ let ARCHIVE_PENDING_SCROLL = false;
 const ARCHIVE_KEY_TO_INDEX = new Map();
 const ARCHIVE_ALLOWED_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'gif', 'mp4']);
 const ARCHIVE_ALLOWED_POSTER_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'gif']);
+let ARCHIVE_FILTER_MODE = 'all';
 
 function extractArchiveFilename(path) {
   if (typeof path !== 'string') return '';
@@ -2652,6 +2476,179 @@ function escapeHTML(str) {
   });
 }
 
+function assignArchiveEntries(list) {
+  const entries = Array.isArray(list) ? list : [];
+  ARCHIVE_KEY_TO_INDEX.clear();
+  const normalized = entries.map((entry, idx) => {
+    const key = (entry.key || generateArchiveKey(entry, idx)).toLowerCase();
+    const next = { ...entry, key, index: idx };
+    ARCHIVE_KEY_TO_INDEX.set(key, idx);
+    return next;
+  });
+  ARCHIVE_FILES = normalized;
+  if (typeof window !== 'undefined') {
+    window.__MOTTO_ARCHIVE_FILES__ = ARCHIVE_FILES;
+  }
+  return ARCHIVE_FILES;
+}
+
+function formatArchiveStat(value) {
+  const safe = Number.isFinite(value) ? value : 0;
+  return safe < 10 ? `0${safe}` : `${safe}`;
+}
+
+function updateArchiveStats(entries = ARCHIVE_FILES) {
+  const list = Array.isArray(entries) ? entries : [];
+  const total = list.length;
+  const motion = list.filter((item) => item.type === 'video').length;
+  const stills = total - motion;
+  if (DOM.arcStatTotal) DOM.arcStatTotal.textContent = formatArchiveStat(total);
+  if (DOM.arcStatMotion) DOM.arcStatMotion.textContent = formatArchiveStat(motion);
+  if (DOM.arcStatStill) DOM.arcStatStill.textContent = formatArchiveStat(stills);
+}
+
+function syncArchiveFilterButtons() {
+  const buttons = DOM.arcFilterButtons ? Array.from(DOM.arcFilterButtons) : [];
+  buttons.forEach((btn) => {
+    const target = (btn.dataset.archiveFilter || 'all').toLowerCase();
+    const isActive = target === ARCHIVE_FILTER_MODE;
+    btn.classList.toggle('is-active', isActive);
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+}
+
+function updateArchiveFilterNotice(visibleCount, totalCount) {
+  if (!DOM.arcGrid) return;
+  const selector = '.archive-grid-state[data-filter-state="1"]';
+  const existing = DOM.arcGrid.querySelector(selector);
+  if (!totalCount) {
+    existing?.remove();
+    return;
+  }
+  if (visibleCount > 0) {
+    existing?.remove();
+    return;
+  }
+  const notice = existing || document.createElement('div');
+  notice.className = 'archive-grid-state archive-grid-state--empty';
+  notice.dataset.filterState = '1';
+  notice.textContent = ARCHIVE_FILTER_MODE === 'motion'
+    ? 'No motion captures logged yet.'
+    : 'No still frames logged yet.';
+  DOM.arcGrid.appendChild(notice);
+}
+
+function applyArchiveFilter() {
+  if (!DOM.arcGrid) return;
+  const cells = DOM.arcGrid.querySelectorAll('.cell');
+  if (!cells.length) return;
+  let visible = 0;
+  cells.forEach((cell) => {
+    const type = (cell.dataset.type || '').toLowerCase();
+    let show = true;
+    if (ARCHIVE_FILTER_MODE === 'motion') {
+      show = type === 'video';
+    } else if (ARCHIVE_FILTER_MODE === 'stills') {
+      show = type !== 'video';
+    }
+    if (show) {
+      cell.classList.remove('is-filtered-out');
+      cell.removeAttribute('aria-hidden');
+      cell.tabIndex = 0;
+      visible += 1;
+    } else {
+      if (cell.classList.contains('is-focus')) {
+        closeArchiveDetail();
+      }
+      cell.classList.add('is-filtered-out');
+      cell.setAttribute('aria-hidden', 'true');
+      cell.tabIndex = -1;
+    }
+  });
+  DOM.arcGrid.classList.toggle('archive-grid--filtered', ARCHIVE_FILTER_MODE !== 'all');
+  updateArchiveFilterNotice(visible, cells.length);
+}
+
+function setArchiveFilter(mode) {
+  const allowed = new Set(['all', 'motion', 'stills']);
+  const next = allowed.has((mode || '').toLowerCase())
+    ? mode.toLowerCase()
+    : 'all';
+  if (ARCHIVE_FILTER_MODE === next) {
+    syncArchiveFilterButtons();
+    applyArchiveFilter();
+    return ARCHIVE_FILTER_MODE;
+  }
+  ARCHIVE_FILTER_MODE = next;
+  syncArchiveFilterButtons();
+  applyArchiveFilter();
+  return ARCHIVE_FILTER_MODE;
+}
+
+function bindArchiveFilterControls() {
+  const buttons = DOM.arcFilterButtons ? Array.from(DOM.arcFilterButtons) : [];
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.archiveFilter || 'all';
+      setArchiveFilter(target);
+    });
+  });
+}
+
+function bindArchiveTimelineLinks() {
+  const items = DOM.arcTimelineItems ? Array.from(DOM.arcTimelineItems) : [];
+  items.forEach((node) => {
+    node.addEventListener('click', () => {
+      const key = (node.dataset.archiveJump || '').toLowerCase();
+      if (!key) return;
+      openArchiveByKey(key, { scroll: true });
+    });
+  });
+}
+
+function syncArchiveTimelineState(activeKey) {
+  const items = DOM.arcTimelineItems ? Array.from(DOM.arcTimelineItems) : [];
+  items.forEach((node) => {
+    const key = (node.dataset.archiveJump || '').toLowerCase();
+    node.classList.toggle('is-active', Boolean(activeKey && key === activeKey));
+  });
+}
+
+function shuffleArchiveOrder() {
+  if (!ARCHIVE_FILES.length) return;
+  const copy = ARCHIVE_FILES.slice();
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  assignArchiveEntries(copy);
+  renderArchiveGrid(ARCHIVE_FILES);
+  applyArchiveFilter();
+  if (ARCHIVE_ACTIVE_KEY) {
+    openArchiveByKey(ARCHIVE_ACTIVE_KEY, { scroll: true });
+  }
+}
+
+function syncArchiveMetaControls() {
+  if (DOM.arcSpotlightToggle) {
+    const isOn = Boolean(ARCHIVE_SPOTLIGHT_ENABLED);
+    DOM.arcSpotlightToggle.dataset.state = isOn ? 'on' : 'off';
+    DOM.arcSpotlightToggle.textContent = isOn ? 'Spotlight on' : 'Spotlight off';
+    DOM.arcSpotlightToggle.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+  }
+}
+
+function setArchiveSpotlightEnabled(enabled = true) {
+  ARCHIVE_SPOTLIGHT_ENABLED = Boolean(enabled);
+  syncArchiveSpotlightClass();
+  syncArchiveMetaControls();
+  return ARCHIVE_SPOTLIGHT_ENABLED;
+}
+
+function toggleArchiveSpotlightEnabled() {
+  return setArchiveSpotlightEnabled(!ARCHIVE_SPOTLIGHT_ENABLED);
+}
+
 function ensureArchiveManifest(options = {}) {
   if (options.force) {
     _archiveManifestPromise = null;
@@ -2678,25 +2675,15 @@ function ensureArchiveManifest(options = {}) {
       const sanitized = payload
         .map((item, index) => sanitizeArchiveEntry(item, index))
         .filter(Boolean);
-      ARCHIVE_KEY_TO_INDEX.clear();
-      ARCHIVE_FILES = sanitized.map((entry, idx) => {
-        const key = (entry.key || generateArchiveKey(entry, idx)).toLowerCase();
-        const normalized = { ...entry, key, index: idx };
-        ARCHIVE_KEY_TO_INDEX.set(key, idx);
-        return normalized;
-      });
-      if (typeof window !== 'undefined') {
-        window.__MOTTO_ARCHIVE_FILES__ = ARCHIVE_FILES;
-      }
-      return ARCHIVE_FILES;
+      const normalized = assignArchiveEntries(sanitized);
+      updateArchiveStats(normalized);
+      return normalized;
     })
     .catch((error) => {
       console.error('Failed to load archive manifest:', error);
-      ARCHIVE_FILES = [];
+      assignArchiveEntries([]);
       _archiveManifestPromise = null;
-      if (typeof window !== 'undefined') {
-        window.__MOTTO_ARCHIVE_FILES__ = ARCHIVE_FILES;
-      }
+      updateArchiveStats([]);
       throw error;
     });
   return _archiveManifestPromise;
@@ -2714,6 +2701,7 @@ function setArchiveGridState(state, message) {
   notice.textContent = message;
   notice.setAttribute('role', 'status');
   notice.setAttribute('aria-live', 'polite');
+  notice.dataset.locked = '1';
   DOM.arcGrid.appendChild(notice);
   syncArchiveSpotlightClass();
 }
@@ -2741,6 +2729,7 @@ function renderArchiveGrid(entries) {
     cell.className = 'cell';
     cell.dataset.index = index;
     cell.dataset.archiveSrc = item.src || '';
+    cell.dataset.type = isVideo ? 'video' : 'image';
     if (item.key) {
       cell.dataset.key = item.key;
       cell.id = `archive-cell-${item.key}`;
@@ -2748,6 +2737,7 @@ function renderArchiveGrid(entries) {
     const label = item.accessibleTitle || item.title || `Archive Item ${index + 1}`;
     cell.setAttribute('role', 'button');
     cell.setAttribute('aria-expanded', 'false');
+    cell.setAttribute('aria-hidden', 'false');
     if (label) {
       cell.setAttribute('aria-label', label);
     } else {
@@ -2781,6 +2771,8 @@ function renderArchiveGrid(entries) {
     decorateArchiveCell(cell, item, allowHoverScrub);
   });
   syncArchiveSpotlightClass();
+  applyArchiveFilter();
+  syncArchiveMetaControls();
   if (ARCHIVE_PENDING_KEY) {
     const pendingKey = ARCHIVE_PENDING_KEY;
     const pendingScroll = ARCHIVE_PENDING_SCROLL;
@@ -3402,7 +3394,7 @@ function handleArchiveHashChange() {
       ARCHIVE_PENDING_KEY = key;
       ARCHIVE_PENDING_SCROLL = true;
     }
-  } else if (DOM.arcDetail && DOM.arcDetail.classList.contains('has-selection')) {
+  } else if (ARC_ACTIVE_KEY) {
     closeArchiveDetail();
   }
 }
@@ -3430,10 +3422,6 @@ function openArchive() {
 }
 DOM.arcModal?.addEventListener('click', (e) => {
   if (e.target.hasAttribute('data-close')) {
-    if (e.target.classList.contains('modal-close') && DOM.arcDetail && DOM.arcDetail.classList.contains('has-selection')) {
-      closeArchiveDetail();
-      return;
-    }
     closeModal(DOM.arcModal);
   }
 });
@@ -3661,6 +3649,22 @@ DOM.nftBtn?.addEventListener('click', (e) => {
   openNftView('nav-link');
 });
 
+bindArchiveFilterControls();
+bindArchiveTimelineLinks();
+setArchiveFilter(ARCHIVE_FILTER_MODE);
+syncArchiveMetaControls();
+
+DOM.arcShuffle?.addEventListener('click', (e) => {
+  e.preventDefault();
+  shuffleArchiveOrder();
+  trackEvent('archive', 'shuffle', 'manual');
+});
+DOM.arcSpotlightToggle?.addEventListener('click', (e) => {
+  e.preventDefault();
+  const enabled = toggleArchiveSpotlightEnabled();
+  trackEvent('archive', 'spotlight', enabled ? 'on' : 'off');
+});
+
 let brandGlitchTimer = null;
 function triggerBrandGlitch(duration = 3200) {
   if (!DOM.homeBtn) return;
@@ -3742,7 +3746,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && DOM.intro && DOM.intro.style.display !== 'none') { DOM.enterBtn?.click(); }
   if (e.key === 'Escape') {
     let closed = false;
-    if (DOM.arcDetail && DOM.arcDetail.classList.contains('has-selection')) { closeArchiveDetail(); closed = true; }
+    if (ARC_ACTIVE_KEY != null) { closeArchiveDetail(); closed = true; }
     if (isModalActive(DOM.immDModal)) { closeModal(DOM.immDModal, { reopenImm: false }); closed = true; }
     if (isModalActive(DOM.immModal)) { closeModal(DOM.immModal); closed = true; }
     if (isModalActive(DOM.arcModal)) { closeModal(DOM.arcModal); closed = true; }
@@ -3792,6 +3796,7 @@ function openArchiveDetail(entry, sourceCell) {
   const index = Number.parseInt(cell.dataset.index || (item?.index ?? -1), 10);
   ARCHIVE_ACTIVE_INDEX = Number.isFinite(index) ? index : ARCHIVE_ACTIVE_INDEX;
   ARCHIVE_ACTIVE_KEY = (item?.key || cell.dataset.key || generateArchiveKey(item, index)).toLowerCase();
+  syncArchiveTimelineState(ARCHIVE_ACTIVE_KEY);
 
   applyArchiveFocus(cell);
 
@@ -3815,39 +3820,16 @@ function openArchiveDetail(entry, sourceCell) {
   }
 
   updateArchiveCaption(cell, item);
-  DOM.arcDetail?.classList.add('has-selection');
   syncArchiveSpotlightClass();
 }
 
 function closeArchiveDetail(opts = {}) {
-  const detailEl = DOM.arcDetail;
-  const hadSelection = detailEl?.classList.contains('has-selection');
+  const hadSelection = ARCHIVE_ACTIVE_KEY != null;
   if (ARC_ACTIVE_CELL) {
     ARC_ACTIVE_CELL.classList.remove('is-active');
     ARC_ACTIVE_CELL = null;
   }
   clearArchiveFocus();
-  const video = DOM.arcDetailMedia?.querySelector('video');
-  if (video) video.pause();
-  if (DOM.arcDetailMedia) {
-    DOM.arcDetailMedia.innerHTML = '';
-    DOM.arcDetailMedia.classList.remove('is-ready');
-    DOM.arcDetailMedia.removeAttribute('data-orientation');
-    delete DOM.arcDetailMedia.dataset.mediaType;
-    DOM.arcDetailMedia.style.removeProperty('--archive-detail-image');
-    DOM.arcDetailMedia.style.removeProperty('--archive-detail-accent');
-    DOM.arcDetailMedia._backdropToken = null;
-    DOM.arcDetailMedia.hidden = true;
-  }
-  if (DOM.arcDetailCaption) {
-    DOM.arcDetailCaption.textContent = '';
-    DOM.arcDetailCaption.hidden = true;
-  }
-  if (DOM.arcDetailGuide) {
-    DOM.arcDetailGuide.hidden = false;
-  }
-  detailEl?.classList.remove('has-selection');
-  DOM.arcGrid?.classList.remove('hidden');
   ARCHIVE_ACTIVE_INDEX = -1;
   ARCHIVE_ACTIVE_KEY = null;
   if (hadSelection && !opts.skipHash) {
@@ -3855,6 +3837,7 @@ function closeArchiveDetail(opts = {}) {
   }
   syncArchiveSpotlightClass();
   setSpotlightTarget(50, 48, true);
+  syncArchiveTimelineState(null);
 }
 
 ensureImmortalsData().catch((err) => {
@@ -3868,16 +3851,8 @@ ensureArchiveManifest().catch((err) => {
 handleInitialViewRequest();
 
 window.MottoArchive = window.MottoArchive || {};
-window.MottoArchive.setSpotlight = (enabled = true) => {
-  ARCHIVE_SPOTLIGHT_ENABLED = Boolean(enabled);
-  syncArchiveSpotlightClass();
-  return ARCHIVE_SPOTLIGHT_ENABLED;
-};
-window.MottoArchive.toggleSpotlight = () => {
-  ARCHIVE_SPOTLIGHT_ENABLED = !ARCHIVE_SPOTLIGHT_ENABLED;
-  syncArchiveSpotlightClass();
-  return ARCHIVE_SPOTLIGHT_ENABLED;
-};
+window.MottoArchive.setSpotlight = (enabled = true) => setArchiveSpotlightEnabled(enabled);
+window.MottoArchive.toggleSpotlight = () => toggleArchiveSpotlightEnabled();
 window.MottoArchive.disableOverlay = true;
 
 window.addEventListener('hashchange', handleArchiveHashChange);
