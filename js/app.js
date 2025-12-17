@@ -13,7 +13,7 @@ const SHOP_URL = '#';
 const TWITTER_URL = 'https://x.com/motto_7777';
 const IG_URL = 'https://www.instagram.com/mottttooooooo/';
 const TT_URL = 'https://www.youtube.com/@motto_7777';
-const NFT_COLLECTION_URL = 'https://crypto.com/nft/collection/e5d6b1c9197704a5cca12036062263f2?tab=items';
+const NFT_COLLECTION_URL = 'https://crypto.com/nft/drops-event/7757a25297e2ba222ccf68f367e614f4?tab=shop';
 
 // ====== Build Version ======
 const SCRIPT_VERSION = (() => {
@@ -186,7 +186,7 @@ const ABOUT_SUMMARY = 'This site is the main stage and archive for MOTTO 7777. I
 
 const ABOUT_LORE = Object.freeze([
   'In the year 7,777, humanity’s last echoes dissolve into glitch and loop. Seven archetypes — Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer — drift through signal, circuit, and emotion. Their identities fragment and repeat, asking a simple question: what remains when memory fractures?',
-  'MOTTO 7777 lives on sevens — set in the year 7,777, shaped by seven archetypes, 7,777 NFTs, and a 7-track OST that scores this world. The 7,700-piece MOTTO pack is a curated generative set of hand-drawn helmets, riders and glitches spread across those seven archetypes.',
+  'MOTTO 7777 lives on sevens — set in the year 7,777, shaped by seven archetypes, 7,777 NFTs, and a 7-track OST that scores this world. The 7,700-piece MOTTO pack is a curated generative set of hand-drawn portraits and glitches spread across those seven archetypes.',
   'The 77 Immortals are animated motion portrait NFTs that sit at the core of MOTTO 7777. Each Immortal loops an 8-bit reimagining of the original MOTTO OST, as if the soundtrack survived only as game-console memory. Within the 77, seven Legend pieces form the innermost core: images that refuse to fade, replaying the question of who stays, who is erased, and who turns into myth.'
 ]);
 
@@ -223,14 +223,14 @@ const ABOUT_PILLARS = [
     eyebrow: 'DROPS / COLLECTORS',
     title: 'DROPS / COLLECTORS',
     body: [
-      'MOTTO 7777 lives here as high-res motion and sound, and on-chain as a 7,777-piece NFT collection on the Cronos chain via Crypto.com NFT. The main MOTTO pack holds 7,700 hand-built generative portraits, with 77 Immortal motion portraits sitting at the top layer.',
-      'Immortals are the rarest visible layer of the world, while the main drop is available to collectors via the NFT tab.'
+      'Enter the MOTTO 7777 drop on Crypto.com NFT.',
+      'View the full 7,777-piece collection, trade MOTTO pack NFTs, and collect Immortals directly from the marketplace.'
     ]
   }
 ];
 
 const ABOUT_TEASER_URL = 'https://www.youtube.com/embed/0j9Vhhuz5PA';
-const ABOUT_CTA_NOTE = 'Pick where to enter: characters through IMMORTALS, process through ARCHIVE, or the sound of the world through the OST.';
+const ABOUT_CTA_NOTE = 'Pick where to enter: characters through IMMORTALS, process through ARCHIVE, the sound of the world through the OST, or the full drop via the NFT tab.';
 
 function getPortalById(id) {
   return PORTALS.find(p => p.id === id);
@@ -705,7 +705,13 @@ const DOM = {
   arcStatTotal: document.getElementById('archiveStatTotal'),
   arcStatMotion: document.getElementById('archiveStatMotion'),
   arcStatStill: document.getElementById('archiveStatStill'),
-  arcTimelineItems: document.querySelectorAll('[data-archive-jump]')
+  arcTimelineItems: document.querySelectorAll('[data-archive-jump]'),
+  arcTimeline: document.getElementById('archiveTimeline'),
+  arcNotesBtn: document.querySelector('[data-archive-notes]'),
+  arcDetail: document.getElementById('archiveDetail'),
+  arcDetailMedia: document.getElementById('archiveDetailMedia'),
+  arcDetailTitle: document.getElementById('archiveDetailTitle'),
+  arcDetailType: document.getElementById('archiveDetailType')
 };
 
 let MAIN_BOOTED = false;
@@ -719,6 +725,54 @@ MODALS.forEach((el) => {
   el.classList.add('hidden');
   el.classList.remove('active');
 });
+
+const VIEW_STATES = Object.freeze({
+  HOME: 'home',
+  ABOUT: 'about',
+  NFT: 'nft',
+  MERCH: 'merch'
+});
+
+let CURRENT_STAGE_VIEW = VIEW_STATES.HOME;
+let HISTORY_READY = false;
+
+function buildHistoryBase(hashOverride) {
+  if (typeof window === 'undefined') return '';
+  const base = `${window.location.pathname}${window.location.search}`;
+  if (typeof hashOverride === 'string') {
+    return `${base}${hashOverride}`;
+  }
+  const { hash = '' } = window.location;
+  if (!hash || hash.startsWith('#archive')) {
+    return base;
+  }
+  return `${base}${hash}`;
+}
+
+function commitViewState(view, { replace = false, force = false } = {}) {
+  if (typeof window === 'undefined' || !window.history) return;
+  const payload = { introDismissed: true, view };
+  if (!HISTORY_READY) {
+    history.replaceState(payload, '', buildHistoryBase(''));
+    HISTORY_READY = true;
+    CURRENT_STAGE_VIEW = view;
+    return;
+  }
+  if (!force && !replace && CURRENT_STAGE_VIEW === view) {
+    return;
+  }
+  const method = replace ? 'replaceState' : 'pushState';
+  history[method](payload, '', buildHistoryBase());
+  CURRENT_STAGE_VIEW = view;
+}
+
+function replaceHistoryPreservingState(url) {
+  if (typeof window === 'undefined' || !window.history) return;
+  const currentState = history.state && typeof history.state === 'object'
+    ? { ...history.state }
+    : { introDismissed: true, view: CURRENT_STAGE_VIEW };
+  history.replaceState(currentState, '', url);
+}
 
 const IMMORTALS_ACCESS_MODES = Object.freeze({
   LOCKED: 'locked',
@@ -856,7 +910,7 @@ function closeModal(modal, opts = {}) {
     closeArchiveDetail();
     deactivateModal(modal);
     if (window.location.hash.startsWith('#archive')) {
-      history.replaceState(null, '', '#');
+      replaceHistoryPreservingState(buildHistoryBase(''));
     }
     return;
   }
@@ -900,7 +954,6 @@ if (SPOTIFY_URL === '#') DOM.spBtn?.classList.add('disabled');
 if (YOUTUBE_URL === '#') DOM.ytBtn?.classList.add('disabled');
 if (IG_URL === '#') DOM.igBtn?.classList.add('disabled');
 if (TT_URL === '#') DOM.ttBtn?.classList.add('disabled');
-if (SHOP_URL === '#') DOM.shopBtn?.classList.add('disabled');
 
 // ====== Debounce ======
 function debounce(fn, ms) {
@@ -1032,18 +1085,17 @@ function handleInitialViewRequest() {
   }
 
   if (viewParam === 'immortals' && !isImmortalsUnlocked()) {
-    console.info('Immortals view request ignored because access is locked.');
-    return;
+    console.info('Immortals locked — falling back to home stage.');
+    viewParam = VIEW_STATES.HOME;
   }
 
   const actions = {
     immortals: () => openImmortals(),
     archive: () => openArchive(),
-    about: () => renderAboutView(),
-    nft: () => {
-      resetStageForView();
-      renderNftView();
-    }
+    about: () => openAboutSection('url-param', { replaceHistory: true }),
+    nft: () => openNftView('url-param', { replaceHistory: true }),
+    merch: () => openMerchView('url-param', { replaceHistory: true }),
+    [VIEW_STATES.HOME]: () => openHomeStage('url-param', { replaceHistory: true })
   };
 
   const action = actions[viewParam];
@@ -1054,6 +1106,28 @@ function handleInitialViewRequest() {
     .then(() => action())
     .catch((err) => {
       console.error('Failed to open requested view:', err);
+    });
+}
+
+function handleViewPopState(event) {
+  const state = event.state;
+  if (!state || state.introDismissed !== true) return;
+  const targetView = state.view || VIEW_STATES.HOME;
+  CURRENT_STAGE_VIEW = targetView;
+  const actions = {
+    [VIEW_STATES.ABOUT]: () => openAboutSection('history', { skipHistory: true }),
+    [VIEW_STATES.NFT]: () => openNftView('history', { skipHistory: true }),
+    [VIEW_STATES.MERCH]: () => openMerchView('history', { skipHistory: true }),
+    [VIEW_STATES.HOME]: () => openHomeStage('history', { skipHistory: true })
+  };
+  fastExitIntro();
+  ensureMainReady()
+    .then(() => {
+      const action = actions[targetView] || actions[VIEW_STATES.HOME];
+      action();
+    })
+    .catch((err) => {
+      console.error('Failed to handle history navigation:', err);
     });
 }
 
@@ -1193,6 +1267,7 @@ async function renderTodayGallery() {
   if (!DOM.stage) return;
   DOM.stage.classList.remove('stage--about');
   DOM.stage.classList.remove('stage--nft');
+  DOM.stage.classList.remove('stage--merch');
   DOM.stage.classList.add('stage--hero');
   DOM.stage.innerHTML = '<div class="today-loading">Loading...</div>';
   try {
@@ -1270,6 +1345,7 @@ async function renderAboutView() {
   if (!DOM.stage) return;
   DOM.stage.classList.remove('stage--hero');
   DOM.stage.classList.remove('stage--nft');
+  DOM.stage.classList.remove('stage--merch');
   DOM.stage.classList.add('stage--about');
   DOM.stage.innerHTML = '';
 
@@ -1440,6 +1516,7 @@ function renderNftView() {
   if (!DOM.stage) return;
   DOM.stage.classList.remove('stage--hero');
   DOM.stage.classList.remove('stage--about');
+  DOM.stage.classList.remove('stage--merch');
   DOM.stage.classList.add('stage--nft');
   DOM.stage.innerHTML = '';
 
@@ -1487,7 +1564,7 @@ function renderNftView() {
 
   const mainSection = makeSection('Main drop — MOTTO pack (7,700)');
   [
-    'The main drop is a 7,700-piece MOTTO pack drawn by Sean Woong. Each NFT is a hand-drawn composite portrait built from helmets, riders, suits, glitches and backgrounds across the seven archetypes.',
+    'The main drop is a 7,700-piece MOTTO pack drawn by Sean Woong. Each NFT is a hand-drawn composite portrait built from layered traits and glitches across the seven archetypes.',
     'Traits are assembled through a generative system, then curated down into 7,700 final pieces — not auto-generated noise, but a selected layer of the world.'
   ].forEach((text) => {
     const p = document.createElement('p');
@@ -1537,6 +1614,9 @@ function renderNftView() {
   const utilityCopy = document.createElement('p');
   utilityCopy.textContent = 'MOTTO 7777 NFTs come with more than just artwork. Holders may gain access to utilities such as soundtrack download links, future mini-game entries, occasional physical merchandise packages, and future governance-related rewards, depending on eligibility and conditions. Exact amounts, conditions and timelines are explained on Crypto.com NFT and in the official “Motto 7777 NFT Collection – Reward Utility Terms & Conditions.”';
   utilitySection.appendChild(utilityCopy);
+  const helperCopy = document.createElement('p');
+  helperCopy.textContent = 'NFC mini-CD keyring (Prototype) is showcased in the MERCH / REWARDS tab.';
+  utilitySection.appendChild(helperCopy);
   content.appendChild(utilitySection);
 
   const ctaSection = makeSection('');
@@ -1565,8 +1645,88 @@ function renderNftView() {
   }
 }
 
-function openAboutSection(source = 'nav-link') {
+function createYouTubeEmbed(id, title) {
+  const params = new URLSearchParams({
+    autoplay: 0,
+    mute: 1,
+    playsinline: 1,
+    controls: 0,
+    modestbranding: 1,
+    rel: 0,
+    loop: 1,
+    playlist: id
+  });
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube.com/embed/${id}?${params.toString()}`;
+  iframe.title = title;
+  iframe.loading = 'lazy';
+  iframe.allowFullscreen = true;
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  iframe.setAttribute('frameborder', '0');
+  return iframe;
+}
+
+function renderMerchView() {
+  if (!DOM.stage) return;
+  DOM.stage.classList.remove('stage--hero');
+  DOM.stage.classList.remove('stage--about');
+  DOM.stage.classList.remove('stage--nft');
+  DOM.stage.classList.add('stage--merch');
+  DOM.stage.innerHTML = '';
+
+  const root = document.createElement('section');
+  root.className = 'merch-root';
+  root.setAttribute('aria-labelledby', 'merch-title');
+
+  const hero = document.createElement('section');
+  hero.className = 'merch-hero';
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'merch-eyebrow';
+  eyebrow.textContent = 'MERCH / REWARDS';
+  hero.appendChild(eyebrow);
+
+  root.appendChild(hero);
+
+  const content = document.createElement('div');
+  content.className = 'merch-content';
+
+  const nfcSection = document.createElement('section');
+  nfcSection.className = 'merch-section';
+  const heading = document.createElement('h2');
+  heading.textContent = 'NFC mini-CD keyring (Prototype)';
+  nfcSection.appendChild(heading);
+
+  const videoGrid = document.createElement('div');
+  videoGrid.className = 'merch-video-grid';
+  [
+    { id: 'g9aN_rwTjtY', title: 'NFC keyring prototype · angle 01' },
+    { id: 'mp3nI35Mti8', title: 'NFC keyring prototype · angle 02' }
+  ].forEach((video) => {
+    const frame = document.createElement('div');
+    frame.className = 'merch-video-frame';
+    frame.appendChild(createYouTubeEmbed(video.id, video.title));
+    videoGrid.appendChild(frame);
+  });
+
+  nfcSection.appendChild(videoGrid);
+  content.appendChild(nfcSection);
+  root.appendChild(content);
+
+  DOM.stage.appendChild(root);
+  if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function openAboutSection(source = 'nav-link', options = {}) {
+  const { skipHistory = false, replaceHistory = false } = options || {};
   const open = () => {
+    if (!skipHistory) {
+      commitViewState(VIEW_STATES.ABOUT, { replace: replaceHistory });
+    } else {
+      CURRENT_STAGE_VIEW = VIEW_STATES.ABOUT;
+    }
     trackEvent('Nav', 'Open', `About:${source}`);
     playTransitionOverlay(() => {
       resetStageForView();
@@ -1586,8 +1746,14 @@ function openAboutSection(source = 'nav-link') {
     });
 }
 
-function openNftView(source = 'nav-link') {
+function openNftView(source = 'nav-link', options = {}) {
+  const { skipHistory = false, replaceHistory = false } = options || {};
   const open = () => {
+    if (!skipHistory) {
+      commitViewState(VIEW_STATES.NFT, { replace: replaceHistory });
+    } else {
+      CURRENT_STAGE_VIEW = VIEW_STATES.NFT;
+    }
     trackEvent('Nav', 'Open', `NFT:${source}`);
     playTransitionOverlay(() => {
       resetStageForView();
@@ -1607,8 +1773,41 @@ function openNftView(source = 'nav-link') {
     });
 }
 
-function openHomeStage(source = 'nav-home') {
+function openMerchView(source = 'nav-link', options = {}) {
+  const { skipHistory = false, replaceHistory = false } = options || {};
   const open = () => {
+    if (!skipHistory) {
+      commitViewState(VIEW_STATES.MERCH, { replace: replaceHistory });
+    } else {
+      CURRENT_STAGE_VIEW = VIEW_STATES.MERCH;
+    }
+    trackEvent('Nav', 'Open', `Merch:${source}`);
+    playTransitionOverlay(() => {
+      resetStageForView();
+      renderMerchView();
+    }, NAV_OVERLAY_DEFAULTS);
+  };
+
+  if (MAIN_BOOTED) {
+    open();
+    return;
+  }
+
+  ensureMainReady()
+    .then(() => open())
+    .catch((err) => {
+      console.error('Failed to open Merch view:', err);
+    });
+}
+
+function openHomeStage(source = 'nav-home', options = {}) {
+  const { skipHistory = false, replaceHistory = false } = options || {};
+  const open = () => {
+    if (!skipHistory) {
+      commitViewState(VIEW_STATES.HOME, { replace: replaceHistory });
+    } else {
+      CURRENT_STAGE_VIEW = VIEW_STATES.HOME;
+    }
     trackEvent('Nav', 'Open', `Home:${source}`);
     playTransitionOverlay(() => {
       resetStageForView();
@@ -1663,6 +1862,7 @@ function handleImmortalsEntryRequest(source = 'nav') {
 async function bootMain() {
   console.log('Booting main stage ✅');
   await renderTodayGallery();
+  commitViewState(VIEW_STATES.HOME, { replace: true, force: true });
   requestAnimationFrame(() => {
     if (ENABLE_AUDIO) {
       DOM.audioUI.hidden = false;
@@ -1678,6 +1878,7 @@ function spawnPortals() {
   DOM.stage?.classList.remove('stage--hero');
   DOM.stage?.classList.remove('stage--about');
   DOM.stage?.classList.remove('stage--nft');
+  DOM.stage?.classList.remove('stage--merch');
   if (portalObserver) {
     portalObserver.disconnect();
     portalObserver = null;
@@ -2341,6 +2542,7 @@ DOM.immDModal?.addEventListener('click', (e) => {
 
 // ====== Archive ======
 let ARC_ACTIVE_CELL = null;
+let ARCHIVE_ACTIVE_ENTRY = null;
 let ARCHIVE_ACTIVE_INDEX = -1;
 let ARCHIVE_ACTIVE_KEY = null;
 let ARCHIVE_PENDING_KEY = null;
@@ -2494,7 +2696,7 @@ function assignArchiveEntries(list) {
 
 function formatArchiveStat(value) {
   const safe = Number.isFinite(value) ? value : 0;
-  return safe < 10 ? `0${safe}` : `${safe}`;
+  return `${safe}`;
 }
 
 function updateArchiveStats(entries = ARCHIVE_FILES) {
@@ -2615,18 +2817,7 @@ function syncArchiveTimelineState(activeKey) {
 }
 
 function shuffleArchiveOrder() {
-  if (!ARCHIVE_FILES.length) return;
-  const copy = ARCHIVE_FILES.slice();
-  for (let i = copy.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  assignArchiveEntries(copy);
-  renderArchiveGrid(ARCHIVE_FILES);
-  applyArchiveFilter();
-  if (ARCHIVE_ACTIVE_KEY) {
-    openArchiveByKey(ARCHIVE_ACTIVE_KEY, { scroll: true });
-  }
+  showRandomArchiveEntry();
 }
 
 function syncArchiveMetaControls() {
@@ -2759,13 +2950,20 @@ function renderArchiveGrid(entries) {
       ? `<div class="caption"><span class="caption-title">${title}</span>${typeLabel ? `<span class="caption-type">${typeLabel}</span>` : ''}</div>`
       : '';
     cell.innerHTML = `${media}${caption}`;
-    cell.onclick = (event) => {
-      event.preventDefault();
-      if (cell.classList.contains('is-focus')) {
-        closeArchiveDetail();
-      } else {
-        openArchiveDetail(item, cell);
+    const isMediaInteraction = (evt) => {
+      if (!evt) return false;
+      const path = typeof evt.composedPath === 'function' ? evt.composedPath() : null;
+      if (Array.isArray(path) && path.length) {
+        return path.some((node) => node instanceof HTMLElement && node.closest?.('.archive-media'));
       }
+      const target = evt.target;
+      return Boolean(target && typeof target.closest === 'function' && target.closest('.archive-media'));
+    };
+
+    cell.onclick = (event) => {
+      if (isMediaInteraction(event)) return;
+      if (cell.classList.contains('is-focus')) return;
+      openArchiveDetail(item, cell);
     };
     DOM.arcGrid.appendChild(cell);
     decorateArchiveCell(cell, item, allowHoverScrub);
@@ -2773,6 +2971,9 @@ function renderArchiveGrid(entries) {
   syncArchiveSpotlightClass();
   applyArchiveFilter();
   syncArchiveMetaControls();
+  if (entries.length) {
+    showRandomArchiveEntry();
+  }
   if (ARCHIVE_PENDING_KEY) {
     const pendingKey = ARCHIVE_PENDING_KEY;
     const pendingScroll = ARCHIVE_PENDING_SCROLL;
@@ -2824,14 +3025,10 @@ function decorateArchiveCell(cell, item, allowHoverScrub) {
   if (!cell._archiveKeydown) {
     cell.addEventListener('keydown', (evt) => {
       if (evt.key === 'Enter' || evt.key === ' ') {
-        evt.preventDefault();
-        if (cell.classList.contains('is-focus')) {
-          closeArchiveDetail();
-        } else {
-          const idx = Number.parseInt(cell.dataset.index || '-1', 10);
-          const entry = ARCHIVE_FILES[idx] || item;
-          openArchiveDetail(entry, cell);
-        }
+        if (cell.classList.contains('is-focus')) return;
+        const idx = Number.parseInt(cell.dataset.index || '-1', 10);
+        const entry = ARCHIVE_FILES[idx] || item;
+        openArchiveDetail(entry, cell);
       }
     });
     cell._archiveKeydown = true;
@@ -3318,7 +3515,7 @@ function updateArchiveHash(key) {
     ? `#archive:${encodeURIComponent(key.toLowerCase())}`
     : '#archive';
   if (window.location.hash === target) return;
-  history.replaceState(null, '', target);
+  replaceHistoryPreservingState(buildHistoryBase(target));
 }
 
 function openArchiveByKey(key, options = {}) {
@@ -3423,7 +3620,11 @@ function openArchive() {
 DOM.arcModal?.addEventListener('click', (e) => {
   if (e.target.hasAttribute('data-close')) {
     closeModal(DOM.arcModal);
+    return;
   }
+  if (!ARCHIVE_ACTIVE_KEY) return;
+  if (e.target.closest('.cell')) return;
+  closeArchiveDetail();
 });
 
 function removeArchiveCell(cell, emptyMessage) {
@@ -3648,6 +3849,17 @@ DOM.nftBtn?.addEventListener('click', (e) => {
   e.preventDefault();
   openNftView('nav-link');
 });
+DOM.shopBtn?.addEventListener('click', (e) => {
+  e.preventDefault();
+  openMerchView('nav-link');
+});
+
+DOM.arcNotesBtn?.addEventListener('click', () => {
+  if (!DOM.arcTimeline) return;
+  DOM.arcTimeline.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  DOM.arcTimeline.classList.add('is-highlight');
+  setTimeout(() => DOM.arcTimeline?.classList.remove('is-highlight'), 1200);
+});
 
 bindArchiveFilterControls();
 bindArchiveTimelineLinks();
@@ -3816,11 +4028,83 @@ function openArchiveDetail(entry, sourceCell) {
     mediaEl.controls = true;
     mediaEl.loop = item?.loop !== false;
     mediaEl.muted = true;
-    try { mediaEl.play(); } catch (err) { /* noop */ }
+    mediaEl.autoplay = false;
   }
-
+  setActiveArchiveEntry({
+    ...item,
+    src: item?.src || cell.dataset.archiveSrc
+  }, cell);
   updateArchiveCaption(cell, item);
   syncArchiveSpotlightClass();
+}
+
+function setActiveArchiveEntry(entry = {}, sourceCell = null) {
+  const normalized = { ...entry };
+  if (!normalized.src && sourceCell?.dataset?.archiveSrc) {
+    normalized.src = sourceCell.dataset.archiveSrc;
+  }
+  if (!normalized.src) return;
+  ARCHIVE_ACTIVE_ENTRY = normalized;
+  ARC_ACTIVE_CELL = sourceCell || null;
+  const key = (normalized.key || '').toLowerCase();
+  ARC_ACTIVE_KEY = key || null;
+  renderArchiveDetailPanel(normalized);
+  syncArchiveTimelineState(ARC_ACTIVE_KEY);
+}
+
+function showRandomArchiveEntry() {
+  if (!ARCHIVE_FILES.length) return;
+  const index = Math.floor(Math.random() * ARCHIVE_FILES.length);
+  const entry = ARCHIVE_FILES[index];
+  setActiveArchiveEntry(entry);
+}
+
+function renderArchiveDetailPanel(entry = {}) {
+  if (!DOM.arcDetailMedia) return;
+  const mediaRoot = DOM.arcDetailMedia;
+  mediaRoot.innerHTML = '';
+  const src = resolveAssetPath(entry.src || '');
+  if (!src) {
+    resetArchiveDetailPanel();
+    return;
+  }
+  const isVideo = entry.type === 'video' || /\.mp4(?:$|\?)/i.test(src);
+  let media;
+  if (isVideo) {
+    media = document.createElement('video');
+    media.src = src;
+    media.controls = true;
+    media.playsInline = true;
+    media.setAttribute('playsinline', '');
+    media.loop = entry.loop !== false;
+    media.preload = 'metadata';
+  } else {
+    media = document.createElement('img');
+    media.src = src;
+    media.alt = entry.title || entry.accessibleTitle || 'Archive media';
+    media.loading = 'lazy';
+    media.decoding = 'async';
+  }
+  mediaRoot.appendChild(media);
+  if (DOM.arcDetailTitle) {
+    DOM.arcDetailTitle.textContent = entry.title || entry.accessibleTitle || 'Captured signal';
+  }
+  if (DOM.arcDetailType) {
+    const label = entry.displayType || (isVideo ? 'VIDEO' : 'STILL');
+    DOM.arcDetailType.textContent = label;
+  }
+}
+
+function resetArchiveDetailPanel() {
+  if (DOM.arcDetailMedia) {
+    DOM.arcDetailMedia.innerHTML = '';
+  }
+  if (DOM.arcDetailTitle) {
+    DOM.arcDetailTitle.textContent = 'Select a signal to view details.';
+  }
+  if (DOM.arcDetailType) {
+    DOM.arcDetailType.textContent = '';
+  }
 }
 
 function closeArchiveDetail(opts = {}) {
@@ -3832,12 +4116,14 @@ function closeArchiveDetail(opts = {}) {
   clearArchiveFocus();
   ARCHIVE_ACTIVE_INDEX = -1;
   ARCHIVE_ACTIVE_KEY = null;
+  ARCHIVE_ACTIVE_ENTRY = null;
   if (hadSelection && !opts.skipHash) {
     updateArchiveHash(null);
   }
   syncArchiveSpotlightClass();
   setSpotlightTarget(50, 48, true);
   syncArchiveTimelineState(null);
+  resetArchiveDetailPanel();
 }
 
 ensureImmortalsData().catch((err) => {
@@ -3849,6 +4135,7 @@ ensureArchiveManifest().catch((err) => {
 });
 
 handleInitialViewRequest();
+window.addEventListener('popstate', handleViewPopState);
 
 window.MottoArchive = window.MottoArchive || {};
 window.MottoArchive.setSpotlight = (enabled = true) => setArchiveSpotlightEnabled(enabled);

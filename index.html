@@ -42,7 +42,7 @@
       <a id="twBtn"   class="link-glitch nav-link" href="https://x.com/motto_7777" target="_blank" rel="noopener">X</a>
       <a id="igBtn"   class="link-glitch nav-link" href="https://www.instagram.com/mottttooooooo/" target="_blank" rel="noopener">IG</a>
       <a id="ttBtn"   class="link-glitch nav-link" href="https://www.youtube.com/@motto_7777" target="_blank" rel="noopener">U</a>
-      <a id="shopBtn" class="link-glitch nav-link" href="#" target="_blank" rel="noopener">SHOP</a>
+      <a id="shopBtn" class="link-glitch nav-link" href="#" target="_blank" rel="noopener">MERCH / REWARDS</a>
     </nav>
     <div class="nav-eggs">
       <a id="egg1" class="link-glitch egg" href="https://www.youtube.com/@sean_woong" target="_blank" rel="noopener" aria-label="Visit Sean Woong YouTube channel">SEAN WOONG</a>
@@ -145,17 +145,40 @@
     <div class="modal-bg" data-close></div>
     <div class="modal-card archive-modal-card">
       <button class="modal-close" data-close>✕</button>
-      <div class="archive-gallery">
-        <div class="archive-wall">
-          <div id="archiveGrid" class="archive-grid" role="list"></div>
-        </div>
-        <div id="archiveDetail" class="archive-detail" aria-live="polite">
-          <div id="archiveDetailGuide" class="archive-detail-guide" data-empty>
-            <span>select a piece to view details</span>
+      <div class="archive-shell">
+        <section class="archive-board">
+          <div class="archive-board-body">
+            <div class="archive-stage">
+              <div class="archive-main">
+                <section id="archiveDetail" class="archive-detail" aria-live="polite">
+                  <div class="archive-detail-media" id="archiveDetailMedia"></div>
+                  <div class="archive-detail-info">
+                    <p class="archive-detail-title" id="archiveDetailTitle">Select a signal to view details.</p>
+                    <p class="archive-detail-type" id="archiveDetailType"></p>
+                  </div>
+                </section>
+                <div class="archive-grid-shell">
+                  <div id="archiveGrid" class="archive-grid archive-grid--compact" role="list"></div>
+                </div>
+              </div>
+              <aside class="archive-meta">
+                <p class="archive-overline">PROJECT 7777 · ARCHIVE</p>
+                <h2 class="archive-title">SIGNAL VAULT</h2>
+                <p class="archive-subtitle">Posters, UI sketches, and build captures from MOTTO 7777.</p>
+                <p class="archive-metrics">
+                  <span>ARTIFACTS <strong id="archiveStatTotal">0</strong></span>
+                  <span class="archive-metrics__divider">·</span>
+                  <span>MOTION <strong id="archiveStatMotion">0</strong></span>
+                  <span class="archive-metrics__divider">·</span>
+                  <span>STILLS <strong id="archiveStatStill">0</strong></span>
+                </p>
+                <div class="archive-actions">
+                  <button id="archiveShuffle" class="archive-ghost-btn" type="button">Shuffle</button>
+                </div>
+              </aside>
+            </div>
           </div>
-          <div id="archiveDetailMedia" class="archive-detail-media" hidden></div>
-          <p id="archiveDetailCaption" class="archive-detail-caption" hidden></p>
-        </div>
+        </section>
       </div>
     </div>
   </div>
