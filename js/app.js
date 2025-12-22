@@ -76,6 +76,12 @@ function withAssetVersion(path) {
   return appendQueryParam(path, 'v', version, { skipIfExists: true });
 }
 
+const INTRO_LOGO_STATIC_SRC = 'assets/images/motto_profile_static.webp';
+const INTRO_LOGO_ANIMATED_SRC = 'assets/images/motto_profile.gif';
+const INTRO_LOGO_MOTION_PREF = (typeof window !== 'undefined' && typeof window.matchMedia === 'function')
+  ? window.matchMedia('(prefers-reduced-motion: reduce)')
+  : null;
+
 // ====== Data Sources ======
 const IMM_DATA_URL = (() => {
   try {
@@ -651,6 +657,7 @@ if (typeof window !== 'undefined') {
 const DOM = {
   intro: document.getElementById('intro'),
   introClip: document.getElementById('introClip'),
+  introLogo: document.getElementById('introLogo'),
   enterBtn: document.getElementById('enterBtn'),
   stage: document.getElementById('stage'),
   egg1: document.getElementById('egg1'),
@@ -725,6 +732,80 @@ MODALS.forEach((el) => {
   el.classList.add('hidden');
   el.classList.remove('active');
 });
+
+// ====== Intro Logo Swap ======
+let _introLogoSwapInFlight = false;
+
+function getIntroLogoSource(type = 'static') {
+  if (!DOM.introLogo) return '';
+  if (type === 'animated') {
+    return DOM.introLogo.dataset.animatedSrc || INTRO_LOGO_ANIMATED_SRC;
+  }
+  return DOM.introLogo.dataset.staticSrc || INTRO_LOGO_STATIC_SRC;
+}
+
+function shouldReduceIntroMotion() {
+  return Boolean(INTRO_LOGO_MOTION_PREF && INTRO_LOGO_MOTION_PREF.matches);
+}
+
+function restoreIntroLogoStatic() {
+  if (!DOM.introLogo) return;
+  const staticSrc = getIntroLogoSource('static');
+  if (staticSrc) {
+    DOM.introLogo.src = staticSrc;
+  }
+  delete DOM.introLogo.dataset.currentAnimated;
+}
+
+function swapIntroLogoToGif() {
+  if (!DOM.introLogo || shouldReduceIntroMotion()) return;
+  const animatedSrc = getIntroLogoSource('animated');
+  if (!animatedSrc) return;
+  const versionedSrc = withAssetVersion(animatedSrc);
+  if (!versionedSrc) return;
+  if (DOM.introLogo.dataset.currentAnimated === versionedSrc || _introLogoSwapInFlight) return;
+
+  _introLogoSwapInFlight = true;
+  const loader = new Image();
+  loader.decoding = 'async';
+  loader.addEventListener('load', () => {
+    DOM.introLogo.src = versionedSrc;
+    DOM.introLogo.dataset.currentAnimated = versionedSrc;
+    _introLogoSwapInFlight = false;
+  }, { once: true });
+  loader.addEventListener('error', () => {
+    _introLogoSwapInFlight = false;
+  }, { once: true });
+  loader.src = versionedSrc;
+}
+
+function requestIntroLogoSwapAfterLoad() {
+  if (!DOM.introLogo || typeof window === 'undefined' || typeof document === 'undefined') return;
+  if (document.readyState === 'complete') {
+    swapIntroLogoToGif();
+    return;
+  }
+  window.addEventListener('load', swapIntroLogoToGif, { once: true });
+}
+
+function bindIntroLogoMotionWatcher() {
+  if (!INTRO_LOGO_MOTION_PREF) return;
+  const handler = (event) => {
+    if (event && event.matches) {
+      restoreIntroLogoStatic();
+      return;
+    }
+    requestIntroLogoSwapAfterLoad();
+  };
+  if (typeof INTRO_LOGO_MOTION_PREF.addEventListener === 'function') {
+    INTRO_LOGO_MOTION_PREF.addEventListener('change', handler);
+  } else if (typeof INTRO_LOGO_MOTION_PREF.addListener === 'function') {
+    INTRO_LOGO_MOTION_PREF.addListener(handler);
+  }
+}
+
+requestIntroLogoSwapAfterLoad();
+bindIntroLogoMotionWatcher();
 
 const VIEW_STATES = Object.freeze({
   HOME: 'home',

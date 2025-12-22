@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MOTTO 7777</title>
+  <link rel="preload" as="image" type="image/webp" href="/assets/images/motto_profile_static.webp" />
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="stylesheet" href="css/nft.css"/>
   <script defer src="js/cursor.js"></script>
@@ -15,7 +16,17 @@
   <!-- Intro -->
   <div id="intro" class="intro">
     <div class="intro-inner">
-      <img src="assets/images/motto_profile.gif" alt="MOTTO" class="intro-logo" />
+      <img
+        id="introLogo"
+        class="intro-logo"
+        src="assets/images/motto_profile_static.webp"
+        data-static-src="assets/images/motto_profile_static.webp"
+        data-animated-src="assets/images/motto_profile.gif"
+        alt="MOTTO"
+        width="500"
+        height="500"
+        fetchpriority="high"
+      />
       <button id="enterBtn" class="btn">ENTER</button>
       <p class="hint">headphones recommended</p>
     </div>
@@ -164,6 +175,9 @@
                 <p class="archive-overline">PROJECT 7777 · ARCHIVE</p>
                 <h2 class="archive-title">SIGNAL VAULT</h2>
                 <p class="archive-subtitle">Posters, UI sketches, and build captures from MOTTO 7777.</p>
+                <div class="archive-actions">
+                  <button id="archiveShuffle" class="archive-ghost-btn" type="button">Shuffle</button>
+                </div>
                 <p class="archive-metrics">
                   <span>ARTIFACTS <strong id="archiveStatTotal">0</strong></span>
                   <span class="archive-metrics__divider">·</span>
@@ -171,9 +185,6 @@
                   <span class="archive-metrics__divider">·</span>
                   <span>STILLS <strong id="archiveStatStill">0</strong></span>
                 </p>
-                <div class="archive-actions">
-                  <button id="archiveShuffle" class="archive-ghost-btn" type="button">Shuffle</button>
-                </div>
               </aside>
             </div>
           </div>
