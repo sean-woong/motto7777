@@ -860,10 +860,10 @@ const IMMORTALS_ACCESS_MODES = Object.freeze({
   OPEN: 'open'
 });
 const IMMORTALS_ACCESS_STORAGE_KEY = 'motto:immortals-access';
-let IMMORTALS_ACCESS_MODE = IMMORTALS_ACCESS_MODES.LOCKED;
+let IMMORTALS_ACCESS_MODE = IMMORTALS_ACCESS_MODES.OPEN;
 
 function readStoredImmortalsAccessMode() {
-  if (typeof window === 'undefined') return IMMORTALS_ACCESS_MODES.LOCKED;
+  if (typeof window === 'undefined') return IMMORTALS_ACCESS_MODES.OPEN;
   try {
     const stored = window.localStorage?.getItem(IMMORTALS_ACCESS_STORAGE_KEY);
     if (stored === IMMORTALS_ACCESS_MODES.OPEN || stored === IMMORTALS_ACCESS_MODES.LOCKED) {
@@ -872,7 +872,7 @@ function readStoredImmortalsAccessMode() {
   } catch (err) {
     console.warn('Unable to read Immortals access mode:', err);
   }
-  return IMMORTALS_ACCESS_MODES.LOCKED;
+  return IMMORTALS_ACCESS_MODES.OPEN;
 }
 
 function persistImmortalsAccessMode(mode) {
@@ -920,7 +920,10 @@ function toggleImmortalsAccess() {
 
 function initImmortalsAccessMode() {
   const stored = readStoredImmortalsAccessMode();
-  applyImmortalsAccessMode(stored);
+  if (stored === IMMORTALS_ACCESS_MODES.LOCKED) {
+    persistImmortalsAccessMode(IMMORTALS_ACCESS_MODES.OPEN);
+  }
+  applyImmortalsAccessMode(IMMORTALS_ACCESS_MODES.OPEN);
 }
 
 initImmortalsAccessMode();

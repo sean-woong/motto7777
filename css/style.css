@@ -1286,7 +1286,6 @@ body.cursor-target {
 .audio-ui::after {
   content: none;
 }
-
 @media (min-width: 769px) {
   .audio-ui {
     height: 40px;
@@ -1616,6 +1615,7 @@ body.cursor-target {
   #egg2 { right: clamp(14px, 6vw, 24px); }
   .stage {
     padding: clamp(90px, 24vw, 140px) clamp(16px, 7vw, 28px) clamp(160px, 32vw, 220px);
+    padding-bottom: calc(clamp(160px, 32vw, 220px) + 160px);
   }
   .audio-ui {
     right: clamp(12px, 6vw, 24px);
@@ -1648,6 +1648,35 @@ body.cursor-target {
   .audio-range {
     width: clamp(150px, 60vw, 280px);
   }
+
+  .stage.stage--about,
+  .stage.stage--nft,
+  .stage.stage--merch {
+    padding-bottom: calc(clamp(150px, 20vw, 210px) + 160px);
+  }
+
+  #archiveModal .archive-board-body {
+    padding-bottom: clamp(260px, 60vw, 480px);
+  }
+
+  #archiveModal .archive-stage {
+    flex-direction: column;
+  }
+
+  #archiveModal .archive-meta {
+    order: -1;
+  }
+
+  #archiveModal .archive-actions {
+    width: 100%;
+    justify-content: flex-start;
+    padding: clamp(8px, 3vw, 14px) 0;
+    margin-bottom: clamp(12px, 3vw, 18px);
+  }
+
+  #archiveModal .modal-card {
+    max-height: calc(100vh - clamp(160px, 36vw, 240px));
+  }
 }
 
 @media (max-width: 640px) {
@@ -1656,6 +1685,7 @@ body.cursor-target {
     max-width: min(520px, 94vw);
     gap: clamp(22px, 7vw, 32px);
     padding: clamp(120px, 30vw, 180px) clamp(16px, 8vw, 26px) clamp(170px, 36vw, 240px);
+    padding-bottom: calc(clamp(170px, 36vw, 240px) + 160px);
   }
   .intro-logo {
     width: min(62vw, 220px);
@@ -1709,8 +1739,18 @@ body.cursor-target {
     width: auto;
     max-width: min(100%, 360px);
   }
+
+  .stage.stage--about,
+  .stage.stage--nft,
+  .stage.stage--merch {
+    padding-bottom: calc(clamp(130px, 22vw, 180px) + 160px);
+  }
   .hint {
     font-size: 11px;
+  }
+
+  #archiveModal .modal-card {
+    max-height: calc(100vh - clamp(180px, 44vw, 280px));
   }
 }
 
@@ -2489,6 +2529,7 @@ body.cursor-target {
   display: flex;
   flex-direction: column;
   gap: clamp(22px, 3vw, 32px);
+  padding-bottom: clamp(220px, 28vw, 360px);
 }
 
 .archive-stage {
@@ -2553,7 +2594,9 @@ body.cursor-target {
 }
 .archive-actions {
   display: flex;
+  align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .archive-detail {
