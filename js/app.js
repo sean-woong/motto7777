@@ -1134,6 +1134,7 @@ function fastExitIntro() {
   if (DOM.introClip) {
     DOM.introClip.hidden = true;
   }
+  stopIntroGlitchLoop();
 }
 
 function ensureMainReady() {
@@ -1215,9 +1216,85 @@ function handleViewPopState(event) {
     });
 }
 
+const INTRO_GLITCH_MIN_DELAY = 1500;
+const INTRO_GLITCH_MAX_DELAY = 3000;
+const INTRO_GLITCH_DURATION = 460;
+let introGlitchTimer = null;
+let introCtaEl = null;
+
+function getIntroCtaEl() {
+  if (introCtaEl) return introCtaEl;
+  introCtaEl = document.querySelector('.intro-cta');
+  return introCtaEl;
+}
+
+function stopIntroGlitchLoop() {
+  if (introGlitchTimer) {
+    clearTimeout(introGlitchTimer);
+    introGlitchTimer = null;
+  }
+  const el = getIntroCtaEl();
+  if (el) el.classList.remove('is-glitch-burst');
+}
+
+function startIntroGlitchLoop() {
+  const el = getIntroCtaEl();
+  if (!el || !DOM.intro || DOM.intro.style.display === 'none') return;
+  stopIntroGlitchLoop();
+  const runBurst = () => {
+    if (!DOM.intro || DOM.intro.style.display === 'none') {
+      stopIntroGlitchLoop();
+      return;
+    }
+    el.classList.remove('is-glitch-burst');
+    void el.offsetWidth;
+    el.classList.add('is-glitch-burst');
+    setTimeout(() => {
+      el.classList.remove('is-glitch-burst');
+    }, INTRO_GLITCH_DURATION);
+    const delay = INTRO_GLITCH_MIN_DELAY + Math.random() * (INTRO_GLITCH_MAX_DELAY - INTRO_GLITCH_MIN_DELAY);
+    introGlitchTimer = setTimeout(runBurst, delay);
+  };
+  const initialDelay = INTRO_GLITCH_MIN_DELAY + Math.random() * (INTRO_GLITCH_MAX_DELAY - INTRO_GLITCH_MIN_DELAY);
+  introGlitchTimer = setTimeout(runBurst, initialDelay);
+}
+
 // ====== Intro → Main ======
+const INTRO_AUTO_ENTER_DELAY = 5000;
+let introAutoEnterTimer = null;
+
+function cancelIntroAutoEnter() {
+  if (!introAutoEnterTimer) return;
+  clearTimeout(introAutoEnterTimer);
+  introAutoEnterTimer = null;
+}
+
+function requestIntroEnter() {
+  if (!DOM.enterBtn || DOM.enterBtn.disabled) return;
+  DOM.enterBtn.click();
+}
+
+function scheduleIntroAutoEnter() {
+  if (!DOM.intro || !DOM.enterBtn) return;
+  if (DOM.intro.style.display === 'none') return;
+  cancelIntroAutoEnter();
+  introAutoEnterTimer = setTimeout(() => {
+    if (!DOM.intro || DOM.intro.style.display === 'none') return;
+    requestIntroEnter();
+  }, INTRO_AUTO_ENTER_DELAY);
+}
+
+if (DOM.intro) {
+  DOM.intro.addEventListener('touchstart', () => {
+    if (DOM.intro.style.display === 'none') return;
+    requestIntroEnter();
+  }, { passive: true });
+}
+
 DOM.enterBtn?.addEventListener('click', () => {
   console.log("ENTER 버튼 클릭됨 ✅");
+  stopIntroGlitchLoop();
+  cancelIntroAutoEnter();
   DOM.enterBtn.disabled = true;
   DOM.enterBtn.setAttribute('aria-busy', 'true');
 
@@ -1239,6 +1316,7 @@ DOM.enterBtn?.addEventListener('click', () => {
     if (DOM.intro) {
       DOM.intro.style.display = 'none';
     }
+    stopIntroGlitchLoop();
 
     if (DOM.introClip) {
       playTransitionOverlay(() => finalizeBoot(), {
@@ -1252,6 +1330,9 @@ DOM.enterBtn?.addEventListener('click', () => {
     }
   }, DUR_LONG);
 });
+
+scheduleIntroAutoEnter();
+startIntroGlitchLoop();
 
 // ====== Today Stage ======
 function pickRandomImmortal() {
