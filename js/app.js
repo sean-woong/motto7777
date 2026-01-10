@@ -915,9 +915,12 @@ const DOM = {
   nowText: document.getElementById('nowText'),
   vol: document.getElementById('vol'),
   muteBtn: document.getElementById('muteBtn'),
+  playerCenter: document.querySelector('.player-center'),
   prevBtn: document.getElementById('prevBtn'),
   playBtn: document.getElementById('playBtn'),
   nextBtn: document.getElementById('nextBtn'),
+  miniControls: document.getElementById('miniControls'),
+  volumePopover: document.getElementById('volumePopover'),
   spBtn: document.getElementById('spBtn'),
   ytBtn: document.getElementById('ytBtn'),
   twBtn: document.getElementById('twBtn'),
@@ -1891,11 +1894,36 @@ function ensureMobileNavEggsPlacement(retries = 2) {
 
 function setupAudioToggle() {
   if (!DOM.audioUI || !DOM.audioToggle) return;
+  const restoreControls = () => {
+    if (!DOM.playerCenter || !DOM.prevBtn || !DOM.nextBtn) return;
+    if (DOM.prevBtn.parentElement !== DOM.playerCenter) {
+      DOM.playerCenter.insertBefore(DOM.prevBtn, DOM.playBtn || DOM.playerCenter.firstChild);
+    }
+    if (DOM.nextBtn.parentElement !== DOM.playerCenter) {
+      DOM.playerCenter.appendChild(DOM.nextBtn);
+    }
+  };
+  const moveMiniControls = () => {
+    if (!DOM.miniControls || !DOM.prevBtn || !DOM.nextBtn) return;
+    if (DOM.prevBtn.parentElement !== DOM.miniControls) {
+      DOM.miniControls.appendChild(DOM.prevBtn);
+    }
+    if (DOM.nextBtn.parentElement !== DOM.miniControls) {
+      DOM.miniControls.appendChild(DOM.nextBtn);
+    }
+  };
+
   const applyState = (collapsed) => {
     DOM.audioUI.classList.toggle('is-collapsed', collapsed);
     DOM.audioToggle.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
     DOM.audioToggle.setAttribute('aria-label', collapsed ? 'Expand audio player' : 'Collapse audio player');
     DOM.audioToggle.textContent = collapsed ? '▲' : '▾';
+    DOM.audioUI.classList.remove('is-volume-open');
+    if (collapsed) {
+      moveMiniControls();
+    } else {
+      restoreControls();
+    }
     try {
       localStorage.setItem('motto_audio_collapsed', collapsed ? '1' : '0');
     } catch (err) {
@@ -1915,6 +1943,18 @@ function setupAudioToggle() {
     event.preventDefault();
     event.stopPropagation();
     applyState(!DOM.audioUI.classList.contains('is-collapsed'));
+  });
+
+  DOM.audioUI.addEventListener('click', (event) => {
+    if (!DOM.audioUI.classList.contains('is-collapsed')) return;
+    if (DOM.audioUI.classList.contains('is-volume-open')) {
+      if (!event.target.closest('#volumePopover') && !event.target.closest('#muteBtn')) {
+        DOM.audioUI.classList.remove('is-volume-open');
+      }
+      return;
+    }
+    if (event.target.closest('button, input, a')) return;
+    applyState(false);
   });
 }
 
@@ -4494,7 +4534,13 @@ function startOST() {
     updateVolumeFill();
   };
   DOM.vol.addEventListener('change', updateVolumeFill);
-  DOM.muteBtn.onclick = () => {
+  DOM.muteBtn.onclick = (event) => {
+    if (DOM.audioUI?.classList.contains('is-collapsed')) {
+      event.preventDefault();
+      event.stopPropagation();
+      DOM.audioUI.classList.toggle('is-volume-open');
+      return;
+    }
     if (!A) return;
     A.muted = !A.muted;
     updateMuteBtn();
