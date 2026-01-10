@@ -50,12 +50,15 @@
 
   <!-- Header Nav -->
   <header class="nav">
-    <a href="#" id="homeBtn" class="brand">
-      <span class="sr-only">MOTTO Home</span>
-      <span class="brand-word" data-text="motto">motto</span>
-      <span class="brand-tag" aria-label="7777 in Japanese">ナナナナ</span>
-    </a>
-    <nav class="links">
+    <div class="nav-top">
+      <a href="#" id="homeBtn" class="brand">
+        <span class="sr-only">MOTTO Home</span>
+        <span class="brand-word" data-text="motto">motto</span>
+        <span class="brand-tag" aria-label="7777 in Japanese">ナナナナ</span>
+      </a>
+      <button id="navToggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation">≡</button>
+    </div>
+    <nav id="navLinks" class="links">
       <a id="immBtn"  class="link-glitch nav-link" href="#">IMMORTALS</a>
       <a id="arcBtn"  class="link-glitch nav-link" href="#">ARCHIVE</a>
       <a id="aboutBtn" class="link-glitch nav-link" href="#about">ABOUT</a>
@@ -131,7 +134,14 @@
         </label>
         <button id="immClearFilters" class="imm-clear" type="button" hidden>Clear</button>
         <span id="immCount" class="imm-count" aria-live="polite"></span>
+        <div class="imm-mobile-actions" aria-label="Immortals tools">
+          <button id="immSearchToggle" class="imm-mobile-btn imm-mobile-btn--search" type="button" aria-expanded="false" aria-controls="immSearch" aria-label="Open search">
+            <span class="sr-only">Search</span>
+          </button>
+          <button id="immTagsToggle" class="imm-mobile-btn imm-mobile-btn--tags" type="button" aria-expanded="false" aria-controls="immTagFilters" aria-label="Open tag filters">≡</button>
+        </div>
       </div>
+      <div id="immMobileBackdrop" class="imm-mobile-backdrop" aria-hidden="true"></div>
       <div id="immTagFilters" class="imm-tag-filters" role="group" aria-label="Filter Immortals by tag"></div>
       <div id="immGrid" class="imm-grid"></div>
     </div>

@@ -267,10 +267,10 @@ const ABOUT_CONTENT = Object.freeze({
     ],
     ctaNote: 'Pick where to enter: characters through IMMORTALS, process through ARCHIVE, the sound of the world through the OST, or the full drop via the NFT tab.',
     ctas: [
-      { label: 'ENTER IMMORTALS', action: 'immortals' },
-      { label: 'BROWSE ARCHIVE', action: 'archive' },
-      { label: 'LISTEN TO OST', action: 'music' },
-      { label: 'GO TO NFT DROP', action: 'nft' }
+      { label: 'ENTER IMMORTALS', shortLabel: 'CHARACTERS', action: 'immortals' },
+      { label: 'BROWSE ARCHIVE', shortLabel: 'ARCHIVE', action: 'archive' },
+      { label: 'LISTEN TO OST', shortLabel: 'OST', action: 'music' },
+      { label: 'GO TO NFT DROP', shortLabel: 'NFT DROP', action: 'nft' }
     ]
   },
   kr: {
@@ -294,9 +294,9 @@ const ABOUT_CONTENT = Object.freeze({
         title: 'Chapter 1: 7777 세계관',
         logline: 'glitch · loop · 7 아키타입',
         lines: [
-          'MOTTO 7777은 Sean Woong과 Haz Haus의 오디오-비주얼 웹 아트북 프로젝트입니다.',
-          '7777년, 인류의 마지막 에코가 글리치와 루프로 녹아듭니다.',
-          '7 아키타입(Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer)이 신호·회로·감정을 통해 떠돕니다.',
+          'MOTTO 7777은 Sean Woong & Haz Haus의 오디오-비주얼 웹 아트북.',
+          '7777년, 인류의 마지막 에코가 글리치와 루프로 녹아듦.',
+          '7 아키타입(Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer)이 신호·회로·감정을 통해 떠돔.',
           '기억이 파편화될 때, 무엇이 남을까?'
         ]
       },
@@ -304,11 +304,9 @@ const ABOUT_CONTENT = Object.freeze({
         title: 'Chapter 2: Survival Battle',
         logline: 'DROP → T+14일 → KIA / SURVIVE',
         lines: [
-          'DROP → T+14일 → KIA / SURVIVE',
-          '총 7,777 NFTs (7,700 main pack + 77 Immortals)',
-          '드롭 T+14일, 메인 팩의 50%가 KIA로 업데이트되며 기존 아트는 KIA 버전으로 대체됩니다.',
-          '나머지 50%는 Survive 상태로 원본 아트를 유지합니다.',
-          'KIA로 업데이트된 NFT는 Crypto.com NFT 내에서만 보관/거래 가능(외부 출금 불가).'
+          '총 7,777 NFTs (7,700 main + 77 Immortals)',
+          'T+14일: main 50% KIA(원본 파괴), 50% Survive',
+          'KIA는 Crypto.com NFT 내부 거래만 가능'
         ]
       },
       {
@@ -316,9 +314,9 @@ const ABOUT_CONTENT = Object.freeze({
         logline: 'OST · 미니게임 · 머치 · 거버넌스',
         lines: [
           'OST 다운로드',
-          '미래 미니게임 참여',
-          '물리 머천다이즈 패키지 (예: NFC 키링 프로토타입)',
-          '거버넌스 리워드 (자격 기준)'
+          '미래 미니게임',
+          '물리 머천다이즈 (NFC 키링 프로토)',
+          '거버넌스 리워드'
         ]
       }
     ],
@@ -359,10 +357,10 @@ const ABOUT_CONTENT = Object.freeze({
     ],
     ctaNote: 'IMMORTALS로 캐릭터를, ARCHIVE로 과정을, OST로 무드를, NFT 탭으로 전체 드롭을.',
     ctas: [
-      { label: 'ENTER IMMORTALS', action: 'immortals' },
-      { label: 'BROWSE ARCHIVE', action: 'archive' },
-      { label: 'LISTEN TO OST', action: 'music' },
-      { label: 'GO TO NFT DROP', action: 'nft' }
+      { label: 'ENTER IMMORTALS', shortLabel: '캐릭터', action: 'immortals' },
+      { label: 'BROWSE ARCHIVE', shortLabel: '아카이브', action: 'archive' },
+      { label: 'LISTEN TO OST', shortLabel: 'OST', action: 'music' },
+      { label: 'GO TO NFT DROP', shortLabel: 'NFT', action: 'nft' }
     ]
   }
 });
@@ -931,6 +929,9 @@ const DOM = {
   aboutBtn: document.getElementById('aboutBtn'),
   nftBtn: document.getElementById('nftBtn'),
   homeBtn: document.getElementById('homeBtn'),
+  nav: document.querySelector('.nav'),
+  navToggle: document.getElementById('navToggle'),
+  navLinks: document.getElementById('navLinks'),
   charModal: document.getElementById('charModal'),
   charHero: document.getElementById('charHero'),
   charStrip: document.getElementById('charStrip'),
@@ -941,7 +942,10 @@ const DOM = {
   immGrid: document.getElementById('immGrid'),
   immDModal: document.getElementById('immDetailModal'),
   immSearch: document.getElementById('immSearch'),
+  immSearchToggle: document.getElementById('immSearchToggle'),
   immTagFilters: document.getElementById('immTagFilters'),
+  immTagsToggle: document.getElementById('immTagsToggle'),
+  immMobileBackdrop: document.getElementById('immMobileBackdrop'),
   immCount: document.getElementById('immCount'),
   immClearFilters: document.getElementById('immClearFilters'),
   immLegend: document.getElementById('immLegend'),
@@ -1994,19 +1998,37 @@ function buildAboutBlock(lang) {
   }
   hero.appendChild(heroEyebrow);
 
+  const heroAccordion = document.createElement('details');
+  heroAccordion.className = 'about-hero-accordion';
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  heroAccordion.open = !isMobile;
+
+  const summary = document.createElement('summary');
+  summary.className = 'about-hero-summary';
+  const summaryTitle = document.createElement('span');
+  summaryTitle.className = 'about-hero-summary-title';
+  summaryTitle.textContent = content.hero.title || content.hero.line || 'MOTTO 7777';
+  const summaryMeta = document.createElement('span');
+  summaryMeta.className = 'about-hero-summary-meta';
+  summaryMeta.textContent = isKr ? '요약 펼치기' : 'Tap to expand';
+  summary.appendChild(summaryTitle);
+  summary.appendChild(summaryMeta);
+  heroAccordion.appendChild(summary);
+
   const heroTitle = document.createElement('h1');
   heroTitle.textContent = content.hero.title || content.hero.line;
   if (isKr) heroTitle.classList.add('en-text');
-  hero.appendChild(heroTitle);
+  heroAccordion.appendChild(heroTitle);
   if (Array.isArray(content.hero.sublines)) {
     content.hero.sublines.forEach((text) => {
       if (!text) return;
       const sub = document.createElement('p');
       sub.className = 'about-subhead';
       sub.textContent = text;
-      hero.appendChild(sub);
+      heroAccordion.appendChild(sub);
     });
   }
+  hero.appendChild(heroAccordion);
   hero.appendChild(createLanguageToggle());
   block.appendChild(hero);
 
@@ -2153,7 +2175,16 @@ function buildAboutBlock(lang) {
       const node = document.createElement('button');
       node.className = 'about-btn';
       node.type = 'button';
-      node.textContent = cta.label;
+      node.dataset.action = cta.action;
+      node.setAttribute('aria-label', cta.label);
+      const label = document.createElement('span');
+      label.className = 'about-btn__label';
+      label.textContent = cta.label;
+      node.appendChild(label);
+      const shortLabel = document.createElement('span');
+      shortLabel.className = 'about-btn__short';
+      shortLabel.textContent = cta.shortLabel || cta.label;
+      node.appendChild(shortLabel);
       node.addEventListener('click', (e) => {
         e.preventDefault();
         navigateAboutAction(cta.action, 'about-cta');
@@ -3028,10 +3059,13 @@ async function openImmortals() {
   }
   const filtered = applyImmortalFilters();
   DOM.immModal.classList.remove('modal-loading');
+  setImmMobilePanels({ searchOpen: false, tagsOpen: false });
   openModal(DOM.immModal);
   setTimeout(() => {
     if (isModalActive(DOM.immModal)) {
-      DOM.immSearch?.focus({ preventScroll: true });
+      if (window.innerWidth > 768) {
+        DOM.immSearch?.focus({ preventScroll: true });
+      }
     }
   }, DUR_SHORT);
   return filtered;
@@ -3304,6 +3338,7 @@ DOM.immPrev?.addEventListener('click', () => openImmDetailByIndex(IMM_CUR - 1));
 DOM.immNext?.addEventListener('click', () => openImmDetailByIndex(IMM_CUR + 1));
 DOM.immModal?.addEventListener('click', (e) => {
   if (e.target.hasAttribute('data-close')) {
+    setImmMobilePanels({ searchOpen: false, tagsOpen: false });
     closeModal(DOM.immModal);
     if (isModalActive(DOM.immDModal)) {
       closeImmDetailModal({ reopenImm: false });
@@ -4605,6 +4640,52 @@ function trackEvent(category, action, label) {
   console.log(`[분석] ${category}: ${action} - ${label}`);
 }
 
+function setImmMobilePanels({ searchOpen = false, tagsOpen = false } = {}) {
+  if (!DOM.immModal) return;
+  DOM.immModal.classList.toggle('imm-modal--search', searchOpen);
+  DOM.immModal.classList.toggle('imm-modal--tags', tagsOpen);
+  DOM.immSearchToggle?.setAttribute('aria-expanded', searchOpen ? 'true' : 'false');
+  DOM.immTagsToggle?.setAttribute('aria-expanded', tagsOpen ? 'true' : 'false');
+  if (searchOpen) {
+    setTimeout(() => DOM.immSearch?.focus(), 0);
+  }
+}
+
+DOM.immSearchToggle?.addEventListener('click', () => {
+  const isOpen = DOM.immModal?.classList.contains('imm-modal--search');
+  setImmMobilePanels({ searchOpen: !isOpen, tagsOpen: false });
+});
+DOM.immTagsToggle?.addEventListener('click', () => {
+  const isOpen = DOM.immModal?.classList.contains('imm-modal--tags');
+  setImmMobilePanels({ searchOpen: false, tagsOpen: !isOpen });
+});
+DOM.immMobileBackdrop?.addEventListener('click', () => {
+  setImmMobilePanels({ searchOpen: false, tagsOpen: false });
+});
+DOM.immTagFilters?.addEventListener('click', (e) => {
+  if (e.target.closest('.imm-tag-btn')) {
+    setImmMobilePanels({ searchOpen: false, tagsOpen: false });
+  }
+});
+
+function setNavOpen(open) {
+  if (!DOM.nav || !DOM.navToggle) return;
+  DOM.nav.classList.toggle('nav-open', open);
+  DOM.navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+DOM.navToggle?.addEventListener('click', () => {
+  const isOpen = DOM.nav?.classList.contains('nav-open');
+  setNavOpen(!isOpen);
+});
+DOM.navLinks?.addEventListener('click', (e) => {
+  if (!e.target.closest('a')) return;
+  setNavOpen(false);
+});
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) setNavOpen(false);
+});
+
 DOM.homeBtn?.addEventListener('click', (e) => {
   e.preventDefault();
   openHomeStage('brand-home');
@@ -4736,7 +4817,11 @@ document.addEventListener('keydown', (e) => {
     let closed = false;
     if (ARC_ACTIVE_KEY != null) { closeArchiveDetail(); closed = true; }
     if (isModalActive(DOM.immDModal)) { closeModal(DOM.immDModal, { reopenImm: false }); closed = true; }
-    if (isModalActive(DOM.immModal)) { closeModal(DOM.immModal); closed = true; }
+    if (isModalActive(DOM.immModal)) {
+      setImmMobilePanels({ searchOpen: false, tagsOpen: false });
+      closeModal(DOM.immModal);
+      closed = true;
+    }
     if (isModalActive(DOM.arcModal)) { closeModal(DOM.arcModal); closed = true; }
     if (isModalActive(DOM.charModal)) { closeModal(DOM.charModal); closed = true; }
     if (closed) return;
