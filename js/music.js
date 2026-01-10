@@ -1,5 +1,6 @@
 (() => {
   const DEFAULT_ACCENT = "#ff3bd4";
+  const DEFAULT_ART = "assets/images/motto_profile_static.webp";
   const TRACKS = [
     {
       id: "doomsday",
@@ -104,6 +105,7 @@
     item.id = `track-${track.id}`;
     item.dataset.track = track.id;
     const accent = track.accent || DEFAULT_ACCENT;
+    const art = track.art || DEFAULT_ART;
     item.style.setProperty("--track-accent", accent);
     item.style.setProperty("--track-accent-soft", track.accentSoft || hexToRgba(accent, 0.18));
     item.style.setProperty("--track-accent-strong", track.accentStrong || hexToRgba(accent, 0.38));
@@ -112,6 +114,9 @@
 
     item.innerHTML = `
       <div class="track__visual" aria-hidden="true">
+        <div class="track__art">
+          <img src="${art}" alt="" loading="lazy" />
+        </div>
         <div class="track__pulse">
           <span></span><span></span><span></span><span></span>
         </div>

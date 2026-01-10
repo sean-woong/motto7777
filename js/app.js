@@ -165,78 +165,327 @@ const CHAR_CLIPS = {
   kia: []
 };
 
-const ABOUT_HERO = Object.freeze({
-  eyebrow: 'ABOUT · PROJECT 7777',
-  title: 'MOTTO 7777',
-  sublines: [
-    'Audio-visual project by Sean Woong & Haz Haus.',
-    '7 archetypes · 7,777 artworks · 7-track OST.'
-  ]
+const LANGUAGES = Object.freeze({
+  KR: 'kr',
+  EN: 'en'
 });
 
-const ABOUT_CREDITS = Object.freeze([
-  'Created by Sean Woong & Haz Haus',
-  'Worldbuilding · Sean Woong & Haz Haus',
-  'Visual direction · Sean Woong',
-  'Music & sound direction · Haz Haus'
-]);
+const LANGUAGE_LABELS = Object.freeze({
+  en: 'English',
+  kr: '한국어'
+});
 
-const ABOUT_STATS = Object.freeze([
-  { label: 'IMMORTALS', value: '77', caption: 'Motion portrait NFTs at the visible core of MOTTO 7777.' },
-  { label: 'PACKS', value: '7', caption: 'Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer.' },
-  { label: 'OST', value: '7', caption: 'Original tracks by Haz Haus & oo.sean.' },
-  { label: 'SUPPLY', value: '7,777', caption: '7,700 main collection NFTs + 77 Immortals motion portrait NFTs.' }
-]);
+let CURRENT_LANG = LANGUAGES.EN;
 
-const ABOUT_SUMMARY = 'This site is the main stage and archive for MOTTO 7777. Immortals show the core motion portrait NFTs, the archive holds posters and behind-the-scenes work, and the OST keeps the world moving in the background. The NFT tab links straight to the full 7,777-piece collection on Crypto.com NFT.';
-
-const ABOUT_LORE = Object.freeze([
-  'In the year 7,777, humanity’s last echoes dissolve into glitch and loop. Seven archetypes — Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer — drift through signal, circuit, and emotion. Their identities fragment and repeat, asking a simple question: what remains when memory fractures?',
-  'MOTTO 7777 lives on sevens — set in the year 7,777, shaped by seven archetypes, 7,777 NFTs, and a 7-track OST that scores this world. The 7,700-piece MOTTO pack is a curated generative set of hand-drawn portraits and glitches spread across those seven archetypes.',
-  'The 77 Immortals are animated motion portrait NFTs that sit at the core of MOTTO 7777. Each Immortal loops an 8-bit reimagining of the original MOTTO OST, as if the soundtrack survived only as game-console memory. Within the 77, seven Legend pieces form the innermost core: images that refuse to fade, replaying the question of who stays, who is erased, and who turns into myth.'
-]);
-
-const ABOUT_PILLARS = [
-  {
-    id: 'immortals',
-    eyebrow: 'IMMORTALS GRID',
-    title: 'IMMORTALS GRID',
-    body: [
-      'Looping motion portraits built from the seven packs.',
-      'This grid is where you explore the 77 Immortals and their key cuts in one place.'
+const ABOUT_CONTENT = Object.freeze({
+  en: {
+    hero: {
+      eyebrow: 'ABOUT · PROJECT 7777',
+      title: 'MOTTO 7777',
+      sublines: [
+        'Audio-visual web artbook project by Sean Woong & Haz Haus.',
+        '7 archetypes · 7,777 artworks · 7-track OST.'
+      ]
+    },
+    credits: [],
+    stats: [
+      { label: 'IMMORTALS', value: '77', caption: '77 looping motion-portrait NFTs at the core of MOTTO 7777.' },
+      { label: 'PACKS', value: '7', caption: 'Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer.' },
+      { label: 'OST', value: '7', caption: 'Original tracks by Haz Haus & oo.sean.' },
+      { label: 'SUPPLY', value: '7,777', caption: '7,700 main collection NFTs + 77 Immortals motion portrait NFTs.' }
+    ],
+    chapters: [
+      {
+        title: 'Chapter 1: World of 7777',
+        logline: 'glitch · loop · 7 archetypes',
+        lines: [
+          'MOTTO 7777 is an audio-visual web artbook by Sean Woong & Haz Haus.',
+          'In the year 7,777, humanity’s last echo melts into glitch and loop.',
+          'Seven archetypes (Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer) drift through signal, circuit, and emotion.',
+          'When memory fractures, what remains?'
+        ]
+      },
+      {
+        title: 'Chapter 2: Survival Battle',
+        logline: 'DROP → T+14 DAYS → KIA / SURVIVE',
+        lines: [
+          'DROP → T+14 DAYS → KIA / SURVIVE',
+          '7,777 NFTs (7,700 main pack + 77 Immortals)',
+          'T+14 days after the drop, 50% of the main pack updates to “Killed in Action” (KIA), replacing the original artwork with the KIA version.',
+          'The remaining 50% survive and keep the original artwork.',
+          'KIA-updated NFTs can be held/traded only inside Crypto.com NFT (no external withdrawals).'
+        ]
+      },
+      {
+        title: 'Chapter 3: Holder Benefits',
+        logline: 'OST · mini-game · merch · governance',
+        lines: [
+          'OST downloads',
+          'Future mini-game access',
+          'Physical merchandise packages (e.g., NFC keyring prototype)',
+          'Governance rewards (eligibility-based)'
+        ]
+      }
+    ],
+    pillars: [
+      {
+        id: 'immortals',
+        eyebrow: 'IMMORTALS GRID',
+        title: 'IMMORTALS GRID',
+        body: [
+          '77 looping motion portraits built from the seven packs.',
+          'This grid is where you explore the 77 Immortals and their featured cuts in one place.'
+        ]
+      },
+      {
+        id: 'archive',
+        eyebrow: 'ARCHIVE WALL',
+        title: 'ARCHIVE WALL',
+        body: [
+          'Posters, behind-the-scenes cuts, memes and side experiments from MOTTO 7777.',
+          'This is where the process stays visible instead of being hidden.'
+        ]
+      },
+      {
+        id: 'sound',
+        eyebrow: 'SOUND / OST',
+        title: 'SOUND / OST',
+        body: [
+          'A custom score and live edits for this world by Haz Haus × oo.sean.',
+          'The OST and live edits sit here so every loop and drop has a mood under it.'
+        ]
+      },
+      {
+        id: 'drops',
+        eyebrow: 'DROPS / COLLECTORS',
+        title: 'DROPS / COLLECTORS',
+        body: [
+          'Enter the MOTTO 7777 drop on Crypto.com NFT.',
+          'View the full 7,777-piece collection, trade pack NFTs, and collect Immortals directly from the marketplace.'
+        ]
+      }
+    ],
+    ctaNote: 'Pick where to enter: characters through IMMORTALS, process through ARCHIVE, the sound of the world through the OST, or the full drop via the NFT tab.',
+    ctas: [
+      { label: 'ENTER IMMORTALS', action: 'immortals' },
+      { label: 'BROWSE ARCHIVE', action: 'archive' },
+      { label: 'LISTEN TO OST', action: 'music' },
+      { label: 'GO TO NFT DROP', action: 'nft' }
     ]
   },
-  {
-    id: 'archive',
-    eyebrow: 'ARCHIVE WALL',
-    title: 'ARCHIVE WALL',
-    body: [
-      'Posters, behind-the-scenes cuts, memes and side experiments from MOTTO 7777.',
-      'This is where the messy process stays visible instead of being hidden.'
-    ]
-  },
-  {
-    id: 'sound',
-    eyebrow: 'SOUND / OST',
-    title: 'SOUND / OST',
-    body: [
-      'A custom score for this world by Haz Haus in collaboration with oo.sean.',
-      'The OST and live edits sit here so every loop and drop has a mood under it.'
-    ]
-  },
-  {
-    id: 'drops',
-    eyebrow: 'DROPS / COLLECTORS',
-    title: 'DROPS / COLLECTORS',
-    body: [
-      'Enter the MOTTO 7777 drop on Crypto.com NFT.',
-      'View the full 7,777-piece collection, trade MOTTO pack NFTs, and collect Immortals directly from the marketplace.'
+  kr: {
+    hero: {
+      eyebrow: 'ABOUT · 프로젝트 7777',
+      title: 'MOTTO 7777',
+      sublines: [
+        'Sean Woong과 Haz Haus의 오디오-비주얼 웹 아트북 프로젝트.',
+        '7 아키타입 · 7,777 아트워크 · 7트랙 OST.'
+      ]
+    },
+    credits: [],
+    stats: [
+      { label: 'IMMORTALS', value: '77', caption: 'MOTTO 7777의 코어에 있는 77개의 루핑 모션 포트레이트 NFT.' },
+      { label: 'PACKS', value: '7', caption: 'Dealer · Skull · Rockstar · Drag · Military · Motorcycle · Boxer' },
+      { label: 'OST', value: '7', caption: 'Haz Haus × oo.sean 오리지널 트랙.' },
+      { label: 'SUPPLY', value: '7,777', caption: '7,700 main collection + 77 Immortals 모션 포트레이트.' }
+    ],
+    chapters: [
+      {
+        title: 'Chapter 1: 7777 세계관',
+        logline: 'glitch · loop · 7 아키타입',
+        lines: [
+          'MOTTO 7777은 Sean Woong과 Haz Haus의 오디오-비주얼 웹 아트북 프로젝트입니다.',
+          '7777년, 인류의 마지막 에코가 글리치와 루프로 녹아듭니다.',
+          '7 아키타입(Dealer, Skull, Rockstar, Drag, Military, Motorcycle, Boxer)이 신호·회로·감정을 통해 떠돕니다.',
+          '기억이 파편화될 때, 무엇이 남을까?'
+        ]
+      },
+      {
+        title: 'Chapter 2: Survival Battle',
+        logline: 'DROP → T+14일 → KIA / SURVIVE',
+        lines: [
+          'DROP → T+14일 → KIA / SURVIVE',
+          '총 7,777 NFTs (7,700 main pack + 77 Immortals)',
+          '드롭 T+14일, 메인 팩의 50%가 KIA로 업데이트되며 기존 아트는 KIA 버전으로 대체됩니다.',
+          '나머지 50%는 Survive 상태로 원본 아트를 유지합니다.',
+          'KIA로 업데이트된 NFT는 Crypto.com NFT 내에서만 보관/거래 가능(외부 출금 불가).'
+        ]
+      },
+      {
+        title: 'Chapter 3: 홀더 혜택',
+        logline: 'OST · 미니게임 · 머치 · 거버넌스',
+        lines: [
+          'OST 다운로드',
+          '미래 미니게임 참여',
+          '물리 머천다이즈 패키지 (예: NFC 키링 프로토타입)',
+          '거버넌스 리워드 (자격 기준)'
+        ]
+      }
+    ],
+    pillars: [
+      {
+        id: 'immortals',
+        eyebrow: 'IMMORTALS GRID',
+        title: 'IMMORTALS GRID',
+        body: [
+          '7개의 팩에서 파생된 77 루핑 모션 포트레이트.',
+          '이 그리드에서 77 Immortals와 주요 컷을 한 번에 탐색합니다.'
+        ]
+      },
+      {
+        id: 'archive',
+        eyebrow: 'ARCHIVE WALL',
+        title: 'ARCHIVE WALL',
+        body: [
+          '포스터, 비하인드 컷, 밈, 사이드 실험—과정이 숨지 않고 남는 벽.'
+        ]
+      },
+      {
+        id: 'sound',
+        eyebrow: 'SOUND / OST',
+        title: 'SOUND / OST',
+        body: [
+          'Haz Haus × oo.sean이 함께 만든 이 세계의 커스텀 스코어와 라이브 에딧.'
+        ]
+      },
+      {
+        id: 'drops',
+        eyebrow: 'DROPS / COLLECTORS',
+        title: 'DROPS / COLLECTORS',
+        body: [
+          'Crypto.com NFT에서 전체 7,777 컬렉션을 확인하고 수집/거래.'
+        ]
+      }
+    ],
+    ctaNote: 'IMMORTALS로 캐릭터를, ARCHIVE로 과정을, OST로 무드를, NFT 탭으로 전체 드롭을.',
+    ctas: [
+      { label: 'ENTER IMMORTALS', action: 'immortals' },
+      { label: 'BROWSE ARCHIVE', action: 'archive' },
+      { label: 'LISTEN TO OST', action: 'music' },
+      { label: 'GO TO NFT DROP', action: 'nft' }
     ]
   }
-];
+});
+
+const NFT_CONTENT = Object.freeze({
+  en: {
+    hero: {
+      eyebrow: 'NFT',
+      title: 'MOTTO 7777 · NFT DROP',
+      subtext: 'Survival Battle: MOTTO 7777 on the Cronos chain via Crypto.com NFT.',
+      intro: 'MOTTO 7777 is an audio-visual Cronos collection by Sean Woong and Haz Haus. Seven archetypes, 7,777 NFTs and a 7-track OST are tied into one world called “Survival Battle: MOTTO 7777.”'
+    },
+    sections: {
+      main: {
+        title: 'Main drop — MOTTO pack (7,700)',
+        logline: '7,700 hand-drawn composite portraits',
+        body: [
+          'The main drop is a 7,700-piece MOTTO pack drawn by Sean Woong. Each NFT is a hand-drawn composite portrait built from layered traits and glitches across the seven archetypes.',
+          'Traits are assembled through a generative system, then curated down into 7,700 final pieces — not auto-generated noise, but a selected layer of the world.'
+        ]
+      },
+      immortals: {
+        title: 'Immortals & Legends (77)',
+        logline: '77 looping motion portraits + 8-bit OST memory',
+        body: [
+          'Alongside the MOTTO pack, 77 Immortal NFTs sit at the core of MOTTO 7777. They are animated motion portraits that loop an 8-bit reimagining of the original MOTTO OST, as if the soundtrack survived only as game-console memory.',
+          'Within the 77, seven Legend pieces form the innermost core — images that refuse to fade, replaying the question of who stays, who is erased, and who turns into myth.'
+        ]
+      },
+      rules: {
+        title: 'Game rules — Survival Battle',
+        logline: 'DROP → T+14 DAYS → KIA / SURVIVE',
+        intro: 'Total supply is 7,777 NFTs across the collection: 7,700 MOTTO pack NFTs plus 77 Immortals and legends. The pack is where the Survival Battle rules actually move.',
+        label: 'Key rules:',
+        list: [
+          'Two weeks after the drop window closes, 50% of the MOTTO pack (non-Immortals) will be updated on-chain with “Killed in Action” (KIA) artwork.',
+          'The remaining 50% of the MOTTO pack effectively “Survive” the battle and retain their original artwork.',
+          'Until that KIA update, all assets can be traded freely inside the “Survival Battle: MOTTO 7777” collection on Crypto.com NFT.',
+          'After the KIA update, MOTTO pack NFTs will not be withdrawable outside Crypto.com NFT. Immortals and Legends may follow separate rules as defined on Crypto.com NFT. Check the official event details on Crypto.com for the full terms.'
+        ]
+      },
+      utility: {
+        title: 'Holder utilities',
+        logline: 'OST · mini-game · merch · governance',
+        body: [
+          'MOTTO 7777 NFTs come with more than just artwork. Holders may gain access to utilities such as soundtrack download links, future mini-game entries, occasional physical merchandise packages, and future governance-related rewards, depending on eligibility and conditions. Exact amounts, conditions and timelines are explained on Crypto.com NFT and in the official “Motto 7777 NFT Collection – Reward Utility Terms & Conditions.”',
+          'NFC mini-CD keyring (Prototype) is showcased in the MERCH / REWARDS tab.'
+        ]
+      },
+      cta: {
+        copy: 'Enter the drop from here — view the full collection while the rest of the site stays active.',
+        label: 'View collection on Crypto.com NFT'
+      }
+    }
+  },
+  kr: {
+    hero: {
+      eyebrow: 'NFT',
+      title: 'MOTTO 7777 · NFT DROP',
+      subtext: 'Survival Battle: Crypto.com NFT를 통한 Cronos 체인 드롭.',
+      intro: 'MOTTO 7777은 Sean Woong × Haz Haus의 오디오-비주얼 Cronos 컬렉션입니다.\n7 아키타입, 7,777 NFTs, 7트랙 OST가 하나의 세계 “Survival Battle: MOTTO 7777”로 묶입니다.'
+    },
+    sections: {
+      main: {
+        title: 'Main drop — MOTTO pack (7,700)',
+        logline: '7,700 핸드 드로잉 컴포지트 포트레이트',
+        body: [
+          '메인 드롭은 Sean Woong이 그린 7,700 피스 MOTTO pack입니다.',
+          '각 NFT는 7 아키타입 전반의 레이어드 트레잇과 글리치를 조합한 핸드 드로잉 컴포지트 포트레이트로 구성됩니다.',
+          '트레잇은 제너러티브 시스템으로 조합되지만, 최종 7,700 피스는 큐레이션을 거쳐 선택된 결과물입니다.',
+          '자동 생성 노이즈가 아니라, 세계의 ‘선택된 층’만 남깁니다.'
+        ]
+      },
+      immortals: {
+        title: 'Immortals & Legends (77)',
+        logline: '77 루핑 모션 포트레이트 + 8-bit OST 메모리',
+        body: [
+          'MOTTO pack과 함께, MOTTO 7777의 코어에는 77개의 Immortal NFTs가 존재합니다.',
+          '이들은 애니메이션 루핑 모션 포트레잇이며, 원본 MOTTO OST를 8-bit로 재해석한 루프를 품고 있습니다—사운드트랙이 게임 콘솔의 메모리처럼 살아남은 것처럼.',
+          '77개 안쪽에는 7개의 Legend가 가장 깊은 코어를 이룹니다.',
+          '사라지지 않는 이미지처럼 반복되며, “누가 남고, 누가 지워지며, 누가 신화가 되는가”를 되묻습니다.'
+        ]
+      },
+      rules: {
+        title: 'Game rules — Survival Battle',
+        logline: 'DROP → T+14일 → KIA / SURVIVE',
+        intro: '총 공급은 7,777 NFTs: 7,700 MOTTO pack + 77 Immortals & Legends.',
+        label: 'Key rules:',
+        list: [
+          'Survival Battle 룰은 MOTTO pack(Non-Immortals)에서 실제로 움직입니다.',
+          '드롭 윈도우 종료 2주 후(T+14일), MOTTO pack(Non-Immortals) 50%가 온체인에서 KIA 아트워크로 업데이트됩니다.',
+          '나머지 50%는 Survive로 남아 원본 아트워크를 유지합니다.',
+          'KIA 업데이트 전까지는 Crypto.com NFT 내 “Survival Battle: MOTTO 7777” 컬렉션에서 자유 거래가 가능합니다.',
+          'KIA 업데이트 이후, MOTTO pack NFTs는 Crypto.com NFT 외부로 출금 불가 상태가 됩니다.',
+          'Immortals/Legends는 Crypto.com NFT에 정의된 별도 룰이 적용될 수 있습니다. 이벤트 상세/약관 기준을 따릅니다.'
+        ]
+      },
+      utility: {
+        title: 'Holder utilities',
+        logline: 'OST · 미니게임 · 머치 · 거버넌스',
+        body: [
+          'MOTTO 7777은 아트워크만이 아니라, 홀더에게 다음과 같은 유틸리티가 열릴 수 있습니다(자격/조건 기반).'
+        ],
+        bullets: [
+          'OST 다운로드 링크',
+          '미래 미니게임 참여',
+          '간헐적 피지컬 머치 패키지',
+          '향후 거버넌스/리워드 관련 혜택'
+        ],
+        footnotes: [
+          '정확한 수량·조건·타임라인은 Crypto.com NFT 및 공식 “Motto 7777 NFT Collection – Reward Utility Terms & Conditions”에 정의된 기준을 따릅니다.',
+          'NFC mini-CD keyring (Prototype) 는 MERCH / REWARDS 탭에서 쇼케이스됩니다.'
+        ]
+      },
+      cta: {
+        copy: 'Enter the drop from here — view the full collection while the rest of the site stays active.',
+        label: 'View collection on Crypto.com NFT'
+      }
+    }
+  }
+});
 
 const ABOUT_TEASER_URL = 'https://www.youtube.com/embed/0j9Vhhuz5PA';
-const ABOUT_CTA_NOTE = 'Pick where to enter: characters through IMMORTALS, process through ARCHIVE, the sound of the world through the OST, or the full drop via the NFT tab.';
 
 function getPortalById(id) {
   return PORTALS.find(p => p.id === id);
@@ -662,7 +911,9 @@ const DOM = {
   stage: document.getElementById('stage'),
   egg1: document.getElementById('egg1'),
   egg2: document.getElementById('egg2'),
+  navEggs: document.querySelector('.nav-eggs'),
   audioUI: document.getElementById('audio-ui'),
+  audioToggle: document.getElementById('audioToggle'),
   nowText: document.getElementById('nowText'),
   vol: document.getElementById('vol'),
   muteBtn: document.getElementById('muteBtn'),
@@ -1034,6 +1285,7 @@ if (DOM.twBtn) DOM.twBtn.href = TWITTER_URL;
 if (DOM.igBtn && IG_URL !== '#') DOM.igBtn.href = IG_URL;
 if (DOM.ttBtn && TT_URL !== '#') DOM.ttBtn.href = TT_URL;
 if (DOM.shopBtn) DOM.shopBtn.href = SHOP_URL;
+window.addEventListener('resize', () => ensureMobileNavEggsPlacement(1));
 if (SPOTIFY_URL === '#') DOM.spBtn?.classList.add('disabled');
 if (YOUTUBE_URL === '#') DOM.ytBtn?.classList.add('disabled');
 if (IG_URL === '#') DOM.igBtn?.classList.add('disabled');
@@ -1434,6 +1686,7 @@ async function renderTodayGallery() {
   DOM.stage.classList.remove('stage--nft');
   DOM.stage.classList.remove('stage--merch');
   DOM.stage.classList.add('stage--hero');
+  setHomeView(true);
   DOM.stage.innerHTML = '<div class="today-loading">Loading...</div>';
   try {
     await ensureImmortalsData();
@@ -1471,6 +1724,11 @@ async function renderTodayGallery() {
     });
     footer.appendChild(viewAllLink);
     section.appendChild(footer);
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      moveNavEggsAfter(footer);
+      requestAnimationFrame(() => moveNavEggsAfter(footer));
+      ensureMobileNavEggsPlacement(2);
+    }
 
     DOM.stage.appendChild(section);
   } catch (err) {
@@ -1483,8 +1741,586 @@ async function renderTodayGallery() {
   }
 }
 
-function collectAboutStats() {
-  return ABOUT_STATS.map((stat) => ({ ...stat }));
+function getAboutContent(lang) {
+  return ABOUT_CONTENT[lang] || ABOUT_CONTENT.en;
+}
+
+function getNftContent(lang) {
+  return NFT_CONTENT[lang] || NFT_CONTENT.en;
+}
+
+function applyLanguageMode() {
+  if (typeof document === 'undefined') return;
+  document.body.classList.toggle('lang-en', CURRENT_LANG === LANGUAGES.EN);
+  document.body.classList.toggle('lang-kr', CURRENT_LANG === LANGUAGES.KR);
+  updateLanguageToggleState();
+}
+
+let ABOUT_ACCORDION_LISTENERS = [];
+let ABOUT_ACCORDION_MQ = null;
+let ABOUT_ACCORDION_MQ_HANDLER = null;
+
+function clearAboutAccordionListeners() {
+  ABOUT_ACCORDION_LISTENERS.forEach(({ el, handler }) => {
+    el.removeEventListener('toggle', handler);
+  });
+  ABOUT_ACCORDION_LISTENERS = [];
+}
+
+function setupAboutAccordion() {
+  if (typeof window === 'undefined') return;
+  const applyState = (isMobile) => {
+    const detailsNodes = document.querySelectorAll('.about .about-chapters details.about-chapter');
+    detailsNodes.forEach((node) => {
+      node.open = !isMobile;
+    });
+    clearAboutAccordionListeners();
+    if (!isMobile) return;
+    detailsNodes.forEach((node) => {
+      const handler = () => {
+        if (!node.open) return;
+        detailsNodes.forEach((other) => {
+          if (other !== node) other.open = false;
+        });
+      };
+      node.addEventListener('toggle', handler);
+      ABOUT_ACCORDION_LISTENERS.push({ el: node, handler });
+    });
+  };
+
+  if (ABOUT_ACCORDION_MQ && ABOUT_ACCORDION_MQ_HANDLER) {
+    ABOUT_ACCORDION_MQ.removeEventListener('change', ABOUT_ACCORDION_MQ_HANDLER);
+  }
+  ABOUT_ACCORDION_MQ = window.matchMedia('(max-width: 768px)');
+  ABOUT_ACCORDION_MQ_HANDLER = (event) => applyState(event.matches);
+  ABOUT_ACCORDION_MQ.addEventListener('change', ABOUT_ACCORDION_MQ_HANDLER);
+  applyState(ABOUT_ACCORDION_MQ.matches);
+}
+
+let NFT_ACCORDION_LISTENERS = [];
+let NFT_ACCORDION_MQ = null;
+let NFT_ACCORDION_MQ_HANDLER = null;
+
+function clearNftAccordionListeners() {
+  NFT_ACCORDION_LISTENERS.forEach(({ el, handler }) => {
+    el.removeEventListener('toggle', handler);
+  });
+  NFT_ACCORDION_LISTENERS = [];
+}
+
+function setupNftAccordion() {
+  if (typeof window === 'undefined') return;
+  const applyState = (isMobile) => {
+    const detailsNodes = document.querySelectorAll('.nft-root details.nft-section');
+    detailsNodes.forEach((node) => {
+      node.open = !isMobile;
+    });
+    clearNftAccordionListeners();
+    if (!isMobile) return;
+    detailsNodes.forEach((node) => {
+      const handler = () => {
+        if (!node.open) return;
+        detailsNodes.forEach((other) => {
+          if (other !== node) other.open = false;
+        });
+      };
+      node.addEventListener('toggle', handler);
+      NFT_ACCORDION_LISTENERS.push({ el: node, handler });
+    });
+  };
+
+  if (NFT_ACCORDION_MQ && NFT_ACCORDION_MQ_HANDLER) {
+    NFT_ACCORDION_MQ.removeEventListener('change', NFT_ACCORDION_MQ_HANDLER);
+  }
+  NFT_ACCORDION_MQ = window.matchMedia('(max-width: 768px)');
+  NFT_ACCORDION_MQ_HANDLER = (event) => applyState(event.matches);
+  NFT_ACCORDION_MQ.addEventListener('change', NFT_ACCORDION_MQ_HANDLER);
+  applyState(NFT_ACCORDION_MQ.matches);
+}
+
+let NAV_EGGS_HOME_PARENT = null;
+let NAV_EGGS_HOME_NEXT = null;
+
+function moveNavEggsAfter(node) {
+  if (!DOM.navEggs) return;
+  const navEggs = DOM.navEggs;
+  if (!NAV_EGGS_HOME_PARENT) {
+    NAV_EGGS_HOME_PARENT = navEggs.parentElement;
+    NAV_EGGS_HOME_NEXT = navEggs.nextSibling;
+  }
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  if (!node || !isMobile) {
+    if (NAV_EGGS_HOME_PARENT && navEggs.parentElement !== NAV_EGGS_HOME_PARENT) {
+      NAV_EGGS_HOME_PARENT.insertBefore(navEggs, NAV_EGGS_HOME_NEXT);
+    }
+    navEggs.classList.remove('nav-eggs--stage');
+    return;
+  }
+  if (navEggs.parentElement !== node.parentElement) {
+    node.parentElement.insertBefore(navEggs, node.nextSibling);
+  } else if (navEggs !== node.nextSibling) {
+    node.parentElement.insertBefore(navEggs, node.nextSibling);
+  }
+  navEggs.classList.add('nav-eggs--stage');
+}
+
+function ensureMobileNavEggsPlacement(retries = 2) {
+  if (!DOM.navEggs) return;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  if (!isMobile) {
+    moveNavEggsAfter(null);
+    return;
+  }
+  if (!document.body.classList.contains('view-hero')) {
+    moveNavEggsAfter(null);
+    return;
+  }
+  const footer = document.querySelector('.today-footer');
+  if (footer) {
+    moveNavEggsAfter(footer);
+    return;
+  }
+  if (retries > 0) {
+    window.setTimeout(() => ensureMobileNavEggsPlacement(retries - 1), 200);
+  }
+}
+
+function setupAudioToggle() {
+  if (!DOM.audioUI || !DOM.audioToggle) return;
+  const applyState = (collapsed) => {
+    DOM.audioUI.classList.toggle('is-collapsed', collapsed);
+    DOM.audioToggle.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+    DOM.audioToggle.setAttribute('aria-label', collapsed ? 'Expand audio player' : 'Collapse audio player');
+    DOM.audioToggle.textContent = collapsed ? '▲' : '▾';
+    try {
+      localStorage.setItem('motto_audio_collapsed', collapsed ? '1' : '0');
+    } catch (err) {
+      // ignore storage errors
+    }
+  };
+
+  let collapsed = false;
+  try {
+    collapsed = localStorage.getItem('motto_audio_collapsed') === '1';
+  } catch (err) {
+    collapsed = false;
+  }
+  applyState(collapsed);
+
+  DOM.audioToggle.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    applyState(!DOM.audioUI.classList.contains('is-collapsed'));
+  });
+}
+
+function setHomeView(isHome) {
+  if (typeof document === 'undefined') return;
+  document.body.classList.toggle('view-hero', Boolean(isHome));
+  if (!isHome) {
+    moveNavEggsAfter(null);
+    return;
+  }
+  if (!window.matchMedia('(max-width: 768px)').matches) {
+    moveNavEggsAfter(null);
+    return;
+  }
+  ensureMobileNavEggsPlacement(2);
+}
+
+function updateLanguageToggleState() {
+  document.querySelectorAll('.lang-toggle__btn').forEach((btn) => {
+    const lang = btn.dataset.lang;
+    const isActive = CURRENT_LANG === lang;
+    btn.classList.toggle('is-active', isActive);
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+}
+
+function setLanguage(lang) {
+  if (!lang || lang === CURRENT_LANG) return;
+  CURRENT_LANG = lang;
+  applyLanguageMode();
+}
+
+function createLanguageToggle() {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'lang-toggle';
+
+  const makeButton = (lang) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'lang-toggle__btn';
+    btn.dataset.lang = lang;
+    btn.textContent = LANGUAGE_LABELS[lang];
+    const isActive = CURRENT_LANG === lang;
+    btn.classList.toggle('is-active', isActive);
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    btn.addEventListener('click', () => setLanguage(lang));
+    return btn;
+  };
+
+  wrapper.appendChild(makeButton(LANGUAGES.EN));
+  wrapper.appendChild(makeButton(LANGUAGES.KR));
+  return wrapper;
+}
+
+function collectAboutStats(content) {
+  return content.stats.map((stat) => ({ ...stat }));
+}
+
+function formatChapterTitle(title, lang) {
+  if (lang !== LANGUAGES.KR) return { text: title };
+  if (!title || !title.startsWith('Chapter ')) return { text: title };
+  const parts = title.split(':');
+  if (parts.length < 2) return { text: title };
+  return { html: `<span class="en-text">${parts[0]}</span>:${parts.slice(1).join(':')}` };
+}
+
+function buildAboutBlock(lang) {
+  const content = getAboutContent(lang);
+  const isKr = lang === LANGUAGES.KR;
+  const block = document.createElement('div');
+  block.className = `lang-block lang-block--${lang} ${isKr ? 'kr-text' : 'en-text'}`;
+
+  const hero = document.createElement('header');
+  hero.className = 'about-hero';
+  const heroEyebrow = document.createElement('p');
+  heroEyebrow.className = 'about-eyebrow';
+  if (isKr) {
+    heroEyebrow.innerHTML = '<span class="en-text">ABOUT</span> · 프로젝트 7777';
+  } else {
+    heroEyebrow.textContent = content.hero.eyebrow;
+  }
+  hero.appendChild(heroEyebrow);
+
+  const heroTitle = document.createElement('h1');
+  heroTitle.textContent = content.hero.title || content.hero.line;
+  if (isKr) heroTitle.classList.add('en-text');
+  hero.appendChild(heroTitle);
+  if (Array.isArray(content.hero.sublines)) {
+    content.hero.sublines.forEach((text) => {
+      if (!text) return;
+      const sub = document.createElement('p');
+      sub.className = 'about-subhead';
+      sub.textContent = text;
+      hero.appendChild(sub);
+    });
+  }
+  hero.appendChild(createLanguageToggle());
+  block.appendChild(hero);
+
+  const teaser = document.createElement('div');
+  teaser.className = 'about-teaser';
+  const teaserFrame = document.createElement('div');
+  teaserFrame.className = 'about-teaser__frame';
+  const teaserIframe = document.createElement('iframe');
+  teaserIframe.src = ABOUT_TEASER_URL;
+  teaserIframe.title = 'MOTTO 7777 teaser';
+  teaserIframe.setAttribute('frameborder', '0');
+  teaserIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+  teaserIframe.setAttribute('allowfullscreen', '');
+  teaserFrame.appendChild(teaserIframe);
+  teaser.appendChild(teaserFrame);
+  block.appendChild(teaser);
+
+  if (Array.isArray(content.credits) && content.credits.length) {
+    const credits = document.createElement('div');
+    credits.className = 'about-credits';
+    content.credits.forEach((line, idx) => {
+      const p = document.createElement('p');
+      p.textContent = line;
+      if (idx === 0) {
+        p.classList.add('about-credits__lead');
+      }
+      credits.appendChild(p);
+    });
+    block.appendChild(credits);
+  }
+
+  if (Array.isArray(content.stats) && content.stats.length) {
+    const statsWrap = document.createElement('div');
+    statsWrap.className = 'about-stats';
+    collectAboutStats(content).forEach((stat) => {
+      const card = document.createElement('div');
+      card.className = 'about-stat';
+
+      const label = document.createElement('span');
+      label.className = 'about-stat-label';
+      label.textContent = stat.label;
+      if (isKr) label.classList.add('en-text');
+      card.appendChild(label);
+
+      const value = document.createElement('strong');
+      value.className = 'about-stat-value';
+      value.textContent = stat.value;
+      card.appendChild(value);
+
+      const caption = document.createElement('span');
+      caption.className = 'about-stat-caption';
+      caption.textContent = stat.caption;
+      card.appendChild(caption);
+
+      statsWrap.appendChild(card);
+    });
+    block.appendChild(statsWrap);
+  }
+
+  if (Array.isArray(content.chapters) && content.chapters.length) {
+    const chaptersWrap = document.createElement('div');
+    chaptersWrap.className = 'about-chapters';
+    content.chapters.forEach((chapter) => {
+      const chapterSection = document.createElement('details');
+      chapterSection.className = 'about-chapter';
+      chapterSection.open = true;
+      const summary = document.createElement('summary');
+      summary.className = 'about-chapter-summary';
+      const head = document.createElement('div');
+      head.className = 'about-chapter-head';
+
+      const title = document.createElement('span');
+      title.className = 'about-chapter-title';
+      const formatted = formatChapterTitle(chapter.title, lang);
+      if (formatted.html) {
+        title.innerHTML = formatted.html;
+      } else {
+        title.textContent = formatted.text;
+      }
+      head.appendChild(title);
+
+      const logline = document.createElement('span');
+      logline.className = 'about-chapter-logline';
+      logline.textContent = chapter.logline || '';
+      head.appendChild(logline);
+      summary.appendChild(head);
+      chapterSection.appendChild(summary);
+
+      const list = document.createElement('ul');
+      list.className = 'about-list';
+      chapter.lines.forEach((line) => {
+        const li = document.createElement('li');
+        li.textContent = line;
+        list.appendChild(li);
+      });
+      chapterSection.appendChild(list);
+      chaptersWrap.appendChild(chapterSection);
+    });
+    block.appendChild(chaptersWrap);
+  }
+
+  if (Array.isArray(content.pillars) && content.pillars.length) {
+    const grid = document.createElement('div');
+    grid.className = 'about-grid';
+    content.pillars.forEach((pillar) => {
+      const card = document.createElement('article');
+      card.className = 'about-card';
+
+      if (pillar.eyebrow) {
+        const eyebrow = document.createElement('p');
+        eyebrow.className = 'about-card-eyebrow';
+        eyebrow.textContent = pillar.eyebrow;
+        if (isKr) eyebrow.classList.add('en-text');
+        card.appendChild(eyebrow);
+      }
+
+      const bodyLines = Array.isArray(pillar.body)
+        ? pillar.body
+        : pillar.body
+          ? [pillar.body]
+          : [];
+      bodyLines.forEach((text) => {
+        const copy = document.createElement('p');
+        copy.textContent = text;
+        card.appendChild(copy);
+      });
+
+      grid.appendChild(card);
+    });
+    block.appendChild(grid);
+  }
+
+  if (content.ctaNote) {
+    const ctaNote = document.createElement('p');
+    ctaNote.className = 'about-cta-note';
+    ctaNote.textContent = content.ctaNote;
+    block.appendChild(ctaNote);
+  }
+
+  if (Array.isArray(content.ctas) && content.ctas.length) {
+    const actions = document.createElement('div');
+    actions.className = 'about-actions';
+    content.ctas.forEach((cta) => {
+      const node = document.createElement('button');
+      node.className = 'about-btn';
+      node.type = 'button';
+      node.textContent = cta.label;
+      node.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateAboutAction(cta.action, 'about-cta');
+      });
+
+      actions.appendChild(node);
+    });
+    block.appendChild(actions);
+  }
+
+  return block;
+}
+
+function buildNftBlock(lang) {
+  const content = getNftContent(lang);
+  const isKr = lang === LANGUAGES.KR;
+  const block = document.createElement('div');
+  block.className = `lang-block lang-block--${lang} ${isKr ? 'kr-text' : 'en-text'}`;
+
+  const hero = document.createElement('section');
+  hero.className = 'nft-hero';
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'nft-eyebrow';
+  eyebrow.textContent = content.hero.eyebrow;
+  if (isKr) eyebrow.classList.add('en-text');
+  hero.appendChild(eyebrow);
+
+  const heroTitle = document.createElement('h1');
+  heroTitle.id = `nft-title-${lang}`;
+  heroTitle.textContent = content.hero.title;
+  if (isKr) heroTitle.classList.add('en-text');
+  hero.appendChild(heroTitle);
+
+  const heroSubtext = document.createElement('p');
+  heroSubtext.className = 'nft-subtext';
+  heroSubtext.textContent = content.hero.subtext;
+  if (content.hero.subtext) {
+    hero.appendChild(heroSubtext);
+  }
+
+  const heroIntro = document.createElement('p');
+  heroIntro.className = 'nft-intro';
+  if (content.hero.intro) {
+    const introLines = `${content.hero.intro}`.split('\n').map((line) => line.trim()).filter(Boolean);
+    introLines.forEach((line) => {
+      const lineNode = document.createElement('p');
+      lineNode.className = 'nft-intro';
+      lineNode.textContent = line;
+      hero.appendChild(lineNode);
+    });
+  }
+
+  hero.appendChild(createLanguageToggle());
+  block.appendChild(hero);
+
+  const contentWrap = document.createElement('div');
+  contentWrap.className = 'nft-content';
+
+  const makeSection = (sectionData) => {
+    const section = document.createElement('details');
+    section.className = 'nft-section';
+    section.open = true;
+
+    const summary = document.createElement('summary');
+    summary.className = 'nft-section-summary';
+    const head = document.createElement('div');
+    head.className = 'nft-section-head';
+
+    const title = document.createElement('span');
+    title.className = 'nft-section-title';
+    title.textContent = sectionData.title || '';
+    if (isKr) title.classList.add('en-text');
+    head.appendChild(title);
+
+    const logline = document.createElement('span');
+    logline.className = 'nft-section-logline';
+    logline.textContent = sectionData.logline || '';
+    head.appendChild(logline);
+
+    summary.appendChild(head);
+    section.appendChild(summary);
+
+    return section;
+  };
+
+  const mainSection = makeSection(content.sections.main);
+  content.sections.main.body.forEach((text) => {
+    const p = document.createElement('p');
+    p.textContent = text;
+    mainSection.appendChild(p);
+  });
+  contentWrap.appendChild(mainSection);
+
+  const immortalsSection = makeSection(content.sections.immortals);
+  content.sections.immortals.body.forEach((text) => {
+    const p = document.createElement('p');
+    p.textContent = text;
+    immortalsSection.appendChild(p);
+  });
+  contentWrap.appendChild(immortalsSection);
+
+  const rulesSection = makeSection(content.sections.rules);
+  const rulesIntro = document.createElement('p');
+  rulesIntro.textContent = content.sections.rules.intro;
+  rulesSection.appendChild(rulesIntro);
+
+  const rulesLabel = document.createElement('p');
+  const strong = document.createElement('strong');
+  strong.textContent = content.sections.rules.label;
+  rulesLabel.appendChild(strong);
+  rulesSection.appendChild(rulesLabel);
+
+  const rulesList = document.createElement('ul');
+  rulesList.className = 'nft-list';
+  content.sections.rules.list.forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    rulesList.appendChild(li);
+  });
+  rulesSection.appendChild(rulesList);
+  contentWrap.appendChild(rulesSection);
+
+  const utilitySection = makeSection(content.sections.utility);
+  content.sections.utility.body.forEach((text) => {
+    const p = document.createElement('p');
+    p.textContent = text;
+    utilitySection.appendChild(p);
+  });
+  if (Array.isArray(content.sections.utility.bullets)) {
+    const list = document.createElement('ul');
+    list.className = 'nft-list';
+    content.sections.utility.bullets.forEach((text) => {
+      const li = document.createElement('li');
+      li.textContent = text;
+      list.appendChild(li);
+    });
+    utilitySection.appendChild(list);
+  }
+  if (Array.isArray(content.sections.utility.footnotes)) {
+    content.sections.utility.footnotes.forEach((text) => {
+      const p = document.createElement('p');
+      p.textContent = text;
+      utilitySection.appendChild(p);
+    });
+  }
+  contentWrap.appendChild(utilitySection);
+
+  const ctaSection = document.createElement('section');
+  ctaSection.className = 'nft-cta-section';
+  const ctaCopy = document.createElement('p');
+  ctaCopy.className = 'nft-cta-copy';
+  ctaCopy.textContent = content.sections.cta.copy;
+  ctaSection.appendChild(ctaCopy);
+  const ctaRow = document.createElement('div');
+  ctaRow.className = 'nft-cta-row';
+  const ctaLink = document.createElement('a');
+  ctaLink.className = 'nft-cta nft-cta--primary';
+  ctaLink.href = NFT_COLLECTION_URL;
+  ctaLink.target = '_blank';
+  ctaLink.rel = 'noopener noreferrer';
+  ctaLink.textContent = content.sections.cta.label;
+  ctaRow.appendChild(ctaLink);
+  ctaSection.appendChild(ctaRow);
+  contentWrap.appendChild(ctaSection);
+
+  block.appendChild(contentWrap);
+  return block;
 }
 
 function navigateAboutAction(action, source = 'about-cta') {
@@ -1512,166 +2348,18 @@ async function renderAboutView() {
   DOM.stage.classList.remove('stage--nft');
   DOM.stage.classList.remove('stage--merch');
   DOM.stage.classList.add('stage--about');
+  setHomeView(false);
   DOM.stage.innerHTML = '';
+  applyLanguageMode();
 
   const section = document.createElement('section');
   section.className = 'about';
-
-  const hero = document.createElement('header');
-  hero.className = 'about-hero';
-  const heroEyebrow = document.createElement('p');
-  heroEyebrow.className = 'about-eyebrow';
-  heroEyebrow.textContent = ABOUT_HERO.eyebrow;
-  hero.appendChild(heroEyebrow);
-
-  const heroTitle = document.createElement('h1');
-  heroTitle.textContent = ABOUT_HERO.title || ABOUT_HERO.line;
-  hero.appendChild(heroTitle);
-  if (Array.isArray(ABOUT_HERO.sublines)) {
-    ABOUT_HERO.sublines.forEach((text) => {
-      if (!text) return;
-      const sub = document.createElement('p');
-      sub.className = 'about-subhead';
-      sub.textContent = text;
-      hero.appendChild(sub);
-    });
-  }
-  section.appendChild(hero);
-
-  const teaser = document.createElement('div');
-  teaser.className = 'about-teaser';
-  const teaserFrame = document.createElement('div');
-  teaserFrame.className = 'about-teaser__frame';
-  const teaserIframe = document.createElement('iframe');
-  teaserIframe.src = ABOUT_TEASER_URL;
-  teaserIframe.title = 'MOTTO 7777 teaser';
-  teaserIframe.setAttribute('frameborder', '0');
-  teaserIframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-  teaserIframe.setAttribute('allowfullscreen', '');
-  teaserFrame.appendChild(teaserIframe);
-  teaser.appendChild(teaserFrame);
-  section.appendChild(teaser);
-
-  const credits = document.createElement('div');
-  credits.className = 'about-credits';
-  ABOUT_CREDITS.forEach((line, idx) => {
-    const p = document.createElement('p');
-    p.textContent = line;
-    if (idx === 0) {
-      p.classList.add('about-credits__lead');
-    }
-    credits.appendChild(p);
-  });
-  section.appendChild(credits);
-
-  const statsWrap = document.createElement('div');
-  statsWrap.className = 'about-stats';
-  collectAboutStats().forEach((stat) => {
-    const card = document.createElement('div');
-    card.className = 'about-stat';
-
-    const label = document.createElement('span');
-    label.className = 'about-stat-label';
-    label.textContent = stat.label;
-    card.appendChild(label);
-
-    const value = document.createElement('strong');
-    value.className = 'about-stat-value';
-    value.textContent = stat.value;
-    card.appendChild(value);
-
-    const caption = document.createElement('span');
-    caption.className = 'about-stat-caption';
-    caption.textContent = stat.caption;
-    card.appendChild(caption);
-
-    statsWrap.appendChild(card);
-  });
-  section.appendChild(statsWrap);
-
-  if (ABOUT_LORE.length) {
-    const loreWrap = document.createElement('div');
-    loreWrap.className = 'about-lore';
-    ABOUT_LORE.forEach((text) => {
-      if (!text) return;
-      const p = document.createElement('p');
-      p.className = 'about-main-copy';
-      p.textContent = text;
-      loreWrap.appendChild(p);
-    });
-    section.appendChild(loreWrap);
-  }
-
-  const summary = document.createElement('div');
-  summary.className = 'about-summary';
-  const summaryP = document.createElement('p');
-  summaryP.className = 'about-main-copy';
-  summaryP.textContent = ABOUT_SUMMARY;
-  summary.appendChild(summaryP);
-  section.appendChild(summary);
-
-  const grid = document.createElement('div');
-  grid.className = 'about-grid';
-  ABOUT_PILLARS.forEach((pillar) => {
-    const card = document.createElement('article');
-    card.className = 'about-card';
-
-    if (pillar.eyebrow) {
-      const eyebrow = document.createElement('p');
-      eyebrow.className = 'about-card-eyebrow';
-      eyebrow.textContent = pillar.eyebrow;
-      card.appendChild(eyebrow);
-    }
-
-    const title = document.createElement('h3');
-    title.textContent = pillar.title;
-    card.appendChild(title);
-
-    const bodyLines = Array.isArray(pillar.body)
-      ? pillar.body
-      : pillar.body
-        ? [pillar.body]
-        : [];
-    bodyLines.forEach((text) => {
-      const copy = document.createElement('p');
-      copy.textContent = text;
-      card.appendChild(copy);
-    });
-
-    grid.appendChild(card);
-  });
-  section.appendChild(grid);
-
-  const ctaNote = document.createElement('p');
-  ctaNote.className = 'about-cta-note';
-  ctaNote.textContent = ABOUT_CTA_NOTE;
-  section.appendChild(ctaNote);
-
-  const ctas = [
-    { label: 'ENTER IMMORTALS', action: 'immortals' },
-    { label: 'BROWSE ARCHIVE', action: 'archive' },
-    { label: 'LISTEN TO OST', action: 'music' },
-    { label: 'GO TO NFT DROP', action: 'nft' }
-  ];
-
-  const actions = document.createElement('div');
-  actions.className = 'about-actions';
-  ctas.forEach((cta) => {
-    const node = document.createElement('button');
-    node.className = 'about-btn';
-    node.type = 'button';
-    node.textContent = cta.label;
-    node.addEventListener('click', (e) => {
-      e.preventDefault();
-      navigateAboutAction(cta.action, 'about-cta');
-    });
-
-    actions.appendChild(node);
-  });
-  section.appendChild(actions);
+  section.appendChild(buildAboutBlock(LANGUAGES.EN));
+  section.appendChild(buildAboutBlock(LANGUAGES.KR));
 
   DOM.stage.innerHTML = '';
   DOM.stage.appendChild(section);
+  setupAboutAccordion();
   if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -1683,127 +2371,17 @@ function renderNftView() {
   DOM.stage.classList.remove('stage--about');
   DOM.stage.classList.remove('stage--merch');
   DOM.stage.classList.add('stage--nft');
+  setHomeView(false);
   DOM.stage.innerHTML = '';
+  applyLanguageMode();
 
   const root = document.createElement('section');
   root.className = 'nft-root';
-  root.setAttribute('aria-labelledby', 'nft-title');
-
-  const hero = document.createElement('section');
-  hero.className = 'nft-hero';
-  const eyebrow = document.createElement('p');
-  eyebrow.className = 'nft-eyebrow';
-  eyebrow.textContent = 'NFT';
-  hero.appendChild(eyebrow);
-
-  const heroTitle = document.createElement('h1');
-  heroTitle.id = 'nft-title';
-  heroTitle.textContent = 'MOTTO 7777 · NFT DROP';
-  hero.appendChild(heroTitle);
-
-  const heroSubtext = document.createElement('p');
-  heroSubtext.className = 'nft-subtext';
-  heroSubtext.textContent = 'Survival Battle: MOTTO 7777 on the Cronos chain via Crypto.com NFT.';
-  hero.appendChild(heroSubtext);
-
-  const heroIntro = document.createElement('p');
-  heroIntro.className = 'nft-intro';
-  heroIntro.textContent = 'MOTTO 7777 is an audio-visual Cronos collection by Sean Woong and Haz Haus. Seven archetypes, 7,777 NFTs and a 7-track OST are tied into one world called “Survival Battle: MOTTO 7777.”';
-  hero.appendChild(heroIntro);
-
-  root.appendChild(hero);
-
-  const content = document.createElement('div');
-  content.className = 'nft-content';
-
-  const makeSection = (titleText) => {
-    const section = document.createElement('section');
-    section.className = 'nft-section';
-    if (titleText) {
-      const heading = document.createElement('h2');
-      heading.textContent = titleText;
-      section.appendChild(heading);
-    }
-    return section;
-  };
-
-  const mainSection = makeSection('Main drop — MOTTO pack (7,700)');
-  [
-    'The main drop is a 7,700-piece MOTTO pack drawn by Sean Woong. Each NFT is a hand-drawn composite portrait built from layered traits and glitches across the seven archetypes.',
-    'Traits are assembled through a generative system, then curated down into 7,700 final pieces — not auto-generated noise, but a selected layer of the world.'
-  ].forEach((text) => {
-    const p = document.createElement('p');
-    p.textContent = text;
-    mainSection.appendChild(p);
-  });
-  content.appendChild(mainSection);
-
-  const immortalsSection = makeSection('Immortals & legends (77)');
-  [
-    'Alongside the MOTTO pack, 77 Immortal NFTs sit at the core of MOTTO 7777. They are animated motion portraits that loop an 8-bit reimagining of the original MOTTO OST, as if the soundtrack survived only as game-console memory.',
-    'Within the 77, seven Legend pieces form the innermost core — images that refuse to fade, replaying the question of who stays, who is erased, and who turns into myth.'
-  ].forEach((text) => {
-    const p = document.createElement('p');
-    p.textContent = text;
-    immortalsSection.appendChild(p);
-  });
-  content.appendChild(immortalsSection);
-
-  const rulesSection = makeSection('Game rules — Survival Battle');
-  const rulesIntro = document.createElement('p');
-  rulesIntro.textContent = 'Total supply is 7,777 NFTs across the collection: 7,700 MOTTO pack NFTs plus 77 Immortals and legends. The pack is where the Survival Battle rules actually move.';
-  rulesSection.appendChild(rulesIntro);
-
-  const rulesLabel = document.createElement('p');
-  const strong = document.createElement('strong');
-  strong.textContent = 'Key rules:';
-  rulesLabel.appendChild(strong);
-  rulesSection.appendChild(rulesLabel);
-
-  const rulesList = document.createElement('ul');
-  rulesList.className = 'nft-list';
-  [
-    'Two weeks after the drop window closes, 50% of the MOTTO pack (non-Immortals) will be updated on-chain with “Killed in Action” (KIA) artwork.',
-    'The remaining 50% of the MOTTO pack effectively “Survive” the battle and retain their original artwork.',
-    'Until that KIA update, all assets can be traded freely inside the “Survival Battle: MOTTO 7777” collection on Crypto.com NFT.',
-    'After the KIA update, MOTTO pack NFTs will not be withdrawable outside Crypto.com NFT. Immortals and Legends may follow separate rules as defined on Crypto.com NFT. Check the official event details on Crypto.com for the full terms.'
-  ].forEach((text) => {
-    const li = document.createElement('li');
-    li.textContent = text;
-    rulesList.appendChild(li);
-  });
-  rulesSection.appendChild(rulesList);
-  content.appendChild(rulesSection);
-
-  const utilitySection = makeSection('Holder utilities');
-  const utilityCopy = document.createElement('p');
-  utilityCopy.textContent = 'MOTTO 7777 NFTs come with more than just artwork. Holders may gain access to utilities such as soundtrack download links, future mini-game entries, occasional physical merchandise packages, and future governance-related rewards, depending on eligibility and conditions. Exact amounts, conditions and timelines are explained on Crypto.com NFT and in the official “Motto 7777 NFT Collection – Reward Utility Terms & Conditions.”';
-  utilitySection.appendChild(utilityCopy);
-  const helperCopy = document.createElement('p');
-  helperCopy.textContent = 'NFC mini-CD keyring (Prototype) is showcased in the MERCH / REWARDS tab.';
-  utilitySection.appendChild(helperCopy);
-  content.appendChild(utilitySection);
-
-  const ctaSection = makeSection('');
-  ctaSection.classList.add('nft-cta-section');
-  const ctaCopy = document.createElement('p');
-  ctaCopy.className = 'nft-cta-copy';
-  ctaCopy.textContent = 'Enter the drop from here — view the full collection while the rest of the site stays active.';
-  ctaSection.appendChild(ctaCopy);
-  const ctaRow = document.createElement('div');
-  ctaRow.className = 'nft-cta-row';
-  const ctaLink = document.createElement('a');
-  ctaLink.className = 'nft-cta nft-cta--primary';
-  ctaLink.href = NFT_COLLECTION_URL;
-  ctaLink.target = '_blank';
-  ctaLink.rel = 'noopener';
-  ctaLink.textContent = 'View collection on Crypto.com NFT';
-  ctaRow.appendChild(ctaLink);
-  ctaSection.appendChild(ctaRow);
-  content.appendChild(ctaSection);
-
-  root.appendChild(content);
+  root.setAttribute('aria-labelledby', 'nft-title-en nft-title-kr');
+  root.appendChild(buildNftBlock(LANGUAGES.EN));
+  root.appendChild(buildNftBlock(LANGUAGES.KR));
   DOM.stage.appendChild(root);
+  setupNftAccordion();
 
   if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1838,6 +2416,7 @@ function renderMerchView() {
   DOM.stage.classList.remove('stage--about');
   DOM.stage.classList.remove('stage--nft');
   DOM.stage.classList.add('stage--merch');
+  setHomeView(false);
   DOM.stage.innerHTML = '';
 
   const root = document.createElement('section');
@@ -1876,6 +2455,36 @@ function renderMerchView() {
 
   nfcSection.appendChild(videoGrid);
   content.appendChild(nfcSection);
+
+  const teaserSection = document.createElement('section');
+  teaserSection.className = 'merch-section merch-teasers';
+  const teaserHeading = document.createElement('h2');
+  teaserHeading.textContent = 'Teaser mockups';
+  teaserSection.appendChild(teaserHeading);
+
+  const teaserGrid = document.createElement('div');
+  teaserGrid.className = 'merch-teaser-grid';
+  [
+    { label: 'Teaser 01', title: 'NFC keyring kit' },
+    { label: 'Teaser 02', title: 'Vault cassette drop' },
+    { label: 'Teaser 03', title: 'MOTTO battle tee' }
+  ].forEach((teaser, index) => {
+    const card = document.createElement('article');
+    card.className = 'merch-teaser-card';
+    card.dataset.index = String(index + 1);
+    card.innerHTML = `
+      <div class="merch-teaser-art" aria-hidden="true"></div>
+      <div class="merch-teaser-info">
+        <span class="merch-teaser-label">${teaser.label}</span>
+        <h3>${teaser.title}</h3>
+        <p>Mockup preview · launching soon.</p>
+      </div>
+    `;
+    teaserGrid.appendChild(card);
+  });
+
+  teaserSection.appendChild(teaserGrid);
+  content.appendChild(teaserSection);
   root.appendChild(content);
 
   DOM.stage.appendChild(root);
@@ -2028,6 +2637,8 @@ async function bootMain() {
   console.log('Booting main stage ✅');
   await renderTodayGallery();
   commitViewState(VIEW_STATES.HOME, { replace: true, force: true });
+  setupAudioToggle();
+  ensureMobileNavEggsPlacement(2);
   requestAnimationFrame(() => {
     if (ENABLE_AUDIO) {
       DOM.audioUI.hidden = false;
@@ -3104,7 +3715,7 @@ function renderArchiveGrid(entries) {
     if (isVideo) {
       const posterAttr = item.poster ? ` poster="${resolveAssetPath(item.poster)}"` : '';
       const loopAttr = item.loop === false ? '' : ' loop';
-      media = `<div class="${mediaClass}"><video src="${src}" muted playsinline preload="metadata" data-archive-video${posterAttr}${loopAttr}></video></div>`;
+      media = `<div class="${mediaClass}"><div class="video-wrapper"><video src="${src}" muted playsinline preload="metadata" data-archive-video${posterAttr}${loopAttr}></video></div></div>`;
     } else {
       const altText = label ? escapeHTML(label) : '';
       media = `<div class="${mediaClass}"><img src="${src}" alt="${altText}" loading="lazy"></div>`;
@@ -4234,8 +4845,11 @@ function renderArchiveDetailPanel(entry = {}) {
     return;
   }
   const isVideo = entry.type === 'video' || /\.mp4(?:$|\?)/i.test(src);
+  mediaRoot.classList.toggle('archive-detail-media--video', isVideo);
   let media;
   if (isVideo) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'video-wrapper';
     media = document.createElement('video');
     media.src = src;
     media.controls = true;
@@ -4243,6 +4857,8 @@ function renderArchiveDetailPanel(entry = {}) {
     media.setAttribute('playsinline', '');
     media.loop = entry.loop !== false;
     media.preload = 'metadata';
+    wrapper.appendChild(media);
+    media = wrapper;
   } else {
     media = document.createElement('img');
     media.src = src;
@@ -4299,6 +4915,7 @@ ensureArchiveManifest().catch((err) => {
   console.warn('Archive manifest preload failed:', err);
 });
 
+applyLanguageMode();
 handleInitialViewRequest();
 window.addEventListener('popstate', handleViewPopState);
 
