@@ -919,7 +919,6 @@ const DOM = {
   prevBtn: document.getElementById('prevBtn'),
   playBtn: document.getElementById('playBtn'),
   nextBtn: document.getElementById('nextBtn'),
-  miniControls: document.getElementById('miniControls'),
   volumePopover: document.getElementById('volumePopover'),
   spBtn: document.getElementById('spBtn'),
   ytBtn: document.getElementById('ytBtn'),
@@ -1894,36 +1893,12 @@ function ensureMobileNavEggsPlacement(retries = 2) {
 
 function setupAudioToggle() {
   if (!DOM.audioUI || !DOM.audioToggle) return;
-  const restoreControls = () => {
-    if (!DOM.playerCenter || !DOM.prevBtn || !DOM.nextBtn) return;
-    if (DOM.prevBtn.parentElement !== DOM.playerCenter) {
-      DOM.playerCenter.insertBefore(DOM.prevBtn, DOM.playBtn || DOM.playerCenter.firstChild);
-    }
-    if (DOM.nextBtn.parentElement !== DOM.playerCenter) {
-      DOM.playerCenter.appendChild(DOM.nextBtn);
-    }
-  };
-  const moveMiniControls = () => {
-    if (!DOM.miniControls || !DOM.prevBtn || !DOM.nextBtn) return;
-    if (DOM.prevBtn.parentElement !== DOM.miniControls) {
-      DOM.miniControls.appendChild(DOM.prevBtn);
-    }
-    if (DOM.nextBtn.parentElement !== DOM.miniControls) {
-      DOM.miniControls.appendChild(DOM.nextBtn);
-    }
-  };
-
   const applyState = (collapsed) => {
     DOM.audioUI.classList.toggle('is-collapsed', collapsed);
     DOM.audioToggle.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
     DOM.audioToggle.setAttribute('aria-label', collapsed ? 'Expand audio player' : 'Collapse audio player');
-    DOM.audioToggle.textContent = collapsed ? '▲' : '▾';
-    DOM.audioUI.classList.remove('is-volume-open');
-    if (collapsed) {
-      moveMiniControls();
-    } else {
-      restoreControls();
-    }
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    DOM.audioToggle.textContent = isMobile ? '▲' : (collapsed ? '▲' : '▾');
     try {
       localStorage.setItem('motto_audio_collapsed', collapsed ? '1' : '0');
     } catch (err) {
@@ -1932,10 +1907,16 @@ function setupAudioToggle() {
   };
 
   let collapsed = false;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
   try {
-    collapsed = localStorage.getItem('motto_audio_collapsed') === '1';
+    const stored = localStorage.getItem('motto_audio_collapsed');
+    if (isMobile) {
+      collapsed = true;
+    } else if (stored !== null) {
+      collapsed = stored === '1';
+    }
   } catch (err) {
-    collapsed = false;
+    collapsed = isMobile;
   }
   applyState(collapsed);
 
@@ -1947,12 +1928,6 @@ function setupAudioToggle() {
 
   DOM.audioUI.addEventListener('click', (event) => {
     if (!DOM.audioUI.classList.contains('is-collapsed')) return;
-    if (DOM.audioUI.classList.contains('is-volume-open')) {
-      if (!event.target.closest('#volumePopover') && !event.target.closest('#muteBtn')) {
-        DOM.audioUI.classList.remove('is-volume-open');
-      }
-      return;
-    }
     if (event.target.closest('button, input, a')) return;
     applyState(false);
   });
@@ -4534,13 +4509,7 @@ function startOST() {
     updateVolumeFill();
   };
   DOM.vol.addEventListener('change', updateVolumeFill);
-  DOM.muteBtn.onclick = (event) => {
-    if (DOM.audioUI?.classList.contains('is-collapsed')) {
-      event.preventDefault();
-      event.stopPropagation();
-      DOM.audioUI.classList.toggle('is-volume-open');
-      return;
-    }
+  DOM.muteBtn.onclick = () => {
     if (!A) return;
     A.muted = !A.muted;
     updateMuteBtn();
@@ -4662,7 +4631,10 @@ function setNowLabel(text) {
     const start = containerWidth;
     const distance = textWidth + containerWidth + gap;
     const speed = 220;
-    const duration = Math.max(10, distance / speed);
+    const isMobile = typeof window !== 'undefined'
+      && typeof window.matchMedia === 'function'
+      && window.matchMedia('(max-width: 768px)').matches;
+    const duration = isMobile ? 20 : Math.max(10, distance / speed);
 
     DOM.nowText.style.setProperty('--marquee-start', `${start}px`);
     DOM.nowText.style.setProperty('--marquee-distance', `${distance}px`);
@@ -4674,6 +4646,7 @@ function setNowLabel(text) {
 function updateNow(meta) {
   clearPendingPlayback();
   setNowLabel(meta.title || '—');
+  restartMobileMarquee();
 }
 
 function updateMarqueePlayState() {
@@ -4681,6 +4654,40 @@ function updateMarqueePlayState() {
   if (!DOM.nowText.classList.contains('marquee')) return;
   DOM.nowText.classList.toggle('marquee--paused', !playing);
 }
+
+function restartMobileMarquee() {
+  if (!DOM.nowText) return;
+  if (typeof window === 'undefined') return;
+  if (typeof window.matchMedia !== 'function') return;
+  if (!window.matchMedia('(max-width: 768px)').matches) return;
+  const label = DOM.nowText.getAttribute('aria-label') || '';
+  let inner = DOM.nowText.querySelector('.track-title__inner');
+  if (!inner) return;
+  const apply = () => {
+    const containerWidth = DOM.nowText.clientWidth || 1;
+    const textWidth = inner.scrollWidth || containerWidth;
+    const gap = Math.max(4, Math.min(containerWidth * 0.015, 8));
+    const start = containerWidth;
+    const distance = textWidth + containerWidth + gap;
+    const duration = 20;
+
+    DOM.nowText.classList.remove('marquee', 'marquee--paused');
+    DOM.nowText.style.setProperty('--marquee-start', `${start}px`);
+    DOM.nowText.style.setProperty('--marquee-distance', `${distance}px`);
+    DOM.nowText.style.setProperty('--marquee-duration', `${duration}s`);
+    DOM.nowText.classList.add('marquee');
+    DOM.nowText.classList.toggle('marquee--paused', !playing);
+    inner.style.animation = 'none';
+    void inner.offsetWidth;
+    inner.style.animation = '';
+    inner.style.transform = '';
+  };
+
+  if (label) {
+    requestAnimationFrame(() => requestAnimationFrame(apply));
+  }
+}
+
 
 function trackEvent(category, action, label) {
   console.log(`[분석] ${category}: ${action} - ${label}`);

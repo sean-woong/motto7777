@@ -1711,11 +1711,6 @@ body.lang-kr .lang-block--en {
   display: flex;
   align-items: center;
 }
-.mini-controls {
-  display: none;
-  align-items: center;
-  gap: 6px;
-}
 .volume-popover {
   position: relative;
   display: flex;
@@ -2202,6 +2197,23 @@ body.lang-kr .lang-block--en {
     gap: clamp(12px, 4vw, 18px);
     height: auto;
     min-height: 40px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    --mini-line-height: 24px;
+    --mini-line-pad: 8px;
+    --mini-line-inline: 12px;
+    top: auto;
+    bottom: clamp(16px, 6vw, 28px);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+  .audio-ui.is-collapsed,
+  .audio-ui:not(.is-collapsed) {
+    top: auto;
+    bottom: clamp(16px, 6vw, 28px);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
   }
   .audio-toggle {
     display: inline-grid;
@@ -2240,102 +2252,134 @@ body.lang-kr .lang-block--en {
     box-shadow: 0 0 0 4px rgba(255, 0, 255, 0.12);
   }
   .audio-ui.is-collapsed {
-    padding: 8px clamp(14px, 4vw, 18px);
+    padding: var(--mini-line-pad) var(--mini-line-inline);
     height: 56px;
     min-height: 56px;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-direction: row;
   }
   .audio-ui.is-collapsed .player-left,
   .audio-ui.is-collapsed .player-center,
   .audio-ui.is-collapsed .player-right {
-    display: flex;
-  }
-  .audio-ui.is-collapsed .audio-toggle {
     display: none;
   }
+  .audio-ui.is-collapsed .audio-toggle {
+    display: inline-flex;
+    position: static;
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: transparent;
+    color: var(--color-primary);
+    text-shadow: 0 0 10px rgba(255, 0, 170, .7);
+    margin-right: 6px;
+  }
   .audio-ui.is-collapsed .player-left {
+    display: flex;
     flex: 1 1 auto;
     max-width: none;
-    margin-right: 8px;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+    height: 24px;
+    overflow: hidden;
+  }
+  .audio-ui.is-collapsed .audio-toggle {
+    flex: 0 0 auto;
   }
   .audio-ui.is-collapsed .audio-title {
     font-size: 0.95rem;
-    letter-spacing: .04em;
+    letter-spacing: .02em;
     text-transform: none;
-    line-height: 1.25;
+    line-height: 1.2;
   }
   .audio-ui.is-collapsed .track-title {
-    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .audio-ui.is-collapsed .track-title__inner {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    white-space: normal;
+    white-space: nowrap;
   }
-  .audio-ui.is-collapsed .track-title.marquee .track-title__inner {
-    animation: none;
+  .audio-ui:not(.is-collapsed) {
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: calc(var(--mini-line-pad) + var(--mini-line-height) + 8px);
+    padding-bottom: 10px;
   }
-  .audio-ui.is-collapsed .player-center {
-    order: 2;
-    margin-left: 4px;
-    margin-right: 6px;
-    gap: 0;
+  .audio-ui:not(.is-collapsed) .player-left {
+    order: 1;
+    margin: 0;
+    height: var(--mini-line-height);
+    min-height: var(--mini-line-height);
     flex: 0 0 auto;
-  }
-  .audio-ui.is-collapsed #playBtn {
-    width: 48px;
-    height: 48px;
-  }
-  .audio-ui.is-collapsed .player-right {
-    order: 3;
-    margin-left: auto;
-    gap: 6px;
-    flex: 0 0 auto;
-    min-width: 40px;
-    position: relative;
-  }
-  .audio-ui.is-collapsed .mini-controls {
-    display: inline-flex;
-  }
-  .audio-ui.is-collapsed #prevBtn,
-  .audio-ui.is-collapsed #nextBtn {
-    width: 28px;
-    height: 28px;
-  }
-  .audio-ui.is-collapsed .mini-controls .audio-btn {
-    border-radius: 8px;
-    font-size: 11px;
-  }
-  .audio-ui.is-collapsed #vol {
-    width: 140px;
-  }
-  .audio-ui.is-collapsed .volume-popover {
-    position: absolute;
-    right: 0;
-    bottom: calc(100% + 8px);
-    padding: 10px;
-    border-radius: 12px;
-    background: rgba(8, 10, 18, .92);
-    border: 1px solid rgba(255, 0, 170, .4);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, .45);
-    opacity: 0;
     pointer-events: none;
-    transform: translateY(6px);
-    transition: opacity var(--dur-short) var(--ease-standard),
-                transform var(--dur-short) var(--ease-standard);
-    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: var(--mini-line-pad);
+    left: var(--mini-line-inline);
+    right: var(--mini-line-inline);
+    background: rgba(12, 14, 20, .55);
+    border-radius: 10px;
+    padding: 0 6px;
   }
-  .audio-ui.is-collapsed.is-volume-open .volume-popover {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
+  .audio-ui:not(.is-collapsed) .audio-toggle {
+    display: inline-flex;
+    position: static;
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: transparent;
+    color: var(--color-primary);
+    text-shadow: 0 0 10px rgba(255, 0, 170, .7);
+    flex: 0 0 auto;
   }
-  .audio-ui.is-collapsed .audio-btn--mute {
-    width: 32px;
-    height: 32px;
+  .audio-ui:not(.is-collapsed) .audio-title {
+    font-size: 0.95rem;
+    letter-spacing: .02em;
+    text-transform: none;
+    line-height: 1.2;
+  }
+  .audio-ui:not(.is-collapsed) .track-title {
+    overflow: hidden;
+  }
+  .audio-ui:not(.is-collapsed) .track-title__inner {
+    white-space: nowrap;
+  }
+  .audio-ui:not(.is-collapsed) .player-center {
+    order: 2;
+    margin: 0;
+    justify-content: center;
+    gap: 10px;
+  }
+  .audio-ui:not(.is-collapsed) .audio-btn {
+    width: clamp(72px, 22vw, 110px);
+    height: 44px;
+    border-radius: 10px;
+  }
+  .audio-ui:not(.is-collapsed) #playBtn {
+    width: clamp(90px, 28vw, 140px);
+    height: 50px;
+    border-radius: 12px;
+    background: transparent;
+    border-color: rgba(180, 90, 255, 0.9);
+  }
+  .audio-ui:not(.is-collapsed) .player-right {
+    order: 3;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  .audio-ui:not(.is-collapsed) .audio-btn--mute {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+  }
+  .audio-ui:not(.is-collapsed) #vol {
+    display: block;
+    width: clamp(140px, 40vw, 220px);
   }
   .player-left {
     flex: 1 1 clamp(200px, 48vw, 320px);
