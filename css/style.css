@@ -755,6 +755,7 @@ body.cursor-target {
   opacity: 0;
   transform: scale(.96);
   transition: transform var(--dur-medium) var(--ease-standard), box-shadow var(--dur-medium) var(--ease-standard);
+  border-radius: 22px;
 }
 .today-hero-card.today-hero-animate {
   animation: todayHeroReveal 0.72s var(--ease-standard) forwards;
@@ -763,6 +764,7 @@ body.cursor-target {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  border-radius: 18px;
 }
 .today-hero-card img,
 .today-hero-card video {
@@ -771,12 +773,14 @@ body.cursor-target {
   object-fit: contain;
   filter: saturate(1.05);
   display: block;
+  border-radius: 18px;
 }
 .today-hero-card img,
 .today-hero-card video { background: #000; }
 .today-hero-card .imm-info {
   padding: clamp(12px, 3vw, 18px) clamp(14px, 3.5vw, 22px);
   gap: 6px;
+  border-radius: 0 0 18px 18px;
 }
 .today-hero-card .imm-info strong {
   font-size: clamp(16px, 3vw, 24px);
