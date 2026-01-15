@@ -216,6 +216,12 @@
   outline: none;
 }
 
+.music-platform.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  filter: grayscale(0.3);
+}
+
 .music-platform__icon {
   width: 28px;
   height: 28px;

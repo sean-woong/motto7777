@@ -14,17 +14,22 @@
     .kr-text { font-family: 'Pretendard', sans-serif; }
   </style>
   <script defer src="js/cursor.js"></script>
+  <script defer src="js/site-config.js"></script>
+  <script defer src="js/site.js"></script>
   <script defer src="js/music.js"></script>
 </head>
 <body class="music-page">
   <div class="site-shell">
   <header class="nav">
-    <a href="index.html" id="homeBtn" class="brand">
-      <span class="sr-only">MOTTO Home</span>
-      <span class="brand-word" data-text="motto">motto</span>
-      <span class="brand-tag" aria-label="7777 in Japanese">ナナナナ</span>
-    </a>
-    <nav class="links">
+    <div class="nav-top">
+      <a href="index.html?view=home" id="homeBtn" class="brand">
+        <span class="sr-only">MOTTO Home</span>
+        <span class="brand-word" data-text="motto">motto</span>
+        <span class="brand-tag" aria-label="7777 in Japanese">ナナナナ</span>
+      </a>
+      <button id="navToggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation">≡</button>
+    </div>
+    <nav id="navLinks" class="links">
       <a id="immBtn"  class="link-glitch nav-link" href="index.html?view=immortals">IMMORTALS</a>
       <a id="arcBtn"  class="link-glitch nav-link" href="index.html?view=archive">ARCHIVE</a>
       <a id="aboutBtn" class="link-glitch nav-link" href="index.html?view=about">ABOUT</a>
@@ -55,25 +60,25 @@
         <h2 id="music-platforms-title" class="music-platforms__title">Listen on</h2>
         <p class="music-platforms__hint">Stream MOTTO 7777 across your favorite platforms.</p>
         <div class="music-platforms__grid">
-          <a class="music-platform music-platform--spotify" href="https://open.spotify.com/album/2ZzpXvdQhDH4ttHATc52nT?si=5sDQu1dVS3SkL0j6O1OsvQ" target="_blank" rel="noopener">
+          <a id="musicSpotify" class="music-platform music-platform--spotify" href="https://open.spotify.com/album/2ZzpXvdQhDH4ttHATc52nT?si=5sDQu1dVS3SkL0j6O1OsvQ" target="_blank" rel="noopener">
             <svg aria-hidden="true" focusable="false" class="music-platform__icon" viewBox="0 0 24 24">
               <path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10 10-4.49 10-10S17.51 2 12 2Zm4.4 14.56a.74.74 0 0 1-1.02.24c-2.8-1.71-6.32-2.11-10.47-1.17a.74.74 0 1 1-.32-1.44c4.51-1.02 8.37-.56 11.46 1.32.35.22.46.68.23 1.05Zm1.44-3.2a.93.93 0 0 1-1.27.3c-3.2-1.94-8.09-2.51-11.88-1.4a.93.93 0 0 1-.52-1.78c4.3-1.26 9.6-.63 13.2 1.5a.93.93 0 0 1 .47 1.38Zm.13-3.35c-3.65-2.17-9.73-2.37-13.22-1.34a1.12 1.12 0 0 1-.64-2.15c4.12-1.23 10.86-.98 15.1 1.56a1.12 1.12 0 0 1-1.14 1.93Z"/>
             </svg>
             <span class="music-platform__label">Spotify</span>
           </a>
-          <a class="music-platform music-platform--youtube" href="#" target="_blank" rel="noopener">
+          <a id="musicYouTube" class="music-platform music-platform--youtube" href="#" target="_blank" rel="noopener">
             <svg aria-hidden="true" focusable="false" class="music-platform__icon" viewBox="0 0 24 24">
               <path d="M21.6 7.2a2.75 2.75 0 0 0-1.93-1.95C17.65 5 12 5 12 5s-5.65 0-7.67.25a2.75 2.75 0 0 0-1.93 1.95A28.93 28.93 0 0 0 2 12a28.93 28.93 0 0 0 .4 4.8 2.75 2.75 0 0 0 1.93 1.95C6.35 19 12 19 12 19s5.65 0 7.67-.25a2.75 2.75 0 0 0 1.93-1.95A28.93 28.93 0 0 0 22 12a28.93 28.93 0 0 0-.4-4.8ZM10 15.02V8.98L15.5 12 10 15.02Z"/>
             </svg>
             <span class="music-platform__label">YouTube</span>
           </a>
-          <a class="music-platform music-platform--apple" href="#" target="_blank" rel="noopener">
+          <a id="musicApple" class="music-platform music-platform--apple" href="#" target="_blank" rel="noopener">
             <svg aria-hidden="true" focusable="false" class="music-platform__icon" viewBox="0 0 24 24">
               <path d="M18.3 13.22c-.02-2.4 1.96-3.55 2.05-3.6-1.12-1.63-2.87-1.85-3.48-1.87-1.48-.15-2.88.87-3.63.87-.76 0-1.91-.86-3.14-.83-1.53.02-2.95.89-3.74 2.27-1.6 2.76-.41 6.84 1.14 9.08.76 1.1 1.66 2.35 2.85 2.3 1.14-.04 1.57-.75 2.95-.75 1.38 0 1.77.75 2.97.72 1.23-.02 2.01-1.12 2.76-2.24.87-1.27 1.22-2.51 1.24-2.57-.03-.02-2.39-.91-2.41-3.38ZM15.52 5.83c.66-.8 1.1-1.91.98-3.03-.95.04-2.1.63-2.78 1.43-.61.72-1.15 1.86-1.01 2.95 1.07.08 2.15-.55 2.8-1.35Z"/>
             </svg>
             <span class="music-platform__label">Apple Music</span>
           </a>
-          <a class="music-platform music-platform--soundcloud" href="#" target="_blank" rel="noopener">
+          <a id="musicSoundCloud" class="music-platform music-platform--soundcloud" href="#" target="_blank" rel="noopener">
             <svg aria-hidden="true" focusable="false" class="music-platform__icon" viewBox="0 0 24 24">
               <path d="M18.44 10.63c-.43 0-.85.09-1.24.26a4.01 4.01 0 0 0-7.74 1.11v4.33a.67.67 0 0 0 .67.67h8.31c1.92 0 3.48-1.55 3.48-3.47 0-1.91-1.56-3.47-3.48-3.47Zm-10.52-.45c-.34 0-.62.3-.64.68l-.27 4a.67.67 0 1 0 1.33.09l.27-4.01c.02-.38-.28-.7-.64-.76Zm-2.21.41c-.35.04-.61.36-.61.73v3.48a.67.67 0 0 0 1.33 0v-3.5c0-.41-.31-.74-.72-.71Zm-2.05.97a.67.67 0 0 0-.67.67v2.14a.67.67 0 0 0 1.33 0V12.23a.67.67 0 0 0-.66-.67Z"/>
             </svg>

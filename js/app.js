@@ -7,13 +7,17 @@ const DUR_MEDIUM = 240;
 const DUR_LONG = 480;
 
 // ====== External Links ======
-const SPOTIFY_URL = '#';
-const YOUTUBE_URL = '#';
-const SHOP_URL = '#';
-const TWITTER_URL = 'https://x.com/motto_7777';
-const IG_URL = 'https://www.instagram.com/mottttooooooo/';
-const TT_URL = 'https://www.youtube.com/@motto_7777';
-const NFT_COLLECTION_URL = 'https://crypto.com/nft/drops-event/7757a25297e2ba222ccf68f367e614f4?tab=shop';
+const LINK_CONFIG = (typeof window !== 'undefined' && window.MOTTO_LINKS)
+  ? window.MOTTO_LINKS
+  : {};
+const SPOTIFY_URL = LINK_CONFIG.spotify || '#';
+const YOUTUBE_URL = LINK_CONFIG.youtube || '#';
+const SHOP_URL = LINK_CONFIG.shop || '#';
+const TWITTER_URL = LINK_CONFIG.twitter || 'https://x.com/motto_7777';
+const IG_URL = LINK_CONFIG.instagram || 'https://www.instagram.com/mottttooooooo/';
+const TT_URL = LINK_CONFIG.tt || 'https://www.youtube.com/@motto_7777';
+const NFT_COLLECTION_URL = LINK_CONFIG.nftCollection
+  || 'https://crypto.com/nft/drops-event/7757a25297e2ba222ccf68f367e614f4?tab=shop';
 
 // ====== Build Version ======
 const SCRIPT_VERSION = (() => {
@@ -1087,11 +1091,29 @@ function buildHistoryBase(hashOverride) {
   return `${base}${hash}`;
 }
 
+function buildViewUrl(view, hashOverride) {
+  if (typeof window === 'undefined') return '';
+  const url = new URL(window.location.href);
+  const normalized = view || VIEW_STATES.HOME;
+  if (normalized && normalized !== VIEW_STATES.HOME) {
+    url.searchParams.set('view', normalized);
+  } else {
+    url.searchParams.delete('view');
+  }
+  if (typeof hashOverride === 'string') {
+    url.hash = hashOverride;
+  } else if (!url.hash || url.hash.startsWith('#archive')) {
+    url.hash = '';
+  }
+  const qs = url.searchParams.toString();
+  return `${url.pathname}${qs ? `?${qs}` : ''}${url.hash}`;
+}
+
 function commitViewState(view, { replace = false, force = false } = {}) {
   if (typeof window === 'undefined' || !window.history) return;
   const payload = { introDismissed: true, view };
   if (!HISTORY_READY) {
-    history.replaceState(payload, '', buildHistoryBase(''));
+    history.replaceState(payload, '', buildViewUrl(view, ''));
     HISTORY_READY = true;
     CURRENT_STAGE_VIEW = view;
     return;
@@ -1100,7 +1122,7 @@ function commitViewState(view, { replace = false, force = false } = {}) {
     return;
   }
   const method = replace ? 'replaceState' : 'pushState';
-  history[method](payload, '', buildHistoryBase());
+  history[method](payload, '', buildViewUrl(view));
   CURRENT_STAGE_VIEW = view;
 }
 
@@ -1414,14 +1436,6 @@ function handleInitialViewRequest() {
     const url = new URL(window.location.href);
     viewParam = (url.searchParams.get('view') || '').toLowerCase();
     if (!viewParam) return;
-    const nextSearch = new URLSearchParams(url.searchParams);
-    nextSearch.delete('view');
-    const nextSearchString = nextSearch.toString();
-    history.replaceState(
-      null,
-      '',
-      `${url.pathname}${nextSearchString ? `?${nextSearchString}` : ''}${url.hash}`
-    );
   } catch (err) {
     console.error('Failed to parse view parameter:', err);
     return;
@@ -3298,6 +3312,8 @@ function openImmDetailByIndex(i) {
       }
       DOM.immVideo.src = it.video;
       DOM.immVideo.currentTime = 0;
+      DOM.immVideo.muted = true;
+      DOM.immVideo.volume = 0;
 
       const revealFallback = () => {
         console.warn('Immortal video missing:', it.video);
