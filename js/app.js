@@ -17,7 +17,7 @@ const TWITTER_URL = LINK_CONFIG.twitter || 'https://x.com/motto_7777';
 const IG_URL = LINK_CONFIG.instagram || 'https://www.instagram.com/mottttooooooo/';
 const TT_URL = LINK_CONFIG.tt || 'https://www.youtube.com/@motto_7777';
 const NFT_COLLECTION_URL = LINK_CONFIG.nftCollection
-  || 'https://crypto.com/nft/drops-event/7757a25297e2ba222ccf68f367e614f4?tab=shop';
+  || 'https://crypto.com/nft/collection/e5d6b1c9197704a5cca12036062263f2?tab=items';
 
 // ====== Build Version ======
 const SCRIPT_VERSION = (() => {

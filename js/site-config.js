@@ -8,6 +8,6 @@
     twitter: 'https://x.com/motto_7777',
     instagram: 'https://www.instagram.com/mottttooooooo/',
     tt: 'https://www.youtube.com/@motto_7777',
-    nftCollection: 'https://crypto.com/nft/drops-event/7757a25297e2ba222ccf68f367e614f4?tab=shop'
+    nftCollection: 'https://crypto.com/nft/collection/e5d6b1c9197704a5cca12036062263f2?tab=items'
   };
 })();
