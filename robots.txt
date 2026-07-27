@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-User-agent: GPTBot
-Allow: /
+Sitemap: https://motto7777.com/sitemap.xml

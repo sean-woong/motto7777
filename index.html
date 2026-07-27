@@ -1,225 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MOTTO 7777</title>
-  <link rel="preload" as="image" type="image/webp" href="/assets/images/motto_profile_static.webp" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
-  <link rel="stylesheet" href="css/style.css"/>
-  <link rel="stylesheet" href="css/nft.css"/>
-  <style>
-    body, .en-text { font-family: 'Audiowide', 'Orbitron', sans-serif; }
-    .kr-text { font-family: 'Pretendard', sans-serif; }
-  </style>
-  <script defer src="js/cursor.js"></script>
-  <script defer src="js/site-config.js"></script>
-  <script defer src="js/app.js?v=20250324"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="MOTTO 7777 — an audiovisual archive of 7,777 works, seven archetypes, and one irreversible survival event.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta property="og:title" content="MOTTO 7777">
+  <meta property="og:description" content="An audiovisual archive of 7,777 works, seven archetypes, and one irreversible survival event.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MOTTO 7777">
+  <meta property="og:url" content="https://motto7777.com/">
+  <meta property="og:image" content="https://motto7777.com/media/project-teaser-poster.jpg">
+  <meta property="og:image:alt" content="MOTTO 7777 audiovisual archive">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MOTTO 7777">
+  <meta name="twitter:description" content="An audiovisual archive of 7,777 works, seven archetypes, and one irreversible survival event.">
+  <meta name="twitter:image" content="https://motto7777.com/media/project-teaser-poster.jpg">
+  <meta name="twitter:image:alt" content="MOTTO 7777 audiovisual archive">
+  <link rel="canonical" href="https://motto7777.com/">
+  <link rel="icon" type="image/png" sizes="64x64" href="media/favicon-64.png">
+  <link rel="apple-touch-icon" href="media/icon-180.png">
+  <link rel="preload" as="image" href="media/immortals-posters/legend-soldier.webp" type="image/webp" fetchpriority="high">
+  <title>MOTTO 7777 — Audiovisual Archive</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json" data-structured-data>
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": "MOTTO 7777",
+      "url": "https://motto7777.com/",
+      "description": "An audiovisual archive of 7,777 works, seven archetypes, and one irreversible survival event.",
+      "creator": [
+        {
+          "@type": "Person",
+          "name": "Sean Woong",
+          "description": "World building and visual direction"
+        },
+        {
+          "@type": "Person",
+          "name": "Haz Haus",
+          "description": "World building, album production, and sound direction"
+        }
+      ],
+      "dateCreated": "2024",
+      "datePublished": "2025-12"
+    }
+  </script>
 </head>
 <body>
-  <div class="site-shell">
+  <a class="skip-link" href="#app">Skip to content</a>
 
-  <!-- Intro -->
-  <div id="intro" class="intro">
-    <div class="intro-inner en-text">
-      <img
-        id="introLogo"
-        class="intro-logo"
-        src="assets/images/motto_profile_static.webp"
-        data-static-src="assets/images/motto_profile_static.webp"
-        data-animated-src="assets/images/motto_profile.gif"
-        alt="MOTTO"
-        width="500"
-        height="500"
-        fetchpriority="high"
-      />
-      <div class="intro-cta" data-text="PRESS ENTER TO SURVIVE THE FRACTURE">
-        PRESS ENTER TO SURVIVE THE FRACTURE
-      </div>
-      <div class="intro-sub" data-text="YEAR 7777 AWAITS">YEAR 7777 AWAITS</div>
-      <button id="enterBtn" class="btn">ENTER</button>
-      <p class="hint">HEADPHONES RECOMMENDED FOR IMMERSION</p>
-    </div>
-  </div>
+  <header class="site-header" data-header>
+    <a class="brand" href="?view=home" data-route aria-label="MOTTO 7777 home">
+      <span class="brand-word" data-text="motto">motto</span>
+      <span class="brand-tag">ナナナナ</span>
+    </a>
 
-  <!-- Intro Clip -->
-  <div id="introClip" class="intro-clip" hidden>
-    <img src="assets/images/ani_motto.gif" alt="intro clip" loading="lazy" />
-  </div>
-
-  <!-- Header Nav -->
-  <header class="nav">
-    <div class="nav-top">
-      <a href="#" id="homeBtn" class="brand">
-        <span class="sr-only">MOTTO Home</span>
-        <span class="brand-word" data-text="motto">motto</span>
-        <span class="brand-tag" aria-label="7777 in Japanese">ナナナナ</span>
-      </a>
-      <button id="navToggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation">≡</button>
-    </div>
-    <nav id="navLinks" class="links">
-      <a id="immBtn"  class="link-glitch nav-link" href="#">IMMORTALS</a>
-      <a id="arcBtn"  class="link-glitch nav-link" href="#">ARCHIVE</a>
-      <a id="aboutBtn" class="link-glitch nav-link" href="#about">ABOUT</a>
-      <a id="nftBtn"  class="link-glitch nav-link" href="index.html?view=nft">NFT</a>
-      <a id="musicBtn" class="link-glitch nav-link" href="music.html" data-music-link>MUSIC</a>
-      <a id="twBtn"   class="link-glitch nav-link" href="https://x.com/motto_7777" target="_blank" rel="noopener">X</a>
-      <a id="igBtn"   class="link-glitch nav-link" href="https://www.instagram.com/mottttooooooo/" target="_blank" rel="noopener">IG</a>
-      <a id="ttBtn"   class="link-glitch nav-link" href="https://www.youtube.com/@motto_7777" target="_blank" rel="noopener">U</a>
-      <a id="shopBtn" class="link-glitch nav-link" href="#" target="_blank" rel="noopener">MERCH / REWARDS</a>
+    <nav class="desktop-nav" aria-label="Primary">
+      <a href="?view=immortals" data-route data-nav="immortals">IMMORTALS 77</a>
+      <a href="?view=originals" data-route data-nav="originals">ORIGINAL 7700</a>
+      <a href="?view=vault" data-route data-nav="vault">VAULT</a>
+      <a href="?view=sound" data-route data-nav="sound">SOUND</a>
+      <a href="?view=project" data-route data-nav="project">PROJECT</a>
     </nav>
-    <div class="nav-eggs">
-      <a id="egg1" class="link-glitch egg" href="https://www.youtube.com/@sean_woong" target="_blank" rel="noopener" aria-label="Visit Sean Woong YouTube channel">SEAN WOONG</a>
-      <a id="egg2" class="link-glitch egg" href="https://www.youtube.com/@hazhaus" target="_blank" rel="noopener" aria-label="Visit Haz Haus YouTube channel">HAZ HAUS</a>
+
+    <div class="header-tools">
+      <div class="language-switch" aria-label="Language" hidden>
+        <button type="button" data-lang="en" aria-label="View in English">EN</button>
+        <span>/</span>
+        <button type="button" data-lang="ko" title="Korean editorial pass pending" aria-label="한국어 편집 검수 중" disabled>KO β</button>
+        <span>/</span>
+        <button type="button" data-lang="ja" title="Japanese editorial pass pending" aria-label="日本語編集中" disabled>JA β</button>
+      </div>
+      <button class="menu-button" type="button" data-menu-open aria-expanded="false" aria-controls="mobile-menu">MENU</button>
     </div>
   </header>
 
-  <!-- Audio UI -->
-  <div id="audio-ui" class="audio-ui" hidden>
-    <button id="audioToggle" class="audio-toggle" type="button" aria-pressed="false" aria-label="Collapse audio player">▾</button>
-    <div class="player-left" aria-live="polite">
-      <span id="nowText" class="audio-title track-title">
-        <span class="track-title__inner">—</span>
-      </span>
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title" aria-hidden="true" inert>
+    <div class="mobile-menu__top">
+      <span class="mobile-wordmark" id="mobile-menu-title"><b>motto</b> ナナナナ</span>
+      <button type="button" data-menu-close>CLOSE</button>
     </div>
-    <div class="player-center">
-      <button id="prevBtn" class="audio-btn" title="Previous Track" aria-label="Previous Track">
-        <span class="audio-icon audio-icon--prev" aria-hidden="true"></span>
-      </button>
-      <button id="playBtn" class="audio-btn audio-btn--primary" title="Play/Pause" aria-label="Play or Pause">
-        <span class="audio-icon audio-icon--play" aria-hidden="true"></span>
-      </button>
-      <button id="nextBtn" class="audio-btn" title="Next Track" aria-label="Next Track">
-        <span class="audio-icon audio-icon--next" aria-hidden="true"></span>
-      </button>
-    </div>
-    <div class="player-right">
-      <div id="miniControls" class="mini-controls"></div>
-      <div id="volumePopover" class="volume-popover">
-        <input id="vol" class="audio-range" type="range" min="0" max="1" step="0.01" value="0.9" title="Volume" />
+    <nav aria-label="Mobile primary">
+      <a href="?view=immortals" data-route>IMMORTALS 77</a>
+      <a href="?view=originals" data-route>ORIGINAL 7700</a>
+      <a href="?view=vault" data-route>VAULT</a>
+      <a href="?view=sound" data-route>SOUND</a>
+      <a href="?view=project" data-route>PROJECT</a>
+    </nav>
+    <div class="mobile-menu__meta">
+      <div class="mobile-menu__languages" aria-label="Language" hidden>
+        <button type="button" data-lang="en" aria-label="View in English">EN</button>
+        <span>/</span>
+        <button type="button" data-lang="ko" title="Korean editorial pass pending" aria-label="한국어 편집 검수 중" disabled>KO β</button>
+        <span>/</span>
+        <button type="button" data-lang="ja" title="Japanese editorial pass pending" aria-label="日本語編集中" disabled>JA β</button>
       </div>
-      <button id="muteBtn" class="audio-btn audio-btn--mute" title="Mute/Unmute" aria-label="Mute or Unmute"><span aria-hidden="true">🔊</span></button>
+      <a href="?view=kia" data-route>K.I.A. SPECIAL EXHIBITION</a>
+      <a href="https://www.instagram.com/mottttooooooo/" target="_blank" rel="noreferrer">INSTAGRAM ↗</a>
+      <a href="https://x.com/motto_7777" target="_blank" rel="noreferrer">X ↗</a>
     </div>
   </div>
 
-  <!-- Stage -->
-  <main id="stage" class="stage" aria-live="polite"></main>
+  <main id="app" tabindex="-1">
+    <section class="app-fallback" aria-label="MOTTO 7777 archive introduction">
+      <span>MOTTO 7777 / AUDIOVISUAL ARCHIVE</span>
+      <h1>7,777 WORKS.<br>SEVEN ARCHETYPES.<br>ONE SURVIVAL EVENT.</h1>
+      <p>A world built by Sean Woong and Haz Haus: 7,700 Originals, 77 Immortals, and seven connected tracks.</p>
+    </section>
+  </main>
+  <div class="sr-status" data-status role="status" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Character Modal -->
-  <div id="charModal" class="modal" hidden>
-    <div class="modal-bg" data-close></div>
-    <div class="modal-card char-card">
-      <button class="modal-close" data-close>✕</button>
-      <div class="char-legend" id="charLegend"></div>
-      <div class="char-hero">
-        <video id="charHero" playsinline muted loop autoplay controls
-               style="max-width:100%;max-height:66vh;object-fit:contain;border:1px solid #2a2a2a"></video>
-      </div>
-      <div class="char-bar">
-        <div id="charCaption" class="char-note"></div>
-        <button id="charAuto" class="char-auto" aria-pressed="true" title="Auto slide thumbnails">AUTO ON</button>
-      </div>
-      <div id="charStrip" class="char-strip"></div>
+  <footer class="site-footer" data-footer>
+    <div class="site-footer__title">
+      <span>MOTTO 7777</span>
+      <span>WORLD BUILDING — SEAN WOONG + HAZ HAUS / VISUAL — SEAN WOONG / SOUND — HAZ HAUS</span>
     </div>
-  </div>
-
-  <!-- Immortals Modal -->
-  <div id="immModal" class="modal" hidden>
-    <div class="modal-bg" data-close></div>
-    <div class="modal-card" style="width:min(96vw,1200px);padding:12px">
-      <button class="modal-close" data-close>✕</button>
-      <h3 style="margin:0 0 10px">IMMORTALS</h3>
-      <div class="imm-controls">
-        <label class="imm-search">
-          <span class="sr-only">Search Immortals</span>
-          <input id="immSearch" type="search" placeholder="Search by title, tag, or archetype" autocomplete="off" spellcheck="false" />
-        </label>
-        <button id="immClearFilters" class="imm-clear" type="button" hidden>Clear</button>
-        <span id="immCount" class="imm-count" aria-live="polite"></span>
-        <div class="imm-mobile-actions" aria-label="Immortals tools">
-          <button id="immSearchToggle" class="imm-mobile-btn imm-mobile-btn--search" type="button" aria-expanded="false" aria-controls="immSearch" aria-label="Open search">
-            <span class="sr-only">Search</span>
-          </button>
-          <button id="immTagsToggle" class="imm-mobile-btn imm-mobile-btn--tags" type="button" aria-expanded="false" aria-controls="immTagFilters" aria-label="Open tag filters">≡</button>
-        </div>
-      </div>
-      <div id="immMobileBackdrop" class="imm-mobile-backdrop" aria-hidden="true"></div>
-      <div id="immTagFilters" class="imm-tag-filters" role="group" aria-label="Filter Immortals by tag"></div>
-      <div id="immGrid" class="imm-grid"></div>
+    <div class="site-footer__links">
+      <a href="https://open.spotify.com/album/2ZzpXvdQhDH4ttHATc52nT?si=5sDQu1dVS3SkL0j6O1OsvQ" target="_blank" rel="noreferrer">SPOTIFY ↗</a>
+      <a href="https://www.youtube.com/@motto_7777" target="_blank" rel="noreferrer">YOUTUBE ↗</a>
+      <a href="https://www.instagram.com/mottttooooooo/" target="_blank" rel="noreferrer">INSTAGRAM ↗</a>
+      <a href="https://crypto.com/nft/collection/e5d6b1c9197704a5cca12036062263f2?tab=items" target="_blank" rel="noreferrer">HISTORICAL COLLECTION SOURCE ↗</a>
     </div>
-  </div>
-
-  <!-- Immortals Detail Modal -->
-  <div id="immDetailModal" class="modal" hidden>
-    <div class="modal-bg" data-close></div>
-    <div class="modal-card imm-detail-card">
-      <header class="imm-detail-head">
-        <h3 id="immTitle"></h3>
-        <button class="modal-close" data-close aria-label="Close Immortal detail">✕</button>
-      </header>
-      <div id="immLegend" class="imm-legend"></div>
-      <div class="imm-hero">
-        <video id="immVideo" playsinline muted loop autoplay controls></video>
-        <img id="immVideoFallback" alt="" hidden />
-      </div>
-      <div id="immMeta" class="imm-meta-bar">
-        <span id="immTags" class="imm-tags"></span>
-        <span id="immDate" class="imm-date"></span>
-      </div>
-      <p id="immDesc" class="imm-desc"></p>
-      <div class="imm-nav">
-        <button id="immPrev">◀</button>
-        <span id="immIndex" class="imm-index"></span>
-        <button id="immNext">▶</button>
-      </div>
+    <div class="site-footer__record">
+      <span>AUDIOVISUAL ARCHIVE / 2024—2026</span>
+      <span>7,700 ORIGINALS + 77 IMMORTALS</span>
     </div>
-  </div>
-  <!-- Dev helper: <script defer src="js/verify-archive-assets.js"></script> -->
-  <!-- Archive Modal -->
-  <div id="archiveModal" class="modal" hidden>
-    <div class="modal-bg" data-close></div>
-    <div class="modal-card archive-modal-card">
-      <div class="archive-shell">
-        <section class="archive-board">
-          <div class="archive-board-body">
-            <div class="archive-stage">
-              <div class="archive-main">
-                <section id="archiveDetail" class="archive-detail" aria-live="polite">
-                  <div class="archive-detail-media" id="archiveDetailMedia"></div>
-                  <div class="archive-detail-info">
-                    <p class="archive-detail-title" id="archiveDetailTitle">Select a signal to view details.</p>
-                    <p class="archive-detail-type" id="archiveDetailType"></p>
-                  </div>
-                </section>
-                <div class="archive-grid-shell">
-                  <div id="archiveGrid" class="archive-grid archive-grid--compact" role="list"></div>
-                </div>
-              </div>
-              <aside class="archive-meta">
-                <p class="archive-overline">PROJECT 7777 · ARCHIVE</p>
-                <h2 class="archive-title">SIGNAL VAULT</h2>
-                <p class="archive-subtitle">Posters, UI sketches, and build captures from MOTTO 7777.</p>
-                <div class="archive-actions">
-                  <button id="archiveShuffle" class="archive-ghost-btn" type="button">Shuffle</button>
-                </div>
-                <p class="archive-metrics">
-                  <span>ARTIFACTS <strong id="archiveStatTotal">0</strong></span>
-                  <span class="archive-metrics__divider">·</span>
-                  <span>MOTION <strong id="archiveStatMotion">0</strong></span>
-                  <span class="archive-metrics__divider">·</span>
-                  <span>STILLS <strong id="archiveStatStill">0</strong></span>
-                </p>
-              </aside>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
+  </footer>
 
-  </div>
+  <audio data-audio-engine preload="metadata"></audio>
+  <div class="cursor" data-cursor aria-hidden="true"><span></span></div>
 
+  <script src="app.js" defer></script>
+  <noscript>MOTTO 7777 requires JavaScript to navigate the audiovisual archive.</noscript>
 </body>
 </html>
