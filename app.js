@@ -143,32 +143,32 @@
 
   const LEGEND_DESCRIPTIONS = {
     dealer: {
-      en: "Dealer — Loop Glitch · Fumes bleed.",
-      ko: "딜러 — 루프 글리치 · 연기가 스며든다."
+      en: "Fumes bleed.",
+      ko: "연기가 스며든다."
     },
     skull: {
-      en: "Skull — Fragment Protocol · Sparks ignite.",
-      ko: "스컬 — 프래그먼트 프로토콜 · 스파크가 튄다."
+      en: "Sparks ignite.",
+      ko: "스파크가 튄다."
     },
     rockstar: {
-      en: "Rockstar — Stall Stage · Smile stalls.",
-      ko: "록스타 — 스톨 스테이지 · 미소가 멈춘다."
+      en: "Smile stalls.",
+      ko: "미소가 멈춘다."
     },
     drag: {
-      en: "Drag — Recode Glam · Everything screams.",
-      ko: "드랙 — 리코드 글램 · 모든 것이 비명한다."
+      en: "Everything screams.",
+      ko: "모든 것이 비명한다."
     },
     military: {
-      en: "Military — Reload Combat · Target locked.",
-      ko: "밀리터리 — 리로드 컴뱃 · 조준이 고정된다."
+      en: "Target locked.",
+      ko: "조준이 고정된다."
     },
     boxer: {
-      en: "Boxer — Loop Fight · Bell rings.",
-      ko: "복서 — 루프 파이트 · 종이 울린다."
+      en: "Bell rings.",
+      ko: "종이 울린다."
     },
     motorcycle: {
-      en: "Motorcycle — Skid Speed · Veins pulse.",
-      ko: "모터사이클 — 스키드 스피드 · 맥박이 뛴다."
+      en: "Veins pulse.",
+      ko: "맥박이 뛴다."
     }
   };
 
@@ -176,24 +176,24 @@
     en: {
       homeLine: "AN AUDIOVISUAL ARCHIVE OF 7,777 WORKS",
       homeClass: "SELECTED FROM IMMORTALS 77",
-      immortalsIntro: "The 77 motion works at the core of MOTTO 7777: seventy Immortals and seven Legends.",
-      originalsIntro: "The 7,700 pre-K.I.A. works preserved through seven archetype packs.",
-      vaultIntro: "Selected release artifacts, unreleased image studies, process records, physical extensions, and identity work.",
-      soundIntro: "The official seven-track album, earlier demo tapes, seven short 8-bit versions, and selected studio records.",
-      projectIntro: "The authoritative structure, history, credits, and inquiry record for MOTTO 7777.",
+      immortalsIntro: "The 77 motion works at the core of MOTTO 7777: seventy Immortals and seven Legends, each integrating the 8-bit track paired with its archetype.",
+      originalsIntro: "The complete pre-K.I.A. image state of 7,700 works, preserved through seven archetype packs.",
+      vaultIntro: "Release images, studies, process, objects, and wordmark work from MOTTO 7777.",
+      soundIntro: "The official album, early demos, seven 8-bit versions, and studio material.",
+      projectIntro: "",
       statement: "MOTTO 7777 links 7,777 visual works with seven archetypes and seven tracks.",
       statementEnd: "After the drop, half of the Originals entered K.I.A."
     },
     ko: {
       homeLine: "7,777점으로 이루어진 오디오비주얼 아카이브",
       homeClass: "IMMORTALS 77에서 선택",
-      immortalsIntro: "MOTTO 7777의 중심에 있는 77개의 모션 작품: 70 Immortals와 7 Legends.",
-      originalsIntro: "일곱 아키타입 팩으로 보존된 K.I.A. 이전의 7,700개 원본 작품.",
-      vaultIntro: "선별된 발매 아티팩트, 미공개 이미지 스터디, 제작 기록, 실물 오브젝트와 아이덴티티 작업.",
-      soundIntro: "정식 발매된 일곱 트랙, 이전 데모 테이프, 일곱 개의 짧은 8-bit 버전과 선별된 스튜디오 기록.",
-      projectIntro: "MOTTO 7777의 구조, 역사, 크레딧과 문의를 정리한 공식 기록.",
+      immortalsIntro: "MOTTO 7777의 중심을 이루는 77개의 모션 작품. 70개의 Immortals와 7개의 Legends 모두 해당 아키타입과 짝을 이루는 8-bit 트랙을 결합한다.",
+      originalsIntro: "일곱 아키타입 팩으로 보존한 7,700개 작품의 완전한 K.I.A. 이전 이미지 상태.",
+      vaultIntro: "MOTTO 7777의 발매 이미지, 스터디, 제작 과정, 오브젝트와 워드마크 작업.",
+      soundIntro: "정식 앨범과 초기 데모, 일곱 개의 8-bit 버전, 스튜디오 자료.",
+      projectIntro: "",
       statement: "MOTTO 7777은 7,777개의 작품과 일곱 아키타입, 일곱 트랙을 연결한다.",
-      statementEnd: "드롭 이후 Originals의 절반은 K.I.A. 상태로 전환되었다."
+      statementEnd: "발매 이후 Originals의 절반은 K.I.A.로 전환됐다."
     },
     ja: {
       homeLine: "7,777作品によるオーディオビジュアル・アーカイブ",
@@ -207,6 +207,270 @@
       statementEnd: "ドロップ後、Originalsの半数がK.I.A.へ移行した。"
     }
   };
+
+  const PROJECT_NOTE = {
+    short: "MOTTO 7777 is an audiovisual project in which making 7,777 works formed a world of its own. Sean Woong and Haz Haus developed seven fixed archetype-track pairs across image, motion, and sound. This site preserves the complete pre-K.I.A. state of the 7,700 Originals and reconnects the works, music, and process dispersed after release.",
+    groups: [
+      {
+        label: "ORIGIN / 7,777",
+        paragraphs: [
+          "MOTTO 7777 is an audiovisual project in which the making of 7,777 works formed a world of its own. It did not translate prewritten lore into images. The scope of the world and the number of works grew together through ongoing conversations between Sean Woong and Haz Haus around numbers, music, drawing, and characters.",
+          "The number 7,777 did not emerge from a fixed symbolic system. Its playful suggestion of luck, together with the experience of releasing Digi Engine, an earlier series of 88 works, provided the starting point. Sean Woong and Haz Haus began imagining the figures and conditions of a world set in the year 7,777.",
+          "As the work accumulated, so did its visual vocabulary: figures across race and gender; bodies moving between human and robotic forms; tattooed skin; helmets and weapons; images of death; and repeating backgrounds and patterns. This vocabulary expanded through seven archetypes—Motorcycle, Dealer, Skull, Rockstar, Drag, Military, and Boxer—each developing a distinct body, attitude, and atmosphere.",
+          "The world was not added afterwards to contain a large edition. It became the field in which images could repeat, mutate, and relate to one another. Rather than a world producing 7,777 illustrations, it was the act of making 7,777 works that produced the world."
+        ]
+      },
+      {
+        label: "IMAGE / SOUND",
+        paragraphs: [
+          "The seven archetypes and seven tracks form fixed pairs. Their relationship, however, is not limited to character and theme song, or to one medium explaining the other. Words, rhythms, gestures, and atmospheres moved from sound into image, while the figures and visual conditions of the world fed back into the making of the music. Each pair carries shared language, bodily movement, speed, and repetition across two media.",
+          "This relationship was built directly into the 77 motion works that comprise IMMORTALS 77. Haz Haus reworked each of the seven tracks as an 8-bit version, and every work incorporates the version paired with its archetype. Sound is not an external accompaniment in these works; it is part of the structure formed by image and movement.",
+          "MOTTO began with the sensation of speed in a MotoGP rider’s point-of-view footage. Haz Haus’s repeating guitar loop, Sean Woong’s voice, and the repeated sound of “more” fed into motorcycle helmets, tattoo patterns, and the Motorcycle images.",
+          "In 7777 (GET LO), the repeated line “Everybody get lo” overlaps with ducking and evasive movement in boxing, the body lowering itself, and the atmosphere of an underground fight. A word becomes a sound, then a gesture and a scene. The other track and archetype pairs developed through connections of different intensity and form."
+        ]
+      },
+      {
+        label: "K.I.A. / TRANSITION",
+        paragraphs: [
+          "The core project consists of 7,700 Originals and 77 motion works. The 77 comprise seventy Immortals and seven PROTOCOL-7 works. Figures and visual elements formed through these principal motion works expanded into seven archetypes; each archetype developed into 1,100 Originals, producing a total of 7,700.",
+          "After every Original had been distributed and a set period had passed, half of them—3,850 works—entered K.I.A. No work was burned or removed from the market. Nor was a glitch effect simply overlaid on the existing image. The static image of each designated Original was replaced by a separate motion artwork defined by signal failure and glitch. A released work acquired another image, format, and state.",
+          "The rule was developed during the project and executed after discussion of its ratio. Once enacted, K.I.A. introduced time into the structure of MOTTO 7777: a released work no longer had to remain fixed in its initial state."
+        ]
+      },
+      {
+        label: "ARCHIVE / AFTER THE DROP",
+        paragraphs: [
+          "After the release, the works became distributed across different owners, wallets, and individual marketplace records. The blockchain records ownership and current state, but does not show at a glance how each work once operated within the project as a whole. Images, music, archetypes, process, and the K.I.A. event became dispersed across separate records.",
+          "The Original Archive on this site preserves the complete pre-K.I.A. state of the 7,700 works. It does not attempt to reproduce every current K.I.A. state. Instead, it presents the full image system before the split, while a separate exhibition and representative motion work document the form and history of the K.I.A. transition.",
+          "The archive also retains drawings, image elements, archetype studies, and traces of the sampling process. These are not supplements to the tokens, but records of how a visual language formed in the 77 principal motion works expanded into 7,700 images.",
+          "This site does not preserve ownership; it preserves the form and context of MOTTO 7777. The project is therefore more than 7,777 completed files. It includes the process through which a number became a system of figures and sound, music entered the image, released works changed over time, and a dispersed collection became legible again as one audiovisual structure."
+        ]
+      }
+    ]
+  };
+
+  const PROJECT_NOTE_KO = {
+    short: "MOTTO 7777은 7,777개의 작품을 만드는 과정이 하나의 세계를 형성한 오디오비주얼 프로젝트다. Sean Woong과 Haz Haus는 이미지와 모션, 사운드를 가로지르는 일곱 아키타입과 일곱 트랙의 고정된 짝을 만들었다. 이 웹은 7,700개 Originals의 완전한 K.I.A. 이전 상태를 보존하고, 발매 이후 흩어진 작품과 음악, 제작 기록을 다시 연결한다.",
+    groups: [
+      {
+        label: "기원 / 7,777",
+        paragraphs: [
+          "MOTTO 7777은 7,777개의 작품을 만드는 과정이 하나의 세계를 형성한 오디오비주얼 프로젝트다. 먼저 완성된 세계관을 이미지로 옮긴 작업은 아니다. 숫자와 음악, 드로잉과 인물에 관한 Sean Woong과 Haz Haus의 대화가 이어지는 동안 세계의 범위와 작품의 수가 함께 커졌다.",
+          "7,777이라는 숫자는 처음부터 고정된 상징 체계에서 나온 것이 아니었다. 숫자가 주는 재미와 행운의 인상, 그리고 앞서 88점으로 구성된 Digi Engine을 발매했던 경험이 출발점이 됐다. 두 사람은 이 숫자를 중심으로 서기 7,777년의 세계와 그 안의 인물들을 상상하기 시작했다.",
+          "작업이 쌓이면서 시각 언어도 함께 확장됐다. 서로 다른 인종과 성별의 인물, 인간과 로봇 사이를 오가는 신체, 타투가 새겨진 피부, 헬멧과 무기, 죽음의 이미지, 반복되는 배경과 패턴이 하나의 어휘가 됐다. 이 어휘는 Motorcycle, Dealer, Skull, Rockstar, Drag, Military, Boxer라는 일곱 아키타입 안에서 서로 다른 신체와 태도, 분위기로 전개됐다.",
+          "세계는 많은 수의 에디션을 하나로 묶기 위해 나중에 덧붙인 장식이 아니었다. 이미지가 반복되고 변형되며 서로 관계를 맺을 수 있게 하는 범위가 됐다. 하나의 세계가 7,777개의 이미지를 낳았다기보다, 7,777개의 작품을 만드는 행위가 하나의 세계를 만들었다고 보는 편이 더 가깝다."
+        ]
+      },
+      {
+        label: "이미지 / 사운드",
+        paragraphs: [
+          "일곱 아키타입과 일곱 트랙은 고정된 짝을 이룬다. 그러나 그 관계는 캐릭터와 테마곡, 또는 한 매체가 다른 매체를 설명하는 방식에 머물지 않는다. 말과 리듬, 몸짓과 분위기가 소리에서 이미지로 이동했고, 세계의 인물과 시각적 조건은 다시 음악 제작에 영향을 주었다. 각 짝은 언어와 신체의 움직임, 속도와 반복을 이미지와 소리 사이에서 공유한다.",
+          "이 관계는 IMMORTALS 77을 이루는 77개의 모션 작품 안에 직접 결합됐다. Haz Haus는 일곱 트랙을 각각 8-bit 버전으로 다시 만들었고, 모든 작품에는 해당 아키타입과 짝을 이루는 버전이 삽입됐다. 이 작품들에서 사운드는 외부에 덧붙은 배경음이 아니라 이미지와 움직임이 함께 만드는 구조의 일부다.",
+          "MOTTO는 MotoGP 선수의 POV 영상에서 받은 질주의 감각으로 시작됐다. Haz Haus의 반복적인 기타 루프, Sean Woong의 목소리와 반복되는 “more”의 소리는 바이크 헬멧, 타투 패턴, Motorcycle 이미지로 이어졌다.",
+          "7777 (GET LO)에서는 “Everybody get lo”라는 반복 구절이 복싱의 더킹과 회피 동작, 몸을 낮추는 움직임, 지하 격투장의 분위기와 겹친다. 하나의 단어가 소리가 되고, 다시 몸짓과 장면으로 이동한다. 다른 트랙과 아키타입의 짝도 서로 다른 밀도와 방식으로 이러한 관계를 발전시켰다."
+        ]
+      },
+      {
+        label: "K.I.A. / 전환",
+        paragraphs: [
+          "프로젝트의 핵심 작품은 7,700개의 Originals와 77개의 모션 작품으로 구성된다. 77개는 70개의 Immortals와 7개의 PROTOCOL-7 작품이다. 이 주요 모션 작품에서 형성된 인물과 시각 요소는 일곱 아키타입으로 확장됐고, 각 아키타입은 1,100개의 Originals로 전개되어 총 7,700개가 됐다.",
+          "모든 Originals가 배포되고 일정 시간이 지난 뒤, 그중 절반인 3,850개가 K.I.A.로 전환됐다. 작품은 소각되거나 시장에서 제거되지 않았다. 기존 이미지 위에 글리치 효과를 단순히 덧씌운 것도 아니다. 지정된 Original의 정지 이미지는 신호 단절과 글리치의 성격을 가진 별도의 모션 아트워크로 교체됐다. 발매된 하나의 작품이 다른 이미지와 형식, 상태를 갖게 된 것이다.",
+          "이 규칙은 프로젝트 진행 중에 제안되었고 비율에 관한 논의를 거쳐 실행됐다. 실행된 순간부터 K.I.A.는 MOTTO 7777에 시간의 구조를 만들었다. 발매된 작품도 최초 상태에 고정되지 않고 다른 이미지와 형식, 상태로 전환될 수 있게 된 것이다."
+        ]
+      },
+      {
+        label: "아카이브 / 발매 이후",
+        paragraphs: [
+          "발매 이후 작품들은 서로 다른 소유자와 지갑, 마켓플레이스의 개별 기록으로 흩어졌다. 블록체인은 소유권과 현재 상태를 기록하지만, 각 작품이 전체 프로젝트 안에서 어떤 관계를 가졌는지 한눈에 보여주지는 않는다. 이미지와 음악, 아키타입, 제작 과정, K.I.A. 이벤트는 서로 다른 기록으로 분산됐다.",
+          "현재 웹의 Original Archive는 7,700개 작품의 완전한 K.I.A. 이전 상태를 보존한다. 현재 존재하는 모든 K.I.A. 상태를 재현하려는 것은 아니다. 분기 이전의 전체 이미지 시스템을 전시하고, 별도의 전시와 대표 모션 작품을 통해 K.I.A. 전환의 형식과 역사를 기록한다.",
+          "아카이브는 드로잉과 이미지 요소, 아키타입 스터디, 이미지 샘플링의 흔적도 함께 보존한다. 이것들은 토큰에 딸린 부속 자료가 아니라, 77개의 주요 모션 작품에서 형성된 시각 언어가 어떻게 7,700개의 이미지로 확장됐는지를 보여주는 제작 기록이다.",
+          "이 웹이 보존하는 것은 소유권이 아니라 MOTTO 7777의 형태와 맥락이다. 따라서 프로젝트는 완성된 7,777개의 파일만을 뜻하지 않는다. 하나의 숫자가 인물과 사운드의 체계가 되고, 음악이 이미지 안으로 들어가며, 발매된 작품이 시간 안에서 변하고, 흩어진 컬렉션이 다시 하나의 오디오비주얼 구조로 읽히게 되는 과정까지 포함한다."
+        ]
+      }
+    ]
+  };
+
+  const KO_TEXT = Object.freeze({
+    "ARCHIVE DATA LOADING": "아카이브 데이터를 불러오는 중",
+    "WORK NOT FOUND IN THE VERIFIED MANIFEST.": "검증된 매니페스트에서 작품을 찾을 수 없습니다.",
+    "ENTER IMMORTALS 77 →": "IMMORTALS 77 입장 →",
+    "TOTAL WORKS": "전체 작품",
+    "ARCHETYPES / TRACKS": "아키타입 / 트랙",
+    "PROJECT NOTE": "프로젝트 노트",
+    "A WORLD FORMED THROUGH 7,777 WORKS.": "7,777개의 작품을 통해 형성된 세계.",
+    "READ THE FULL PROJECT NOTE →": "프로젝트 노트 전문 읽기 →",
+    "01 / MOTION ARCHIVE": "01 / 모션 아카이브",
+    "70 IMMORTALS + 7 LEGENDS": "70 IMMORTALS + 7 LEGENDS",
+    "PROTOCOL-7 / LEGENDS": "PROTOCOL-7 / LEGENDS",
+    "Seven archetypes in the official album order. Seven singular motion works.": "정식 앨범 순서로 배열한 일곱 아키타입과 일곱 개의 단독 모션 작품.",
+    "ALL": "전체",
+    "SEARCH THE 77": "77개 작품 검색",
+    "Filter Immortals by archetype": "아키타입별 Immortals 필터",
+    "Previous work": "이전 작품",
+    "Next work": "다음 작품",
+    "CONTINUE TO ORIGINAL 7700 →": "ORIGINAL 7700으로 계속 →",
+    "PLAY FULL MOTION": "전체 모션 재생",
+    "LOADING MOTION": "모션 불러오는 중",
+    "RETRY FULL MOTION": "전체 모션 다시 불러오기",
+    "PLAY 0:15": "0:15 재생",
+    "PREV": "이전",
+    "NEXT": "다음",
+    "02 / PRE-K.I.A. ARCHIVE": "02 / K.I.A. 이전 아카이브",
+    "7 PACKS / 1,100 WORKS EACH": "7개 팩 / 각 1,100점",
+    "SEVEN PACKS": "일곱 개의 팩",
+    "DISCOVER 28": "28점 둘러보기",
+    "RESHUFFLE 28": "28점 다시 섞기",
+    "AFTER THE DROP, THE ARCHIVE SPLIT.": "발매 이후 아카이브는 둘로 나뉘었다.",
+    "ENTER K.I.A. →": "K.I.A. 입장 →",
+    "1,100 ORIGINAL WORKS": "ORIGINAL 작품 1,100점",
+    "JUMP TO SOURCE #": "원본 번호로 이동",
+    "GO": "이동",
+    "COMPLETE IMAGES / CONTACT SHEET SCALE": "전체 이미지 / 콘택트시트 크기",
+    "VISIBLE FIELD": "현재 표시 구간",
+    "PRE-K.I.A.": "K.I.A. 이전",
+    "EXACT SOURCE ORDER": "정확한 원본 순서",
+    "03 / SPECIAL EXHIBITION": "03 / 특별 전시",
+    "3,850 SURVIVED / 3,850 K.I.A.": "3,850 SURVIVED / 3,850 K.I.A.",
+    "PLAY": "재생",
+    "SOUND ON": "사운드 켜기",
+    "SOUND OFF": "사운드 끄기",
+    "PAUSE": "일시정지",
+    "K.I.A. motion artwork": "K.I.A. 모션 아트워크",
+    "K.I.A. motion controls": "K.I.A. 모션 컨트롤",
+    "VISUAL / MOTION": "비주얼 / 모션",
+    "SOUND PRODUCTION": "사운드 프로덕션",
+    "AFFECTED SET": "적용 대상",
+    "EXCLUDED SET": "제외 대상",
+    "STATUS": "상태",
+    "COMPLETED": "완료",
+    "CONTINUE TO VAULT →": "VAULT로 계속 →",
+    "04 / MATERIAL ARCHIVE": "04 / 물질 아카이브",
+    "Immortals special pack design": "Immortals 스페셜 팩 디자인",
+    "UT02 — Seven Seal animated completion reward": "UT02 — Seven Seal 애니메이션 완성 리워드",
+    "Open UT02 Seven Seal at full size": "UT02 Seven Seal을 전체 크기로 열기",
+    "UNRELEASED IMAGE STUDIES": "미발매 이미지 스터디",
+    "DROP PAGE COVER / EARLY STUDY": "드롭 페이지 커버 / 초기 스터디",
+    "UNRELEASED · SEAN WOONG": "미발매 · SEAN WOONG",
+    "Early unused study for the MOTTO 7777 drop page cover": "MOTTO 7777 드롭 페이지 커버의 미사용 초기 스터디",
+    "ROCKSTAR LEGEND / RE-EDITED STILL": "ROCKSTAR LEGEND / 재편집 스틸",
+    "IMAGE STUDY · SEAN WOONG": "이미지 스터디 · SEAN WOONG",
+    "Re-edited still derived from Rockstar Legend": "Rockstar Legend에서 가져와 재편집한 스틸",
+    "PROCESS / MOTION": "제작 과정 / 모션",
+    "PACK COMPOSITION STUDY": "팩 구성 스터디",
+    "SCREEN RECORD EDIT · 00:18": "화면 기록 편집 · 00:18",
+    "Pack composition study screen recording": "팩 구성 스터디 화면 기록",
+    "3D MOTORCYCLE — ANIMATIC / FINAL": "3D MOTORCYCLE — 애니매틱 / 최종",
+    "TEASER FOOTAGE · @CHEESEPIZZA · 00:10": "티저 푸티지 · @CHEESEPIZZA · 00:10",
+    "3D motorcycle animatic and final teaser shot": "3D 모터사이클 애니매틱과 최종 티저 장면",
+    "DROP PAGE COVER / FINAL": "드롭 페이지 커버 / 최종",
+    "PUBLIC RELEASE IMAGE": "공개 발매 이미지",
+    "Final MOTTO 7777 drop page cover image": "MOTTO 7777 최종 드롭 페이지 커버 이미지",
+    "COLLECTION BANNER": "컬렉션 배너",
+    "MOTTO 7777 Original 7700 collection banner": "MOTTO 7777 Original 7700 컬렉션 배너",
+    "MOTTO 7777 Immortals 77 collection banner": "MOTTO 7777 Immortals 77 컬렉션 배너",
+    "VIEW RECORD ↗": "기록 보기 ↗",
+    "PRIVATE ARCHIVE": "비공개 아카이브",
+    "WORDMARK STUDY": "워드마크 스터디",
+    "MOTTO wordmark study on a black field": "검은 화면 위의 MOTTO 워드마크 스터디",
+    "ANIMATED MARK": "애니메이션 마크",
+    "Animated MOTTO wordmark study on a black field": "검은 화면 위의 MOTTO 애니메이션 워드마크 스터디",
+    "VHS SIGNAL STUDY": "VHS 신호 스터디",
+    "MOTTO wordmark distorted through a blue VHS signal": "푸른 VHS 신호로 왜곡한 MOTTO 워드마크",
+    "CONTINUE TO SOUND →": "SOUND로 계속 →",
+    "05 / SEVEN-TRACK SYSTEM": "05 / 일곱 트랙 시스템",
+    "OFFICIAL ALBUM / DEMOS / 8-BIT / STUDIO": "정식 앨범 / 데모 / 8-BIT / 스튜디오",
+    "MUSIC — MOTTO": "음악 — MOTTO",
+    "OFFICIAL ALBUM COVER / INVERTED PROFILE": "정식 앨범 커버 / INVERTED PROFILE",
+    "MOTTO official album cover": "MOTTO 정식 앨범 커버",
+    "OFFICIAL ALBUM / 7 TRACKS": "정식 앨범 / 7개 트랙",
+    "LISTEN TO THE OFFICIAL ALBUM ↗": "정식 앨범 듣기 ↗",
+    "TRACKS": "트랙",
+    "RELEASE ARTISTS": "발매 아티스트",
+    "COLLECTIVE": "크루",
+    "7 TRACKS ↔ 7 ARCHETYPES": "7개 트랙 ↔ 7개 아키타입",
+    "7777 (GET LO) VISUALIZER": "7777 (GET LO) 비주얼라이저",
+    "VISUALIZER — @CHEESEPIZZA": "비주얼라이저 — @CHEESEPIZZA",
+    "MOTTO SESSIONS": "MOTTO 세션",
+    "Haz Haus studio equipment and MOTTO session environment": "Haz Haus의 스튜디오 장비와 MOTTO 세션 환경",
+    "CONTINUE TO PROJECT →": "PROJECT로 계속 →",
+    "CHANNEL": "채널",
+    "TRACK": "트랙",
+    "ARCHETYPE": "아키타입",
+    "READY": "준비",
+    "PLAYING": "재생 중",
+    "PLAYBACK UNAVAILABLE": "재생할 수 없음",
+    "PREVIEW UNAVAILABLE": "미리보기를 불러올 수 없음",
+    "MOTION UNAVAILABLE": "모션을 불러올 수 없음",
+    "A new selected Immortal is now shown.": "새로 선택한 Immortal 작품을 표시했습니다.",
+    "A new balanced selection of 28 Originals is shown.": "일곱 아키타입에서 다시 고른 Originals 28점을 표시했습니다.",
+    "Motion is ready. Use the video control to begin playback.": "모션을 불러왔습니다. 비디오 컨트롤을 사용해 재생하세요.",
+    "Full motion could not be loaded. The poster remains available.": "전체 모션을 불러오지 못했습니다. 포스터는 계속 볼 수 있습니다.",
+    "K.I.A. motion is unavailable. The high-resolution poster is shown.": "K.I.A. 모션을 불러오지 못해 고해상도 포스터를 표시합니다.",
+    "DEMO": "데모",
+    "OPEN PACK →": "팩 열기 →",
+    "8-BIT VERSIONS — HAZ HAUS / INTEGRATED INTO IMMORTALS 77": "8-BIT 버전 — HAZ HAUS / IMMORTALS 77에 결합",
+    "PLAY FILM": "영상 재생",
+    "MOTTO PROJECT TEASER": "MOTTO 프로젝트 티저",
+    "FILM — SEAN WOONG": "영상 — SEAN WOONG",
+    "3D MOTORCYCLE FOOTAGE — @CHEESEPIZZA": "3D 모터사이클 푸티지 — @CHEESEPIZZA",
+    "SOUND — HAZ HAUS": "사운드 — HAZ HAUS",
+    "THE 7,777 SYSTEM": "7,777 시스템",
+    "SURVIVED / 3,850": "생존 / 3,850",
+    "LEGENDS / 7": "LEGENDS / 7",
+    "UT02 — SEVEN SEAL and other protocol rewards are documented separately and are not included in the core total of 7,777 works.": "UT02 — SEVEN SEAL을 포함한 프로토콜 리워드는 별도로 기록하며, 핵심 작품 7,777점에는 포함하지 않는다.",
+    "RELEASE HISTORY": "발매 기록",
+    "CHRONOLOGY": "연대기",
+    "AROUND JAN 2024": "2024년 1월경",
+    "Project development began.": "프로젝트 개발 시작.",
+    "DEC 2025": "2025년 12월",
+    "Official NFT release through Crypto.com.": "Crypto.com을 통한 NFT 정식 발매.",
+    "POST-DROP": "발매 이후",
+    "The K.I.A. event split the 7,700 Originals evenly; Immortals were excluded.": "K.I.A. 이벤트로 7,700개 Originals가 절반씩 나뉘었으며 Immortals는 제외됐다.",
+    "MOTTO album officially released.": "MOTTO 앨범 정식 발매.",
+    "MAR 2026": "2026년 3월",
+    "7777 (GET LO) visualizer by @cheesepizza published.": "@cheesepizza가 제작한 7777 (GET LO) 비주얼라이저 공개.",
+    "PRODUCED": "제작 완료",
+    "AUTHORSHIP": "제작자와 기여자",
+    "WORLD BUILDING / VISUAL DIRECTION": "월드 빌딩 / 비주얼 디렉션",
+    "VOICE CREDIT — OO.SEAN": "보이스 크레딧 — OO.SEAN",
+    "Co-developed the world of MOTTO 7777 and directed its complete visual system: the 7,777 works, animation, pack and release imagery, K.I.A. visual and motion, UT02, project objects, teaser film and edit, and this website.": "Haz Haus와 MOTTO 7777의 세계를 공동 개발하고 전체 시각 시스템을 디렉팅했다. 7,777개의 작품, 애니메이션, 팩과 발매 이미지, K.I.A. 비주얼과 모션, UT02, 프로젝트 오브젝트, 티저 영상과 편집, 이 웹사이트를 제작했다.",
+    "Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web. His practice moves between authored image systems, performance identities, and physical extensions.": "Sean Woong은 서울을 기반으로 디지털 일러스트레이션, 애니메이션, 무빙 이미지, 오브젝트 디자인, 웹을 넘나드는 멀티미디어 아티스트이자 타투이스트다. 그의 작업은 작가가 구축한 이미지 시스템, 퍼포먼스 정체성, 물리적 확장 사이를 이동한다.",
+    "WORLD BUILDING / SOUND DIRECTION": "월드 빌딩 / 사운드 디렉션",
+    "Co-developed the world of MOTTO 7777 and led its sound system: the album, overall sound direction and production, seven 8-bit versions, K.I.A. sound, and project teaser sound.": "Sean Woong과 MOTTO 7777의 세계를 공동 개발하고 사운드 시스템을 이끌었다. 앨범과 전체 사운드 디렉션 및 프로덕션, 일곱 개의 8-bit 버전, K.I.A. 사운드, 프로젝트 티저 사운드를 제작했다.",
+    "Haz Haus is an electronic music producer working across K-pop and electronic music. His practice centers on production, sound design, and genre-crossing collaborative work.": "Haz Haus는 K-pop과 전자음악을 오가며 활동하는 전자음악 프로듀서다. 프로덕션과 사운드 디자인, 장르를 가로지르는 협업을 중심으로 작업한다.",
+    "CONTRIBUTED VISUAL": "비주얼 기여",
+    "3D motorcycle footage used near the opening of the MOTTO Project Teaser; visualizer for 7777 (GET LO).": "MOTTO 프로젝트 티저 초반에 사용한 3D 모터사이클 푸티지와 7777 (GET LO) 비주얼라이저를 제작했다.",
+    "EXHIBITION": "전시",
+    "COLLABORATION / COMMISSION": "협업 / 커미션",
+    "LICENSING": "라이선싱",
+    "PRESS / RESEARCH": "프레스 / 리서치",
+    "CONTACT VIA INSTAGRAM ↗": "INSTAGRAM으로 문의 ↗",
+    "NEXT WORK →": "다음 작품 →",
+    "NO WORKS MATCH THE CURRENT FILTER.": "현재 조건과 일치하는 작품이 없습니다.",
+    "NUMBER / TITLE / ARCHETYPE": "번호 / 작품명 / 아키타입",
+    "8-BIT TRACK": "8-BIT 트랙",
+    "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork. No work was burned or removed.": "발매 이후 3,850개 Original 이미지가 별도의 K.I.A. 모션 아트워크로 교체됐다. 작품은 소각되거나 제거되지 않았다.",
+    "7,700 STATIC IMAGES BEFORE THE SPLIT": "분기 이전 정지 이미지 7,700점",
+    "3,850 REPLACED BY MOTION": "3,850점이 모션으로 교체",
+    "EXCLUDED": "제외",
+    "CREDITS / STATUS": "크레딧 / 상태",
+    "RELEASE / STUDY / PROCESS / OBJECT": "발매 / 스터디 / 과정 / 오브젝트",
+    "RELEASE MATERIALS": "발매 자료",
+    "Pack design used for the Immortals edition.": "Immortals 에디션에 사용한 팩 디자인.",
+    "Animated reward for collecting all seven archetypes, built from the seven-track list.": "일곱 아키타입을 모두 수집한 사람에게 제공한 애니메이션 리워드. 일곱 트랙 목록을 바탕으로 제작했다.",
+    "RELEASE IMAGES": "발매 이미지",
+    "PROJECT OBJECTS": "프로젝트 오브젝트",
+    "LIMITED CIRCULATION": "제한적 유통",
+    "WORDMARK STUDIES": "워드마크 스터디",
+    "Each track is paired with one archetype; its 8-bit version appears in the corresponding works in IMMORTALS 77.": "각 트랙은 하나의 아키타입과 짝을 이루며, 해당 8-bit 버전은 IMMORTALS 77의 작품에 결합됐다.",
+    "STUDIO": "스튜디오",
+    "HAZ HAUS STUDIO": "HAZ HAUS 스튜디오",
+    "ARTIST NOTE": "작가 서문",
+    "06 / PROJECT": "06 / 프로젝트",
+    "INQUIRIES": "문의",
+    "Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web.": "Sean Woong은 서울을 기반으로 디지털 일러스트레이션, 애니메이션, 무빙 이미지, 오브젝트 디자인, 웹을 넘나드는 멀티미디어 아티스트이자 타투이스트다.",
+    "Haz Haus is an electronic music producer working across K-pop and electronic music.": "Haz Haus는 K-pop과 전자음악을 오가며 활동하는 전자음악 프로듀서다."
+  });
 
   const state = {
     lang: "en",
@@ -247,6 +511,11 @@
     }
   }
 
+  const storedLanguage = safeStorageGet("motto-v2-lang");
+  if (storedLanguage === "en" || storedLanguage === "ko") {
+    state.lang = storedLanguage;
+  }
+
   function escapeHTML(value) {
     return String(value)
       .replaceAll("&", "&amp;")
@@ -260,9 +529,139 @@
     return COPY[state.lang] || COPY.en;
   }
 
+  function projectNote() {
+    return state.lang === "ko" ? PROJECT_NOTE_KO : PROJECT_NOTE;
+  }
+
+  function translateToKorean(value) {
+    const text = String(value || "").trim();
+    if (!text) return text;
+    if (KO_TEXT[text]) return KO_TEXT[text];
+
+    let match = text.match(/^← BACK TO (.+)$/);
+    if (match) return `← ${match[1]}로 돌아가기`;
+    match = text.match(/^BACK TO (.+)$/);
+    if (match) return `${match[1]}로 돌아가기`;
+    match = text.match(/^CHANNEL (\d+) \/ READY$/);
+    if (match) return `채널 ${match[1]} / 준비`;
+    match = text.match(/^(8-BIT|DEMO) \/ (READY|PLAYING)$/);
+    if (match) {
+      return `${match[1]} / ${match[2] === "READY" ? "준비" : "재생 중"}`;
+    }
+    match = text.match(/^VISIBLE (\d+)–(\d+) \/ 1,100$/);
+    if (match) return `현재 ${match[1]}–${match[2]} / 1,100`;
+    match = text.match(/^(.+) PACK \/ 1,100 ORIGINALS$/);
+    if (match) return `${match[1]} 팩 / ORIGINALS 1,100점`;
+    match = text.match(/^8-BIT TRACK \/ (\d+)$/);
+    if (match) return `8-BIT 트랙 / ${match[1]}`;
+    match = text.match(/^Open (.+) archive$/);
+    if (match) return `${match[1]} 아카이브 열기`;
+    match = text.match(/^Open (.+) Original pack$/);
+    if (match) return `${match[1]} Original 팩 열기`;
+    match = text.match(/^Open (.+)$/);
+    if (match) return `${match[1]} 열기`;
+    match = text.match(/^Play (.+) on YouTube$/);
+    if (match) return `YouTube에서 ${match[1]} 재생`;
+    match = text.match(/^Play (.+) demo, (.+)$/);
+    if (match) return `${match[1]} 데모 재생, ${match[2]}`;
+    match = text.match(/^Play (.+) 8-bit version, 15 seconds$/);
+    if (match) return `${match[1]} 8-bit 버전 15초 재생`;
+    match = text.match(/^Select (.+), (.+) channel$/);
+    if (match) return `${match[1]}, ${match[2]} 채널 선택`;
+    match = text.match(/^(.+) motion preview$/);
+    if (match) return `${match[1]} 모션 미리보기`;
+    match = text.match(/^(.+) archive of 1,100 works$/);
+    if (match) return `${match[1]} 작품 1,100점 아카이브`;
+    match = text.match(/^(.+) source (\d+) shown in the archive\.$/);
+    if (match) return `${match[1]} 원본 ${match[2]}번을 아카이브에 표시했습니다.`;
+    match = text.match(/^Enter a source number between 1 and (\d+)\.$/);
+    if (match) return `1에서 ${match[1]} 사이의 원본 번호를 입력하세요.`;
+    match = text.match(/^(.+) Immortals filter selected\.$/);
+    if (match) return `${match[1]} Immortals 필터를 선택했습니다.`;
+    match = text.match(/^(\d+) Immortals match the current search\.$/);
+    if (match) return `현재 검색과 일치하는 Immortals는 ${match[1]}점입니다.`;
+    match = text.match(/^(.+), (.+) channel selected\.$/);
+    if (match) return `${match[1]}, ${match[2]} 채널을 선택했습니다.`;
+    return text;
+  }
+
+  function localizedText(value) {
+    return state.lang === "ko" ? translateToKorean(value) : value;
+  }
+
+  function localizeRenderedPage(root) {
+    if (state.lang !== "ko" || !root) return;
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach((node) => {
+      const raw = node.nodeValue || "";
+      const trimmed = raw.trim();
+      if (!trimmed) return;
+      const translated = translateToKorean(trimmed);
+      if (translated === trimmed) return;
+      node.nodeValue = raw.replace(trimmed, translated);
+    });
+
+    root.querySelectorAll("[aria-label], [placeholder], [title], [alt]").forEach((element) => {
+      ["aria-label", "placeholder", "title", "alt"].forEach((attribute) => {
+        if (!element.hasAttribute(attribute)) return;
+        const value = element.getAttribute(attribute) || "";
+        const translated = translateToKorean(value);
+        if (translated !== value) element.setAttribute(attribute, translated);
+      });
+    });
+  }
+
+  function localizeShell() {
+    const isKorean = state.lang === "ko";
+    const shell = {
+      skip: isKorean ? "본문으로 건너뛰기" : "Skip to content",
+      home: isKorean ? "MOTTO 7777 홈" : "MOTTO 7777 home",
+      menu: isKorean ? "메뉴" : "MENU",
+      close: isKorean ? "닫기" : "CLOSE",
+      language: isKorean ? "언어" : "Language",
+      kia: isKorean ? "K.I.A. 특별 전시" : "K.I.A. SPECIAL EXHIBITION",
+      footer: "SEAN WOONG + HAZ HAUS",
+      archive: isKorean ? "오디오비주얼 아카이브 / 2024—2026" : "AUDIOVISUAL ARCHIVE / 2024—2026",
+      collection: isKorean ? "역사적 컬렉션 기록 ↗" : "HISTORICAL COLLECTION SOURCE ↗"
+    };
+
+    const skipLink = document.querySelector(".skip-link");
+    const brand = document.querySelector(".brand");
+    const menuButton = document.querySelector("[data-menu-open]");
+    const closeButton = document.querySelector("[data-menu-close]");
+    const kiaLink = document.querySelector(".mobile-menu__meta a[data-route]");
+    const footerCredit = document.querySelector(".site-footer__title span:last-child");
+    const footerArchive = document.querySelector(".site-footer__record span:first-child");
+    const collectionLink = [...document.querySelectorAll(".site-footer__links a")]
+      .find((link) => link.href.includes("crypto.com"));
+
+    if (skipLink) skipLink.textContent = shell.skip;
+    if (brand) brand.setAttribute("aria-label", shell.home);
+    if (menuButton) menuButton.textContent = shell.menu;
+    if (closeButton) closeButton.textContent = shell.close;
+    if (kiaLink) kiaLink.textContent = shell.kia;
+    if (footerCredit) footerCredit.textContent = shell.footer;
+    if (footerArchive) footerArchive.textContent = shell.archive;
+    if (collectionLink) collectionLink.textContent = shell.collection;
+
+    document.querySelectorAll(".language-switch, .mobile-menu__languages").forEach((control) => {
+      control.setAttribute("aria-label", shell.language);
+    });
+    document.querySelectorAll('[data-lang="en"]').forEach((button) => {
+      button.setAttribute("aria-label", isKorean ? "영어로 보기" : "View in English");
+    });
+    document.querySelectorAll('[data-lang="ko"]').forEach((button) => {
+      button.setAttribute("aria-label", isKorean ? "한국어로 보기" : "View in Korean");
+    });
+  }
+
   function immortalDescription(item) {
     if (!item) return "";
-    const description = item.description || (item.legend ? LEGEND_DESCRIPTIONS[item.archetype] : null);
+    const description =
+      item.description || (item.legend ? LEGEND_DESCRIPTIONS[item.archetype] : null);
     if (!description) return "";
     if (typeof description === "string") return description;
     if (state.lang === "ko") {
@@ -291,7 +690,7 @@
       number,
       publicArchetype: pack?.label || String(item.category || "").toUpperCase(),
       publicTitle: title,
-      classLabel: item.legend ? "LEGEND / PROTOCOL-7" : "IMMORTAL"
+      classLabel: item.legend ? "PROTOCOL-7" : "IMMORTAL"
     };
   }
 
@@ -582,7 +981,10 @@
     };
 
     const renderer = renderers[route.type] || renderHome;
+    document.documentElement.lang = state.lang === "ko" ? "ko" : "en";
     app.innerHTML = renderer(route);
+    localizeRenderedPage(app);
+    localizeShell();
     document.body.dataset.section = route.type === "kia" ? "kia" : route.section;
     bindPage(route);
     bindMediaFallbacks();
@@ -611,12 +1013,21 @@
         return;
       }
 
+      const projectNoteRequested =
+        route.type === "project" &&
+        new URLSearchParams(location.search).get("note") === "true";
+      if (projectNoteRequested) {
+        document.querySelector("#project-note")?.scrollIntoView({ block: "start" });
+        return;
+      }
+
       window.scrollTo(0, 0);
       app.focus({ preventScroll: true });
     });
   }
 
   function setDocumentTitle(route) {
+    const isKorean = state.lang === "ko";
     const labels = {
       home: "MOTTO 7777",
       immortals: "IMMORTALS 77",
@@ -639,27 +1050,42 @@
           ? `${originalPack.label} / ORIGINAL 7700`
           : labels[route.type] || labels[route.section] || "MOTTO 7777");
     document.title = route.type === "home"
-      ? "MOTTO 7777 — Audiovisual Archive"
+      ? isKorean
+        ? "MOTTO 7777 — 오디오비주얼 아카이브"
+        : "MOTTO 7777 — Audiovisual Archive"
       : `${pageTitle} — MOTTO 7777`;
-    document.documentElement.lang = state.lang === "ko" ? "ko" : state.lang === "ja" ? "ja" : "en";
+    document.documentElement.lang = isKorean ? "ko" : "en";
     const description = document.querySelector('meta[name="description"]');
     const socialDescription = document.querySelector('meta[property="og:description"]');
-    const routeDescription = {
-      home: "MOTTO 7777 — an audiovisual archive of 7,777 works.",
-      immortals: "IMMORTALS 77 — seventy Immortals and seven singular Legends.",
-      originals: "ORIGINAL 7700 — seven archetype packs preserved before K.I.A.",
-      vault: "Selected release artifacts, unreleased studies, process records, objects, and identity work from MOTTO 7777.",
-      sound: "Seven tracks, seven archetypes, demos, 8-bit versions, and studio records.",
-      project: "The structure, timeline, credits, and inquiry record for MOTTO 7777.",
-      kia: "K.I.A. — the completed post-drop event that split the 7,700 Originals."
-    }[route.type] || {
-      immortals: "IMMORTALS 77 — seventy Immortals and seven singular Legends.",
-      originals: "ORIGINAL 7700 — seven archetype packs preserved before K.I.A."
-    }[route.section] || "MOTTO 7777 — an audiovisual archive of 7,777 works.";
+    const routeDescriptions = isKorean
+      ? {
+          home: "MOTTO 7777 — 7,777개의 작품, 일곱 개의 고정된 트랙과 아키타입 짝, 발매 이후의 K.I.A. 전환으로 형성된 오디오비주얼 세계.",
+          immortals: "IMMORTALS 77 — 70개의 Immortals와 일곱 개의 Legends. 각 작품은 해당 아키타입과 짝을 이루는 8-bit 트랙을 결합한다.",
+          originals: "ORIGINAL 7700 — 일곱 아키타입 팩으로 보존한 완전한 K.I.A. 이전 이미지 상태.",
+          vault: "MOTTO 7777의 발매 아티팩트, 미공개 스터디, 제작 기록, 오브젝트, 아이덴티티 작업.",
+          sound: "일곱 개의 고정된 트랙과 아키타입 짝, 데모, IMMORTALS 77에 결합된 8-bit 버전, 스튜디오 기록.",
+          project: "MOTTO 7777의 작가 서문과 구조, 연대기, 크레딧, 문의 기록.",
+          kia: "K.I.A. — 7,700개 Original 이미지의 절반을 별도의 모션 아트워크로 교체한 발매 이후의 전환."
+        }
+      : {
+          home: "MOTTO 7777 — an audiovisual world formed through 7,777 works, seven fixed archetype-track pairs, and a post-release K.I.A. transition.",
+          immortals: "IMMORTALS 77 — seventy Immortals and seven singular Legends, each integrating the 8-bit track paired with its archetype.",
+          originals: "ORIGINAL 7700 — the complete pre-K.I.A. image state of seven archetype packs.",
+          vault: "Selected release artifacts, unreleased studies, process records, objects, and identity work from MOTTO 7777.",
+          sound: "Seven fixed track-archetype pairs, demos, 8-bit versions integrated into IMMORTALS 77, and studio records.",
+          project: "The artist-authored project note, structure, timeline, credits, and inquiry record for MOTTO 7777.",
+          kia: "K.I.A. — the completed post-drop transition that replaced half of the 7,700 Original images with a separate motion artwork."
+        };
+    const routeDescription =
+      routeDescriptions[route.type] ||
+      routeDescriptions[route.section] ||
+      routeDescriptions.home;
     const finalDescription = immortal
       ? `${immortal.publicTitle} — ${immortalDescription(immortal)}`
       : route.type === "original-detail" && originalPack
-        ? `${originalPack.label} ${route.number}, preserved in its original pre-K.I.A. state.`
+        ? isKorean
+          ? `${originalPack.label} ${route.number}, K.I.A. 이전 Original 상태로 보존.`
+          : `${originalPack.label} ${route.number}, preserved in its original pre-K.I.A. state.`
         : routeDescription;
     const canonicalUrl = productionUrlForRoute(route);
     const socialImage = immortal
@@ -733,12 +1159,16 @@
             {
               "@type": "Person",
               name: "Sean Woong",
-              description: "World building and visual direction"
+              description: state.lang === "ko"
+                ? "월드 빌딩과 비주얼 디렉션"
+                : "World building and visual direction"
             },
             {
               "@type": "Person",
               name: "Haz Haus",
-              description: "World building, album production, and sound direction"
+              description: state.lang === "ko"
+                ? "월드 빌딩, 앨범 프로덕션, 사운드 디렉션"
+                : "World building, album production, and sound direction"
             }
           ]
         : {
@@ -752,8 +1182,8 @@
       }
     };
     if (workType === "VisualArtwork") {
-      record.artform = "Digital art";
-      record.genre = "Audiovisual art";
+      record.artform = state.lang === "ko" ? "디지털 아트" : "Digital art";
+      record.genre = state.lang === "ko" ? "오디오비주얼 아트" : "Audiovisual art";
     }
     const includesSoundAuthorship =
       route.type === "home" ||
@@ -766,7 +1196,7 @@
       record.contributor = {
         "@type": "Person",
         name: "Haz Haus",
-        description: "Sound production"
+        description: state.lang === "ko" ? "사운드 프로덕션" : "Sound production"
       };
     }
     structuredData.textContent = JSON.stringify(record);
@@ -791,9 +1221,11 @@
 
   function announce(message) {
     if (!statusRegion) return;
+    const localizedMessage =
+      state.lang === "ko" ? translateToKorean(message) : message;
     statusRegion.textContent = "";
     requestAnimationFrame(() => {
-      statusRegion.textContent = message;
+      statusRegion.textContent = localizedMessage;
     });
   }
 
@@ -807,6 +1239,7 @@
     }
     const item = state.homePool[state.homeIndex % state.homePool.length];
     const c = copy();
+    const note = projectNote();
     const description = immortalDescription(item);
     return `
       <section class="page page--home">
@@ -820,7 +1253,7 @@
             <div class="home-copy__class">${escapeHTML(item.classLabel)} · ${escapeHTML(item.publicArchetype)}</div>
             ${description ? `<p class="home-description">${escapeHTML(description)}</p>` : ""}
             <div class="home-actions">
-              <button type="button" data-next-signal>NEXT SIGNAL →</button>
+              <button type="button" data-next-signal>NEXT WORK →</button>
               <a class="text-link" href="${routeHref("immortals")}" data-route>ENTER IMMORTALS 77 →</a>
             </div>
           </div>
@@ -831,6 +1264,16 @@
           ${homeLedgerCell("IMMORTALS", "77")}
           ${homeLedgerCell("ARCHETYPES / TRACKS", "7 / 7")}
         </div>
+        <section class="home-project-note" aria-labelledby="home-project-note-title">
+          <div>
+            <span class="eyebrow">PROJECT NOTE</span>
+            <h2 id="home-project-note-title">A WORLD FORMED THROUGH 7,777 WORKS.</h2>
+          </div>
+          <div class="home-project-note__copy">
+            <p>${escapeHTML(note.short)}</p>
+            <a class="text-link" href="${routeHref("project", { note: true })}" data-route>READ THE FULL PROJECT NOTE →</a>
+          </div>
+        </section>
       </section>
     `;
   }
@@ -894,7 +1337,7 @@
 
         ${visibleLegends.length ? `
           <section class="section">
-            ${sectionHead("01", "PROTOCOL-7 / LEGENDS", "Seven archetypes in the official album order. Seven singular motion works.")}
+            ${sectionHead("01", "PROTOCOL-7 / LEGENDS")}
             <div class="protocol-grid">
               ${visibleLegends.map(renderImmortalCard).join("")}
             </div>
@@ -902,11 +1345,11 @@
         ` : ""}
 
         <section class="section">
-          ${sectionHead("02", "IMMORTALS 70", `<span data-immortal-count>${visibleWorks.length}</span> works in the current field.`)}
+          ${sectionHead("02", "IMMORTALS 70")}
           ${renderImmortalFilters()}
           ${visibleWorks.length
             ? `<div class="immortals-grid">${visibleWorks.map(renderImmortalCard).join("")}</div>`
-            : `<div class="empty-state">NO IMMORTALS MATCH THE CURRENT SIGNAL.</div>`}
+            : `<div class="empty-state">NO WORKS MATCH THE CURRENT FILTER.</div>`}
         </section>
 
         ${pageClosing(routeHref("originals"), "CONTINUE TO ORIGINAL 7700")}
@@ -937,7 +1380,7 @@
           <input
             type="search"
             value="${escapeHTML(state.immortalsQuery)}"
-            placeholder="NUMBER / ARCHETYPE / SIGNAL"
+            placeholder="NUMBER / TITLE / ARCHETYPE"
             data-immortal-search
             autocomplete="off"
           >
@@ -1010,11 +1453,8 @@
           <div class="detail-copy">
             <span class="eyebrow">${escapeHTML(item.classLabel)} / ${escapeHTML(item.publicArchetype)}</span>
             <h1>${escapeHTML(item.publicTitle)}</h1>
-            ${description
-              ? `<p class="immortal-description">${escapeHTML(description)}</p>`
-              : `<p>One of the seven singular Legends in IMMORTALS 77.</p>`}
+            ${description ? `<p class="immortal-description">${escapeHTML(description)}</p>` : ""}
             ${linkedTrack ? renderLinkedTrack(linkedTrack) : ""}
-            <span class="detail-note">FULL MOTION LOADS ON SELECTION / SOUND REMAINS UNDER VISITOR CONTROL</span>
           </div>
         </div>
       </section>
@@ -1024,7 +1464,7 @@
   function renderLinkedTrack(track) {
     return `
       <div class="linked-track">
-        <span class="micro-label">LINKED 8-BIT SIGNAL / ${track.number}</span>
+        <span class="micro-label">8-BIT TRACK / ${track.number}</span>
         <button
           type="button"
           data-audio-track="${track.id}"
@@ -1049,14 +1489,14 @@
         ${pageMast("02 / PRE-K.I.A. ARCHIVE", "ORIGINAL<br>7700", copy().originalsIntro, "7 PACKS / 1,100 WORKS EACH", "mast-originals")}
 
         <section class="section">
-          ${sectionHead("01", "SEVEN PACKS", "Chapter covers in the official seven-track order. Military is the public pack; Soldier is its work title.")}
+          ${sectionHead("01", "SEVEN PACKS")}
           <div class="pack-wall">
             ${PACKS.map(renderPackCard).join("")}
           </div>
         </section>
 
         <section class="section">
-          ${sectionHead("02", "DISCOVER 28", "Four real source works from each archetype, interleaved across the field.")}
+          ${sectionHead("02", "DISCOVER 28")}
           <div class="section-tools"><button type="button" data-reshuffle>RESHUFFLE 28</button></div>
           <div class="discover-grid">
             ${discover.map(renderOriginalCard).join("")}
@@ -1277,7 +1717,11 @@
           fragment.appendChild(link);
         }
         grid.replaceChildren(fragment);
-        if (range) range.textContent = `VISIBLE ${start + 1}–${end} / 1,100`;
+        if (range) {
+          range.textContent = localizedText(
+            `VISIBLE ${start + 1}–${end} / 1,100`
+          );
+        }
         bindPackScrollLinks(grid);
       });
     };
@@ -1361,10 +1805,9 @@
           <div class="detail-media">
             <img src="${item.url}" alt="${escapeHTML(item.label)}" data-media-label="${escapeHTML(item.label)}">
           </div>
-          <div class="detail-copy">
+          <div class="detail-copy detail-copy--minimal">
             <span class="eyebrow">ORIGINAL / ${pack.label}</span>
             <h1>${escapeHTML(item.label)}</h1>
-            <p>Original pre-K.I.A. state. Source number preserved from the verified ${pack.label} manifest.</p>
           </div>
         </div>
       </section>
@@ -1377,7 +1820,7 @@
     const shouldAutoplay = !reduceMotion && !saveData;
     return `
       <section class="page">
-        ${pageMast("03 / SPECIAL EXHIBITION", "K.I.A.", "Killed in Action: a completed post-drop event affecting the 7,700 Originals only.", "3,850 SURVIVED / 3,850 K.I.A.", "kia-mast")}
+        ${pageMast("03 / SPECIAL EXHIBITION", "K.I.A.", "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork. No work was burned or removed.", "3,850 SURVIVED / 3,850 K.I.A.", "kia-mast")}
 
         <section class="section">
           <div class="kia-field">
@@ -1401,16 +1844,16 @@
               </div>
             </div>
             <div class="kia-facts">
-              ${kiaFact("01", "ORIGINAL STATE", "7,700 pre-K.I.A. works were released.")}
-              ${kiaFact("02", "POST-DROP EVENT", "The archive split evenly as planned.")}
-              ${kiaFact("03", "ARCHIVE STATE", "3,850 survived; 3,850 entered K.I.A. Immortals were excluded.")}
+              ${kiaFact("01", "ORIGINALS", "7,700 STATIC IMAGES BEFORE THE SPLIT")}
+              ${kiaFact("02", "K.I.A.", "3,850 REPLACED BY MOTION")}
+              ${kiaFact("03", "IMMORTALS 77", "EXCLUDED")}
             </div>
           </div>
         </section>
 
         <section class="section">
           <div class="credit-block">
-            <h2>ONE IRREVERSIBLE EVENT.</h2>
+            <h2>CREDITS / STATUS</h2>
             <div class="credit-list">
               ${creditRow("VISUAL / MOTION", "SEAN WOONG")}
               ${creditRow("SOUND PRODUCTION", "HAZ HAUS")}
@@ -1441,10 +1884,10 @@
   function renderVault() {
     return `
       <section class="page">
-        ${pageMast("04 / MATERIAL ARCHIVE", "VAULT", copy().vaultIntro, "ARTIFACT / STUDY / PROCESS / RECORD / OBJECT", "mast-vault")}
+        ${pageMast("04 / MATERIAL ARCHIVE", "VAULT", copy().vaultIntro, "RELEASE / STUDY / PROCESS / OBJECT", "mast-vault")}
 
         <section class="section">
-          ${sectionHead("01", "RELEASE ARTIFACTS", "Two distinct objects: the Immortals release pack and the seven-archetype completion reward.")}
+          ${sectionHead("01", "RELEASE MATERIALS")}
           <div class="artifact-grid">
             <article class="artifact">
               <div class="artifact-media">
@@ -1458,7 +1901,7 @@
                 >
               </div>
               <h3>IMMORTALS SPECIAL PACK</h3>
-              <p>A release-specific pack design used for the Immortals edition. It remains separate from the seven Original pack covers.</p>
+              <p>Pack design used for the Immortals edition.</p>
             </article>
             <article class="artifact">
               <a class="artifact-media" href="media/ut02-seven-seal.gif" target="_blank" rel="noreferrer" aria-label="Open UT02 Seven Seal at full size">
@@ -1472,13 +1915,13 @@
                 >
               </a>
               <h3>UT02 — SEVEN SEAL</h3>
-              <p>Animated completion reward for collecting all seven archetypes. The visual structure derives from the seven-track list.</p>
+              <p>Animated reward for collecting all seven archetypes, built from the seven-track list.</p>
             </article>
           </div>
         </section>
 
         <section class="section">
-          ${sectionHead("02", "UNRELEASED IMAGE STUDIES", "Two self-contained visual studies made during the project and held outside the final release system.")}
+          ${sectionHead("02", "UNRELEASED IMAGE STUDIES")}
           <div class="study-grid">
             <figure class="study-record study-record--wide">
               <img
@@ -1512,7 +1955,7 @@
         </section>
 
         <section class="section">
-          ${sectionHead("03", "PROCESS / MOTION", "Two concise records of decisions and development: pack composition, then the teaser motorcycle from animatic to final shot.")}
+          ${sectionHead("03", "PROCESS / MOTION")}
           <div class="process-records">
             <figure class="process-record process-record--pack">
               <div class="process-record__media">
@@ -1554,11 +1997,10 @@
               </figcaption>
             </figure>
           </div>
-          <p class="footnote section-footnote">MOTION LOADS NEAR VIEW / PLAYBACK REMAINS UNDER VISITOR CONTROL</p>
         </section>
 
         <section class="section">
-          ${sectionHead("04", "PUBLIC RELEASE RECORD", "The final drop-page cover and two collection banners retained from the public release system.")}
+          ${sectionHead("04", "RELEASE IMAGES")}
           <div class="release-record">
             <figure class="release-record__cover">
               <img
@@ -1608,24 +2050,22 @@
         </section>
 
         <section class="section">
-          ${sectionHead("05", "PHYSICAL EXTENSIONS", "Produced objects with limited circulation. This is an archive record, not a shop or fulfillment claim.")}
+          ${sectionHead("05", "PROJECT OBJECTS")}
           <div class="object-ledger">
-            ${objectRow("NFC WEB KEYRING", "Produced / web-linked object", "VIEW RECORD ↗", "https://www.youtube.com/watch?v=g9aN_rwTjtY")}
-            ${objectRow("SHEMAGH", "Produced project object", "SELECTED CIRCULATION")}
-            ${objectRow("LEATHER GLOVES", "Produced project object", "SELECTED CIRCULATION")}
-            ${objectRow("MOTTO BAND T-SHIRT", "Produced project object", "PRIVATE ARCHIVE")}
+            ${objectRow("NFC WEB KEYRING", "VIEW RECORD ↗", "https://www.youtube.com/watch?v=g9aN_rwTjtY")}
+            ${objectRow("SHEMAGH", "LIMITED CIRCULATION")}
+            ${objectRow("LEATHER GLOVES", "LIMITED CIRCULATION")}
+            ${objectRow("MOTTO BAND T-SHIRT", "PRIVATE ARCHIVE")}
           </div>
-          <p class="footnote section-footnote">PROJECT OBJECTS / SELECTED RECORD</p>
         </section>
 
         <section class="section">
-          ${sectionHead("06", "IDENTITY STUDIES", "Three selected works showing the wordmark, motion, and signal language of MOTTO.")}
+          ${sectionHead("06", "WORDMARK STUDIES")}
           <div class="identity-grid">
             ${identityFigure(assetPath("archive/Logo_motto_3.jpg"), "WORDMARK STUDY", "MOTTO wordmark study on a black field", 2732, 2048)}
             ${identityFigure(assetPath("archive/ani_motto.gif"), "ANIMATED MARK", "Animated MOTTO wordmark study on a black field", 2732, 2048)}
             ${identityFigure(assetPath("archive/motto_vhs.gif"), "VHS SIGNAL STUDY", "MOTTO wordmark distorted through a blue VHS signal", 794, 572)}
           </div>
-          <p class="footnote section-footnote">IDENTITY ART / MOTION / SELECTED RECORD</p>
         </section>
 
         ${pageClosing(routeHref("sound"), "CONTINUE TO SOUND")}
@@ -1633,14 +2073,13 @@
     `;
   }
 
-  function objectRow(title, description, status, url = "") {
+  function objectRow(title, status, url = "") {
     const statusNode = url
       ? `<a class="text-link" href="${url}" target="_blank" rel="noreferrer">${status}</a>`
       : `<span class="meta">${status}</span>`;
     return `
       <div class="object-row">
         <strong>${title}</strong>
-        <span>${description}</span>
         ${statusNode}
       </div>
     `;
@@ -1671,7 +2110,7 @@
         ${pageMast("05 / SEVEN-TRACK SYSTEM", "SOUND", copy().soundIntro, "OFFICIAL ALBUM / DEMOS / 8-BIT / STUDIO", "mast-sound")}
 
         <section class="section sound-opening">
-          ${sectionHead("01", "MUSIC — MOTTO", "The official seven-track album is the primary release record.")}
+          ${sectionHead("01", "MUSIC — MOTTO")}
           <div class="sound-release">
             <figure class="sound-release__cover">
               <img
@@ -1702,12 +2141,12 @@
         </section>
 
         <section class="section">
-          ${sectionHead("02", "SEVEN-CHANNEL SCORE", "Seven tracks map one-to-one to seven archetypes. Select a channel to hear its earlier demo or the 15-second 8-bit version embedded in the corresponding Immortals.")}
+          ${sectionHead("02", "7 TRACKS ↔ 7 ARCHETYPES", "Each track is paired with one archetype; its 8-bit version appears in the corresponding works in IMMORTALS 77.")}
           ${renderSevenChannelScore()}
         </section>
 
         <section class="section">
-          ${sectionHead("03", "7777 (GET LO) VISUALIZER", "A separate visual record: music and visualizer credits remain distinct.")}
+          ${sectionHead("03", "7777 (GET LO) VISUALIZER")}
           ${renderYouTubeFrame("Ec_WY5F9XUg", "7777 (GET LO) Visualizer", "media/get-lo-visualizer-poster.jpg")}
           <div class="film-credit">
             <span>MUSIC — MOTTO</span>
@@ -1717,7 +2156,7 @@
         </section>
 
         <section class="section">
-          ${sectionHead("04", "STUDIO DOCUMENT", "A selected record of the production environment from the MOTTO sessions.")}
+          ${sectionHead("04", "STUDIO")}
           <div class="studio-document">
             <img
               src="${assetPath("archive/haz_gear_section_01.jpg")}"
@@ -1729,9 +2168,8 @@
               decoding="async"
             >
             <div class="studio-document__copy">
-              <span class="eyebrow">RAW STUDIO DOCUMENT / SELECTED RECORD</span>
-              <h3>MOTTO SESSIONS</h3>
-              <p>Selected equipment and working environment from the sessions in which Haz Haus developed the album and seven 8-bit versions.</p>
+              <span class="eyebrow">MOTTO SESSIONS</span>
+              <h3>HAZ HAUS STUDIO</h3>
               <span class="footnote">SOUND PRODUCTION — HAZ HAUS</span>
             </div>
           </div>
@@ -1847,7 +2285,6 @@
             </figcaption>
           </figure>
         </div>
-        <p class="footnote section-footnote">OFFICIAL ALBUM ABOVE / DEMOS + 8-BIT VERSIONS PLAY ON REQUEST</p>
       </div>
     `;
   }
@@ -1876,14 +2313,57 @@
     `;
   }
 
+  function renderTrackPairMatrix() {
+    return `
+      <div class="pair-matrix" aria-label="Seven fixed track and archetype pairs">
+        <div class="pair-matrix__head" aria-hidden="true">
+          <span>CHANNEL</span>
+          <span>TRACK</span>
+          <span>ARCHETYPE</span>
+        </div>
+        ${TRACKS.map((track) => `
+          <div class="pair-matrix__row">
+            <span>${track.number}</span>
+            <strong>${escapeHTML(track.title)}</strong>
+            <span>${escapeHTML(track.archetype)}</span>
+          </div>
+        `).join("")}
+        <p class="pair-matrix__note">8-BIT VERSIONS — HAZ HAUS / INTEGRATED INTO IMMORTALS 77</p>
+      </div>
+    `;
+  }
+
+  function renderProjectNote() {
+    const note = projectNote();
+    const groups = note.groups.map((group, index) => `
+      <section class="project-note__group" aria-labelledby="project-note-group-${index + 1}">
+        <h3 id="project-note-group-${index + 1}">${escapeHTML(group.label)}</h3>
+        <div class="project-note__paragraphs">
+          ${group.paragraphs.map((paragraph) => `<p>${escapeHTML(paragraph)}</p>`).join("")}
+        </div>
+        ${index === 1 ? renderTrackPairMatrix() : ""}
+      </section>
+    `).join("");
+
+    return `
+      <div class="project-note" id="project-note">
+        <aside class="project-note__rail">
+          <span class="eyebrow">ARTIST NOTE</span>
+          <strong>A WORLD FORMED THROUGH 7,777 WORKS.</strong>
+        </aside>
+        <div class="project-note__body">${groups}</div>
+      </div>
+    `;
+  }
+
   function renderProject() {
     const c = copy();
     return `
       <section class="page">
-        ${pageMast("06 / AUTHORITATIVE RECORD", "PROJECT", c.projectIntro, "WORLD BUILDING — SEAN WOONG + HAZ HAUS", "mast-project")}
+        ${pageMast("06 / PROJECT", "PROJECT", c.projectIntro, "SEAN WOONG + HAZ HAUS", "mast-project")}
 
         <section class="section">
-          ${sectionHead("01", "MOTTO PROJECT TEASER", "The film introduces the project before the case study begins. Playback starts only after visitor action.")}
+          ${sectionHead("01", "MOTTO PROJECT TEASER")}
           ${renderYouTubeFrame("0j9Vhhuz5PA", "MOTTO 7777 Project Teaser", "media/project-teaser-poster.jpg")}
           <div class="film-credit">
             <span>FILM — SEAN WOONG</span>
@@ -1894,11 +2374,12 @@
         </section>
 
         <section class="section">
-          ${sectionHead("02", "THE 7,777 SYSTEM", "A fixed core total. Later states and protocol rewards remain clearly separated from it.")}
-          <p class="project-statement project-statement--system">
-            ${escapeHTML(c.statement)}
-            <em>${escapeHTML(c.statementEnd)}</em>
-          </p>
+          ${sectionHead("02", "PROJECT NOTE")}
+          ${renderProjectNote()}
+        </section>
+
+        <section class="section">
+          ${sectionHead("03", "THE 7,777 SYSTEM")}
           <div class="system-diagram">
             <div class="system-block">
               <span class="eyebrow">ORIGINALS</span>
@@ -1921,8 +2402,8 @@
         </section>
 
         <section class="section">
-          ${sectionHead("03", "RELEASE HISTORY", "Chronology and completed outcomes are kept together; past utilities are not presented as current benefits.")}
-          <div class="project-history">
+          ${sectionHead("04", "RELEASE HISTORY")}
+          <div class="project-history project-history--single">
             <div class="project-history__column">
               <span class="eyebrow project-history__label">CHRONOLOGY</span>
               <div class="timeline">
@@ -1933,21 +2414,11 @@
                 ${timelineRow("MAR 2026", "7777 (GET LO) visualizer by @cheesepizza published.")}
               </div>
             </div>
-            <div class="project-history__column">
-              <span class="eyebrow project-history__label">RELEASE OUTCOMES</span>
-              <div class="project-outcomes">
-                ${outcomeRow("SOUNDTRACK ACCESS", "ANNOUNCED AT RELEASE")}
-                ${outcomeRow("UT02 — SEVEN SEAL", "PRODUCED")}
-                ${outcomeRow("KEYRING / SHEMAGH / GLOVES / T-SHIRT", "PRODUCED / LIMITED CIRCULATION")}
-                ${outcomeRow("PLANNED COLLECTOR DELIVERY", "NOT COMPLETED")}
-              </div>
-              <p class="system-note project-history__note">Planned recipients did not submit delivery addresses. Selected project objects now circulate privately among friends and artists.</p>
-            </div>
           </div>
         </section>
 
         <section class="section">
-          ${sectionHead("04", "AUTHORSHIP", "Primary authorship, artist context, and contributed work in one record. Work-specific credits remain beside the relevant work.")}
+          ${sectionHead("05", "AUTHORSHIP")}
           <div class="author-records">
             <article class="author-record">
               <div class="author-record__identity">
@@ -1957,7 +2428,7 @@
               </div>
               <div class="author-record__body">
                 <p class="author-record__contribution">Co-developed the world of MOTTO 7777 and directed its complete visual system: the 7,777 works, animation, pack and release imagery, K.I.A. visual and motion, UT02, project objects, teaser film and edit, and this website.</p>
-                <p class="author-record__bio">Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web. His practice moves between authored image systems, performance identities, and physical extensions.</p>
+                <p class="author-record__bio">Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web.</p>
                 <div class="artist-record__links" aria-label="Sean Woong links">
                   <a href="https://www.instagram.com/sean_woong/" target="_blank" rel="noreferrer">ART / @SEAN_WOONG ↗</a>
                   <a href="https://www.instagram.com/skin.2.screen/" target="_blank" rel="noreferrer">TATTOO / @SKIN.2.SCREEN ↗</a>
@@ -1972,7 +2443,7 @@
               </div>
               <div class="author-record__body">
                 <p class="author-record__contribution">Co-developed the world of MOTTO 7777 and led its sound system: the album, overall sound direction and production, seven 8-bit versions, K.I.A. sound, and project teaser sound.</p>
-                <p class="author-record__bio">Haz Haus is an electronic music producer working across K-pop and electronic music. His practice centers on production, sound design, and genre-crossing collaborative work.</p>
+                <p class="author-record__bio">Haz Haus is an electronic music producer working across K-pop and electronic music.</p>
                 <div class="artist-record__links" aria-label="Haz Haus links">
                   <a href="https://www.youtube.com/@hazhaus" target="_blank" rel="noreferrer">YOUTUBE / @HAZHAUS ↗</a>
                   <a href="https://www.instagram.com/haz.haus/" target="_blank" rel="noreferrer">INSTAGRAM / @HAZ.HAUS ↗</a>
@@ -1992,7 +2463,7 @@
 
         <section class="section">
           <div class="inquiry-block">
-            <h2>MAKE THE NEXT SIGNAL.</h2>
+            <h2>INQUIRIES</h2>
             <div class="inquiry-list">
               <span>EXHIBITION</span>
               <span>COLLABORATION / COMMISSION</span>
@@ -2000,14 +2471,14 @@
               <span>PRESS / RESEARCH</span>
               <a class="text-link" href="https://www.instagram.com/mottttooooooo/" target="_blank" rel="noreferrer">CONTACT VIA INSTAGRAM ↗</a>
             </div>
-            <p class="rights-note">© 2024—2026 MOTTO 7777. CREATIVE CREDITS AS LISTED.</p>
+            <p class="rights-note">© 2024—2026 MOTTO 7777.</p>
           </div>
         </section>
       </section>
     `;
   }
 
-  function pageMast(kicker, title, description, data, className = "") {
+  function pageMast(kicker, title, description = "", data, className = "") {
     return `
       <header class="page-mast ${className}">
         <div>
@@ -2016,18 +2487,18 @@
         </div>
         <div class="page-mast__copy">
           <strong>${data}</strong>
-          ${escapeHTML(description)}
+          ${description ? `<span>${escapeHTML(description)}</span>` : ""}
         </div>
       </header>
     `;
   }
 
-  function sectionHead(index, title, description) {
+  function sectionHead(index, title, description = "") {
     return `
-      <header class="section-head">
+      <header class="section-head${description ? "" : " section-head--bare"}">
         <span class="section-index">${index}</span>
         <h2>${title}</h2>
-        <p>${description}</p>
+        ${description ? `<p>${description}</p>` : ""}
       </header>
     `;
   }
@@ -2054,15 +2525,6 @@
       <div class="timeline-row">
         <time>${date}</time>
         <p>${text}</p>
-      </div>
-    `;
-  }
-
-  function outcomeRow(record, status) {
-    return `
-      <div class="outcome-row">
-        <strong>${record}</strong>
-        <span class="meta">${status}</span>
       </div>
     `;
   }
@@ -2127,7 +2589,7 @@
       video.playsInline = true;
       video.setAttribute("aria-label", button.dataset.title || "Full motion work");
       button.disabled = true;
-      button.textContent = "LOADING MOTION";
+      button.textContent = localizedText("LOADING MOTION");
       field.classList.add("is-loading");
       const showVideo = () => {
         field.classList.remove("is-loading");
@@ -2139,7 +2601,7 @@
       const showError = () => {
         field.classList.remove("is-loading");
         button.disabled = false;
-        button.textContent = "RETRY FULL MOTION";
+        button.textContent = localizedText("RETRY FULL MOTION");
         announce("Full motion could not be loaded. The poster remains available.");
       };
       video.addEventListener("canplay", showVideo, { once: true });
@@ -2161,8 +2623,8 @@
         kiaLoaded = true;
       };
       const updateKiaControls = () => {
-        kiaPlay.textContent = kiaVideo.paused ? "PLAY" : "PAUSE";
-        kiaSound.textContent = kiaVideo.muted ? "SOUND ON" : "SOUND OFF";
+        kiaPlay.textContent = localizedText(kiaVideo.paused ? "PLAY" : "PAUSE");
+        kiaSound.textContent = localizedText(kiaVideo.muted ? "SOUND ON" : "SOUND OFF");
         kiaPlay.setAttribute("aria-pressed", String(!kiaVideo.paused));
         kiaSound.setAttribute("aria-pressed", String(!kiaVideo.muted));
       };
@@ -2285,7 +2747,7 @@
         image.hidden = true;
         const fallback = document.createElement("span");
         fallback.className = "media-fallback";
-        fallback.textContent = `${image.dataset.mediaLabel || image.alt || "MEDIA"} / PREVIEW UNAVAILABLE`;
+        fallback.textContent = `${image.dataset.mediaLabel || image.alt || "MEDIA"} / ${localizedText("PREVIEW UNAVAILABLE")}`;
         container.appendChild(fallback);
       };
       image.addEventListener("error", showImageFallback, { once: true });
@@ -2318,7 +2780,7 @@
         }
         const fallback = document.createElement("span");
         fallback.className = "media-fallback";
-        fallback.textContent = `${label.toUpperCase()} / MOTION UNAVAILABLE`;
+        fallback.textContent = `${label.toUpperCase()} / ${localizedText("MOTION UNAVAILABLE")}`;
         video.replaceWith(fallback);
       }, { once: true });
     });
@@ -2405,7 +2867,9 @@
       visualTitle.textContent = `${track.number} / ${track.title}`;
     }
     if (visualMeta) {
-      visualMeta.textContent = `${track.archetype} PACK / 1,100 ORIGINALS`;
+      visualMeta.textContent = localizedText(
+        `${track.archetype} PACK / 1,100 ORIGINALS`
+      );
     }
     if (shouldAnnounce) {
       announce(`${track.title}, ${track.archetype} channel selected.`);
@@ -2428,7 +2892,11 @@
       row.classList.toggle("is-active", active);
       row.setAttribute("aria-pressed", String(active && !audio.paused));
       const action = row.querySelector(".track-action");
-      if (action) action.textContent = active && !audio.paused ? "PAUSE" : "PLAY";
+      if (action) {
+        action.textContent = localizedText(
+          active && !audio.paused ? "PAUSE" : "PLAY"
+        );
+      }
     });
 
     const scoreTrack =
@@ -2443,11 +2911,12 @@
     if (scoreMode) {
       const modeLabel =
         state.currentAudioMode === "8bit" ? "8-BIT" : "DEMO";
-      scoreMode.textContent = errorText && hasActiveAudio
+      const statusText = errorText && hasActiveAudio
         ? "PLAYBACK UNAVAILABLE"
         : hasActiveAudio
           ? `${modeLabel} / ${audio.paused ? "READY" : "PLAYING"}`
           : `CHANNEL ${scoreTrack.number} / READY`;
+      scoreMode.textContent = localizedText(statusText);
     }
     if (scoreTitle) {
       scoreTitle.textContent = `${scoreTrack.title} / ${scoreTrack.archetype}`;
@@ -2508,10 +2977,17 @@
     mobileMenu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => closeMenu(false)));
 
     document.querySelectorAll("[data-lang]").forEach((button) => {
-      button.addEventListener("click", () => {
-        state.lang = button.dataset.lang || "en";
+      button.addEventListener("click", async () => {
+        const nextLanguage = button.dataset.lang || "en";
+        if (nextLanguage === state.lang) return;
+        state.lang = nextLanguage;
         safeStorageSet("motto-v2-lang", state.lang);
-        render({ preserveScroll: true });
+        await render({ preserveScroll: true });
+        announce(
+          state.lang === "ko"
+            ? "한국어 화면으로 전환했습니다."
+            : "The interface is now shown in English."
+        );
       });
     });
 
