@@ -325,7 +325,6 @@
     "1,100 ORIGINAL WORKS": "ORIGINAL 작품 1,100점",
     "JUMP TO SOURCE #": "원본 번호로 이동",
     "GO": "이동",
-    "COMPLETE IMAGES / CONTACT SHEET SCALE": "전체 이미지 / 콘택트시트 크기",
     "VISIBLE FIELD": "현재 표시 구간",
     "PRE-K.I.A.": "K.I.A. 이전",
     "EXACT SOURCE ORDER": "정확한 원본 순서",
@@ -408,6 +407,10 @@
     "K.I.A. motion is unavailable. The high-resolution poster is shown.": "K.I.A. 모션을 불러오지 못해 고해상도 포스터를 표시합니다.",
     "DEMO": "데모",
     "OPEN PACK →": "팩 열기 →",
+    "PACK ARCHIVES": "팩 아카이브",
+    "SELECT ONE OF SEVEN PACKS TO VIEW ITS 1,100 ORIGINAL WORKS.": "일곱 팩 중 하나를 선택해 해당 팩의 Original 작품 1,100점을 봅니다.",
+    "VIEW 1,100 ORIGINAL WORKS →": "ORIGINAL 작품 1,100점 보기 →",
+    "COMPLETE IMAGES / SELECT A WORK TO VIEW FULL SIZE": "전체 이미지 / 작품을 선택해 전체 크기로 보기",
     "8-BIT VERSIONS — HAZ HAUS / INTEGRATED INTO IMMORTALS 77": "8-BIT 버전 — HAZ HAUS / IMMORTALS 77에 결합",
     "PLAY FILM": "영상 재생",
     "MOTTO PROJECT TEASER": "MOTTO 프로젝트 티저",
@@ -705,10 +708,6 @@
     return `media/immortals-motion/${encodeURIComponent(item.id)}.mp4`;
   }
 
-  function homePreviewVideo(item) {
-    return `media/home-motion/${encodeURIComponent(item.id)}.mp4`;
-  }
-
   function trackForArchetype(archetype) {
     const pack = PACK_BY_ID.get(archetype);
     return TRACKS.find((track) => track.archetype === pack?.label);
@@ -975,6 +974,13 @@
         if (input instanceof HTMLInputElement) {
           input.setSelectionRange(input.value.length, input.value.length);
         }
+      } else if (preserveFocus.startsWith("immortal-filter:")) {
+        const filter = preserveFocus.split(":")[1];
+        document
+          .querySelector(`[data-immortal-filter="${filter}"]`)
+          ?.focus({ preventScroll: true });
+      } else if (preserveFocus === "originals-reshuffle") {
+        document.querySelector("[data-reshuffle]")?.focus({ preventScroll: true });
       }
       if (preserveScroll) {
         window.scrollTo(0, previousScroll);
@@ -1255,24 +1261,7 @@
   }
 
   function renderHomeMedia(item) {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const saveData = Boolean(navigator.connection?.saveData);
-    if (reduceMotion || saveData) {
-      return `<img src="${immortalPoster(item)}" alt="${escapeHTML(item.publicTitle)}" fetchpriority="high">`;
-    }
-    return `
-      <video
-        src="${homePreviewVideo(item)}"
-        poster="${immortalPoster(item)}"
-        muted
-        loop
-        autoplay
-        playsinline
-        preload="metadata"
-        aria-label="${escapeHTML(item.publicTitle)} motion preview"
-        data-home-video
-      ></video>
-    `;
+    return `<img src="${immortalPoster(item)}" alt="${escapeHTML(item.publicTitle)}" fetchpriority="high" decoding="async">`;
   }
 
   function homeLedgerCell(label, value) {
@@ -1322,7 +1311,7 @@
 
         <section class="section">
           ${sectionHead("02", "IMMORTALS 70")}
-          ${renderImmortalFilters()}
+          ${renderImmortalFilters(visibleLegends.length + visibleWorks.length)}
           ${visibleWorks.length
             ? `<div class="immortals-grid">${visibleWorks.map(renderImmortalCard).join("")}</div>`
             : `<div class="empty-state">NO WORKS MATCH THE CURRENT FILTER.</div>`}
@@ -1333,7 +1322,7 @@
     `;
   }
 
-  function renderImmortalFilters() {
+  function renderImmortalFilters(visibleCount) {
     const filters = [
       ["all", "ALL"],
       ...PACKS.map((pack) => [pack.id, pack.label])
@@ -1353,6 +1342,7 @@
         </div>
         <label class="immortal-search">
           <span>SEARCH THE 77</span>
+          <span hidden data-immortal-count>${visibleCount}</span>
           <input
             type="search"
             value="${escapeHTML(state.immortalsQuery)}"
@@ -1465,7 +1455,7 @@
         ${pageMast("02 / PRE-K.I.A. ARCHIVE", "ORIGINAL<br>7700", copy().originalsIntro, "7 PACKS / 1,100 WORKS EACH", "mast-originals")}
 
         <section class="section">
-          ${sectionHead("01", "SEVEN PACKS")}
+          ${sectionHead("01", "PACK ARCHIVES", "SELECT ONE OF SEVEN PACKS TO VIEW ITS 1,100 ORIGINAL WORKS.")}
           <div class="pack-wall">
             ${PACKS.map(renderPackCard).join("")}
           </div>
@@ -1500,7 +1490,7 @@
           <span>${pack.label}</span>
           <span>${track ? `${track.number} / ${track.title}` : "1,100 WORKS"}</span>
         </div>
-        <span class="pack-count">1,100 ORIGINAL WORKS</span>
+        <span class="pack-entry">VIEW 1,100 ORIGINAL WORKS →</span>
       </a>
     `;
   }
@@ -1600,7 +1590,7 @@
         </div>
         <div class="micro-archive-wrap">
           <div class="micro-archive-note">
-            <span>COMPLETE IMAGES / CONTACT SHEET SCALE</span>
+            <span>COMPLETE IMAGES / SELECT A WORK TO VIEW FULL SIZE</span>
             <span data-visible-range>VISIBLE FIELD</span>
           </div>
           <div
@@ -1793,9 +1783,6 @@
   }
 
   function renderKia() {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const saveData = Boolean(navigator.connection?.saveData);
-    const shouldAutoplay = !reduceMotion && !saveData;
     return `
       <section class="page">
         ${pageMast("03 / SPECIAL EXHIBITION", "K.I.A.", "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork. No work was burned or removed.", "3,850 SURVIVED / 3,850 K.I.A.", "kia-mast")}
@@ -1810,7 +1797,6 @@
                 playsinline
                 preload="none"
                 data-kia-video
-                data-kia-autoplay="${shouldAutoplay}"
                 aria-label="K.I.A. motion artwork"
               >
                 <source media="(max-width: 640px)" data-src="media/kia-720.mp4" type="video/mp4">
@@ -2518,7 +2504,10 @@
     document.querySelectorAll("[data-immortal-filter]").forEach((button) => {
       button.addEventListener("click", () => {
         state.immortalsFilter = button.dataset.immortalFilter || "all";
-        render({ preserveScroll: true });
+        render({
+          preserveScroll: true,
+          preserveFocus: `immortal-filter:${state.immortalsFilter}`
+        });
         announce(`${button.textContent.trim()} Immortals filter selected.`);
       });
     });
@@ -2550,7 +2539,7 @@
 
     document.querySelector("[data-reshuffle]")?.addEventListener("click", () => {
       state.discoverRound += 1;
-      render({ preserveScroll: true });
+      render({ preserveScroll: true, preserveFocus: "originals-reshuffle" });
       announce("A new balanced selection of 28 Originals is shown.");
     });
 
@@ -2628,9 +2617,6 @@
         const observer = new IntersectionObserver((entries) => {
           if (!entries.some((entry) => entry.isIntersecting)) return;
           loadKia();
-          if (kiaVideo.dataset.kiaAutoplay === "true") {
-            kiaVideo.play().catch(updateKiaControls);
-          }
           observer.disconnect();
         }, { rootMargin: "320px 0px" });
         observer.observe(kiaVideo);
@@ -2764,10 +2750,6 @@
       }, { once: true });
     });
 
-    const homeVideo = document.querySelector("[data-home-video]");
-    homeVideo?.play().catch(() => {
-      homeVideo.removeAttribute("autoplay");
-    });
   }
 
   function bindPackScrollLinks(root) {
@@ -3033,9 +3015,6 @@
 
     const artworkSelector = [
       ".home-art",
-      ".work-card__media",
-      ".pack-card__image",
-      ".micro-work",
       ".detail-media",
       ".artifact-media",
       "[data-kia-video]"

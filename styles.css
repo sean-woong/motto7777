@@ -66,9 +66,6 @@ body.menu-open {
 }
 
 body.cursor-enabled .home-art,
-body.cursor-enabled .work-card__media,
-body.cursor-enabled .pack-card__image,
-body.cursor-enabled .micro-work,
 body.cursor-enabled .detail-media,
 body.cursor-enabled .artifact-media,
 body.cursor-enabled [data-kia-video] {
@@ -761,6 +758,7 @@ main {
 .work-card__button {
   width: 100%;
   padding: 0;
+  cursor: pointer;
   text-align: left;
   background: transparent;
 }
@@ -905,6 +903,7 @@ main {
 .pack-card {
   display: block;
   min-width: 0;
+  cursor: pointer;
 }
 
 .pack-card__image {
@@ -937,19 +936,29 @@ main {
   font-size: 9px;
 }
 
-.pack-count {
+.pack-entry {
   display: block;
-  padding-top: 4px;
-  color: var(--muted);
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid var(--rule);
+  color: var(--paper);
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 9px;
+  line-height: 1.35;
   letter-spacing: 0.06em;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.pack-card:hover .pack-entry,
+.pack-card:focus-visible .pack-entry {
+  color: var(--cyan);
+  border-color: var(--cyan);
 }
 
 .discover-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: clamp(18px, 2vw, 30px) 6px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(28px, 3vw, 46px) clamp(7px, 1vw, 14px);
 }
 
 .discover-grid .work-caption {
@@ -1077,6 +1086,7 @@ main {
   padding: 0;
   overflow: hidden;
   background: var(--near);
+  cursor: pointer;
 }
 
 .micro-work img {
@@ -2269,7 +2279,7 @@ body.cursor-ready .cursor.is-native {
   }
 
   .discover-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .section-head {
@@ -2395,7 +2405,7 @@ body.cursor-ready .cursor.is-native {
   }
 
   .discover-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .kia-field,
@@ -2539,6 +2549,12 @@ body.cursor-ready .cursor.is-native {
   .discover-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px 7px;
+  }
+
+  .micro-archive-note {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .pack-archive-head {
@@ -3302,7 +3318,7 @@ body.cursor-enabled video {
   font-size: 10px;
 }
 
-.pack-count {
+.pack-entry {
   font-size: 10px;
 }
 
@@ -3414,6 +3430,7 @@ body.cursor-enabled video {
   .home-actions button,
   .home-actions .text-link,
   .filter-row button,
+  .section-tools button,
   .archive-jump input,
   .archive-jump button,
   .kia-controls button {
@@ -3427,6 +3444,7 @@ body.cursor-enabled video {
   .home-actions button,
   .home-actions .text-link,
   .filter-row button,
+  .section-tools button,
   .kia-controls button {
     display: inline-flex;
     align-items: center;
