@@ -488,8 +488,7 @@
     currentAudioId: "",
     currentAudioMode: "",
     soundChannel: "doomsday",
-    searchTimer: 0,
-    useOriginalThumbnails: false
+    searchTimer: 0
   };
 
   let dataPromise;
@@ -753,34 +752,11 @@
         state.immortals = immortals.map(normalizeImmortal);
         state.collection = collection;
         buildHomePool();
-        probeOriginalThumbnails().then((available) => {
-          const changed = available && !state.useOriginalThumbnails;
-          state.useOriginalThumbnails = available;
-          if (changed && getRoute().section === "originals") {
-            render({ preserveScroll: true });
-          }
-        });
       })
       .catch((error) => {
         state.dataError = error.message || "Archive data unavailable";
       });
     return dataPromise;
-  }
-
-  function probeOriginalThumbnails() {
-    return new Promise((resolve) => {
-      const image = new Image();
-      const timer = window.setTimeout(() => resolve(false), 2500);
-      image.onload = () => {
-        window.clearTimeout(timer);
-        resolve(true);
-      };
-      image.onerror = () => {
-        window.clearTimeout(timer);
-        resolve(false);
-      };
-      image.src = `${COLLECTION_THUMBS_BASE}/_ready.webp`;
-    });
   }
 
   function buildHomePool() {
@@ -1578,7 +1554,7 @@
           aria-label="Open ${escapeHTML(item.label)}"
         >
           <div class="work-card__media">
-            <img src="${state.useOriginalThumbnails ? item.thumbUrl : item.url}" alt="${escapeHTML(item.label)}" loading="lazy" decoding="async" fetchpriority="low" data-media-label="${escapeHTML(item.label)}">
+            <img src="${item.thumbUrl}" alt="${escapeHTML(item.label)}" width="320" height="320" loading="lazy" decoding="async" fetchpriority="low" data-media-label="${escapeHTML(item.label)}">
           </div>
           <div class="work-caption">
             <span>${escapeHTML(item.label)}</span>
@@ -1707,7 +1683,9 @@
           link.style.left = `${column * layout.rowHeight}px`;
           link.style.top = `${row * layout.rowHeight}px`;
           const image = document.createElement("img");
-          image.src = state.useOriginalThumbnails ? item.thumbUrl : item.url;
+          image.src = item.thumbUrl;
+          image.width = 320;
+          image.height = 320;
           image.alt = "";
           image.loading = "eager";
           image.decoding = "async";
@@ -2469,6 +2447,7 @@
               <span>COLLABORATION / COMMISSION</span>
               <span>LICENSING</span>
               <span>PRESS / RESEARCH</span>
+              <a class="text-link" href="mailto:motto7777hq@gmail.com">EMAIL / MOTTO7777HQ@GMAIL.COM ↗</a>
               <a class="text-link" href="https://www.instagram.com/mottttooooooo/" target="_blank" rel="noreferrer">CONTACT VIA INSTAGRAM ↗</a>
             </div>
             <p class="rights-note">© 2024—2026 MOTTO 7777.</p>
@@ -3050,21 +3029,43 @@
     if (window.matchMedia("(forced-colors: active)").matches) return;
     if (window.matchMedia("(prefers-contrast: more)").matches) return;
     document.body.classList.add("cursor-enabled");
+    cursor.classList.add("is-native");
+
+    const artworkSelector = [
+      ".home-art",
+      ".work-card__media",
+      ".pack-card__image",
+      ".micro-work",
+      ".detail-media",
+      ".artifact-media",
+      "[data-kia-video]"
+    ].join(", ");
+
+    const updateCursorMode = (target) => {
+      const artwork = target instanceof Element ? target.closest(artworkSelector) : null;
+      const nativeControl = target instanceof Element
+        ? target.closest("input, textarea, select, audio, video[controls], button, [contenteditable]")
+        : null;
+      const showArtworkCursor = Boolean(artwork && !nativeControl);
+      const opensArtwork = showArtworkCursor && Boolean(target.closest("a"));
+
+      cursor.classList.toggle("is-native", !showArtworkCursor);
+      cursor.classList.toggle("is-active", opensArtwork);
+    };
 
     window.addEventListener("pointermove", (event) => {
       document.body.classList.add("cursor-ready");
       cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+      updateCursorMode(event.target);
     }, { passive: true });
 
     document.addEventListener("pointerover", (event) => {
-      const nativeTarget = event.target.closest(
-        "input, textarea, select, video, button:disabled"
-      );
-      cursor.classList.toggle("is-native", Boolean(nativeTarget));
-      cursor.classList.toggle(
-        "is-active",
-        !nativeTarget && Boolean(event.target.closest("a, button"))
-      );
+      updateCursorMode(event.target);
+    });
+
+    document.documentElement.addEventListener("pointerleave", () => {
+      cursor.classList.add("is-native");
+      cursor.classList.remove("is-active");
     });
   }
 

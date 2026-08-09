@@ -65,13 +65,18 @@ body.menu-open {
   overflow: hidden;
 }
 
-body.cursor-enabled,
-body.cursor-enabled a,
-body.cursor-enabled button,
-body.cursor-enabled input,
-body.cursor-enabled video,
-body.cursor-enabled [role="button"] {
+body.cursor-enabled .home-art,
+body.cursor-enabled .work-card__media,
+body.cursor-enabled .pack-card__image,
+body.cursor-enabled .micro-work,
+body.cursor-enabled .detail-media,
+body.cursor-enabled .artifact-media,
+body.cursor-enabled [data-kia-video] {
   cursor: none;
+}
+
+body.cursor-enabled .detail-media button {
+  cursor: pointer;
 }
 
 button,
