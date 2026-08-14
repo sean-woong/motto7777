@@ -708,6 +708,10 @@
     return `media/immortals-motion/${encodeURIComponent(item.id)}.mp4`;
   }
 
+  function homePreviewVideo(item) {
+    return `media/home-motion/${encodeURIComponent(item.id)}.mp4`;
+  }
+
   function trackForArchetype(archetype) {
     const pack = PACK_BY_ID.get(archetype);
     return TRACKS.find((track) => track.archetype === pack?.label);
@@ -1317,7 +1321,26 @@
   }
 
   function renderHomeMedia(item) {
-    return `<img src="${immortalPoster(item)}" alt="${escapeHTML(item.publicTitle)}" width="500" height="500" fetchpriority="high" decoding="async">`;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const saveData = Boolean(navigator.connection?.saveData);
+    if (reduceMotion || saveData) {
+      return `<img src="${immortalPoster(item)}" alt="${escapeHTML(item.publicTitle)}" width="500" height="500" fetchpriority="high" decoding="async">`;
+    }
+    return `
+      <video
+        src="${homePreviewVideo(item)}"
+        poster="${immortalPoster(item)}"
+        width="500"
+        height="500"
+        muted
+        loop
+        autoplay
+        playsinline
+        preload="metadata"
+        aria-label="${escapeHTML(item.publicTitle)} motion preview"
+        data-home-video
+      ></video>
+    `;
   }
 
   function homeLedgerCell(label, value) {
@@ -2781,6 +2804,11 @@
         fallback.textContent = `${label.toUpperCase()} / ${localizedText("MOTION UNAVAILABLE")}`;
         video.replaceWith(fallback);
       }, { once: true });
+    });
+
+    const homeVideo = document.querySelector("[data-home-video]");
+    homeVideo?.play().catch(() => {
+      homeVideo.removeAttribute("autoplay");
     });
 
   }
