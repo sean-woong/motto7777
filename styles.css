@@ -321,8 +321,10 @@ a:focus-visible,
   grid-template-rows: auto 1fr auto;
   padding: 22px var(--gutter) 32px;
   visibility: hidden;
+  overflow-y: auto;
   background: var(--void);
   opacity: 0;
+  overscroll-behavior: contain;
   transform: translateY(-8px);
   transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
 }
@@ -3425,6 +3427,12 @@ body.cursor-enabled video {
 @media (max-width: 560px) {
   .menu-button,
   .mobile-menu__top button,
+  .mobile-menu__meta a,
+  .mobile-menu__languages button,
+  .site-footer__links a,
+  .text-link,
+  .back-link,
+  .next-link,
   .detail-nav a,
   .detail-media__motion-button,
   .home-actions button,
@@ -3439,6 +3447,12 @@ body.cursor-enabled video {
 
   .menu-button,
   .mobile-menu__top button,
+  .mobile-menu__meta a,
+  .mobile-menu__languages button,
+  .site-footer__links a,
+  .text-link,
+  .back-link,
+  .next-link,
   .detail-nav a,
   .detail-media__motion-button,
   .home-actions button,

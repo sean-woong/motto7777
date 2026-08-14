@@ -981,6 +981,8 @@
           ?.focus({ preventScroll: true });
       } else if (preserveFocus === "originals-reshuffle") {
         document.querySelector("[data-reshuffle]")?.focus({ preventScroll: true });
+      } else if (preserveFocus === "home-next") {
+        document.querySelector("[data-next-signal]")?.focus({ preventScroll: true });
       }
       if (preserveScroll) {
         window.scrollTo(0, previousScroll);
@@ -1070,11 +1072,65 @@
           : `${originalPack.label} ${route.number}, preserved in its original pre-K.I.A. state.`
         : routeDescription;
     const canonicalUrl = productionUrlForRoute(route);
-    const socialImage = immortal
-      ? `https://motto7777.com/${immortalPoster(immortal)}`
-      : route.type === "vault"
-        ? "https://motto7777.com/media/vault-drop-page-cover-final.webp"
-        : "https://motto7777.com/media/project-teaser-poster.jpg";
+    const original =
+      route.type === "original-detail" && originalPack
+        ? buildOriginalItem(originalPack, route.number)
+        : null;
+    const routeSocialImages = {
+      home: {
+        src: "https://motto7777.com/media/project-teaser-poster.jpg",
+        width: 1280,
+        height: 720
+      },
+      immortals: {
+        src: "https://motto7777.com/media/vault-immortals-banner.webp",
+        width: 1500,
+        height: 500
+      },
+      originals: {
+        src: "https://motto7777.com/media/vault-collection-banner.webp",
+        width: 1500,
+        height: 500
+      },
+      kia: {
+        src: "https://motto7777.com/media/kia-poster.webp",
+        width: 1080,
+        height: 1080
+      },
+      vault: {
+        src: "https://motto7777.com/media/vault-drop-page-cover-final.webp",
+        width: 1440,
+        height: 810
+      },
+      sound: {
+        src: "https://motto7777.com/assets/images/motto_profile_static.webp",
+        width: 500,
+        height: 500
+      },
+      project: {
+        src: "https://motto7777.com/media/project-teaser-poster.jpg",
+        width: 1280,
+        height: 720
+      }
+    };
+    const socialImageRecord = immortal
+      ? {
+          src: `https://motto7777.com/${immortalPoster(immortal)}`,
+          width: 500,
+          height: 500
+        }
+      : original
+        ? { src: original.url, width: 500, height: 500 }
+        : route.type === "pack" && originalPack
+          ? {
+              src: `https://motto7777.com/${originalPack.cover}`,
+              width: 696,
+              height: 1012
+            }
+          : routeSocialImages[route.type] ||
+            routeSocialImages[route.section] ||
+            routeSocialImages.home;
+    const socialImage = socialImageRecord.src;
 
     description?.setAttribute("content", finalDescription);
     socialDescription?.setAttribute("content", finalDescription);
@@ -1082,8 +1138,8 @@
     setMeta('meta[property="og:url"]', "content", canonicalUrl);
     setMeta('meta[property="og:image"]', "content", socialImage);
     setMeta('meta[property="og:image:alt"]', "content", pageTitle);
-    setMeta('meta[property="og:image:width"]', "content", immortal ? "500" : "1280");
-    setMeta('meta[property="og:image:height"]', "content", immortal ? "500" : "720");
+    setMeta('meta[property="og:image:width"]', "content", String(socialImageRecord.width));
+    setMeta('meta[property="og:image:height"]', "content", String(socialImageRecord.height));
     setMeta('meta[name="twitter:title"]', "content", pageTitle);
     setMeta('meta[name="twitter:description"]', "content", finalDescription);
     setMeta('meta[name="twitter:image"]', "content", socialImage);
@@ -1261,7 +1317,7 @@
   }
 
   function renderHomeMedia(item) {
-    return `<img src="${immortalPoster(item)}" alt="${escapeHTML(item.publicTitle)}" fetchpriority="high" decoding="async">`;
+    return `<img src="${immortalPoster(item)}" alt="${escapeHTML(item.publicTitle)}" width="500" height="500" fetchpriority="high" decoding="async">`;
   }
 
   function homeLedgerCell(label, value) {
@@ -1365,6 +1421,8 @@
               data-static-src="${immortalPoster(item)}"
               data-motion-src="${immortalMotion(item)}"
               alt="${escapeHTML(item.publicTitle)}"
+              width="500"
+              height="500"
               loading="lazy"
               decoding="async"
             >
@@ -1407,7 +1465,7 @@
         </div>
         <div class="detail-stage">
           <div class="detail-media" data-motion-field>
-            <img src="${immortalPoster(item)}" alt="${escapeHTML(item.publicTitle)}" fetchpriority="high">
+            <img src="${immortalPoster(item)}" alt="${escapeHTML(item.publicTitle)}" width="500" height="500" fetchpriority="high" decoding="async">
             <button
               class="detail-media__motion-button"
               type="button"
@@ -1484,7 +1542,7 @@
     return `
       <a class="pack-card" href="${routeHref("originals", { pack: pack.id })}" data-route aria-label="Open ${pack.label} archive">
         <div class="pack-card__image">
-          <img src="${pack.cover}" alt="${pack.label} pack design" loading="${index < 4 ? "eager" : "lazy"}" decoding="async">
+          <img src="${pack.cover}" alt="${pack.label} pack design" width="696" height="1012" loading="${index < 4 ? "eager" : "lazy"}" decoding="async">
         </div>
         <div class="pack-label">
           <span>${pack.label}</span>
@@ -1771,7 +1829,7 @@
         </div>
         <div class="detail-stage">
           <div class="detail-media">
-            <img src="${item.url}" alt="${escapeHTML(item.label)}" data-media-label="${escapeHTML(item.label)}">
+            <img src="${item.url}" alt="${escapeHTML(item.label)}" width="500" height="500" fetchpriority="high" decoding="async" data-media-label="${escapeHTML(item.label)}">
           </div>
           <div class="detail-copy detail-copy--minimal">
             <span class="eyebrow">ORIGINAL / ${pack.label}</span>
@@ -2127,8 +2185,7 @@
               alt="Haz Haus studio equipment and MOTTO session environment"
               width="1508"
               height="1528"
-              loading="eager"
-              fetchpriority="low"
+              loading="lazy"
               decoding="async"
             >
             <div class="studio-document__copy">
@@ -2497,7 +2554,7 @@
   function bindPage(route) {
     document.querySelector("[data-next-signal]")?.addEventListener("click", () => {
       state.homeIndex = (state.homeIndex + 1) % state.homePool.length;
-      render({ preserveScroll: true });
+      render({ preserveScroll: true, preserveFocus: "home-next" });
       announce("A new selected Immortal is now shown.");
     });
 
@@ -2613,17 +2670,6 @@
       });
       kiaVideo.addEventListener("play", updateKiaControls);
       kiaVideo.addEventListener("pause", updateKiaControls);
-      if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver((entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
-          loadKia();
-          observer.disconnect();
-        }, { rootMargin: "320px 0px" });
-        observer.observe(kiaVideo);
-        state.cleanups.push(() => observer.disconnect());
-      } else {
-        loadKia();
-      }
       updateKiaControls();
     }
 
@@ -2680,19 +2726,6 @@
         });
       });
 
-      if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            loadVaultVideo(entry.target);
-            observer.unobserve(entry.target);
-          });
-        }, { rootMargin: "320px 0px" });
-        vaultVideos.forEach((video) => observer.observe(video));
-        state.cleanups.push(() => observer.disconnect());
-      } else {
-        vaultVideos.forEach(loadVaultVideo);
-      }
     }
 
     if (route.type === "pack") {
