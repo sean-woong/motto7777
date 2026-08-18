@@ -254,7 +254,7 @@
       homeClass: "SELECTED FROM IMMORTALS 77",
       immortalsIntro: "The 77 motion works at the core of MOTTO 7777: seventy Immortals and seven Legends, each integrating the 8-bit track paired with its archetype.",
       originalsIntro: "The complete pre-K.I.A. image state of 7,700 works, preserved through seven archetype packs.",
-      vaultIntro: "Release images, studies, process, objects, and wordmark work from MOTTO 7777.",
+      vaultIntro: "Selected release images, studies, process records, objects, and wordmark work from MOTTO 7777.",
       soundIntro: "The official album, early demos, seven 8-bit versions, and studio material.",
       projectIntro: "",
       statement: "MOTTO 7777 links 7,777 visual works with seven archetypes and seven tracks.",
@@ -265,7 +265,7 @@
       homeClass: "IMMORTALS 77에서 선택",
       immortalsIntro: "MOTTO 7777의 중심을 이루는 77개의 모션 작품. 70개의 Immortals와 7개의 Legends 모두 해당 아키타입과 짝을 이루는 8-bit 트랙을 결합한다.",
       originalsIntro: "일곱 아키타입 팩으로 보존한 7,700개 작품의 완전한 K.I.A. 이전 이미지 상태.",
-      vaultIntro: "MOTTO 7777의 발매 이미지, 스터디, 제작 과정, 오브젝트와 워드마크 작업.",
+      vaultIntro: "MOTTO 7777에서 선별한 발매 이미지, 스터디, 제작 기록, 오브젝트와 워드마크 작업.",
       soundIntro: "정식 앨범과 초기 데모, 일곱 개의 8-bit 버전, 스튜디오 자료.",
       projectIntro: "",
       statement: "MOTTO 7777은 7,777개의 작품과 일곱 아키타입, 일곱 트랙을 연결한다.",
@@ -276,7 +276,7 @@
       homeClass: "IMMORTALS 77より選出",
       immortalsIntro: "MOTTO 7777の核をなす77点のモーション作品。70点のImmortalsと7点のLegendsはいずれも、各アーキタイプと組をなす8-bitトラックを統合している。",
       originalsIntro: "7つのアーキタイプ・パックとして保存された、7,700点の作品による完全なK.I.A.以前のイメージ状態。",
-      vaultIntro: "MOTTO 7777のリリース・イメージ、スタディ、制作過程、オブジェクト、ワードマーク作品。",
+      vaultIntro: "MOTTO 7777から選出したリリース・イメージ、スタディ、制作記録、オブジェクト、ワードマーク作品。",
       soundIntro: "公式アルバム、初期デモ、7つの8-bit版、スタジオ資料。",
       projectIntro: "",
       statement: "MOTTO 7777は、7,777点の作品、7つのアーキタイプ、7つのトラックを結ぶ。",
@@ -293,6 +293,7 @@
           "MOTTO 7777 is an audiovisual project in which the process of making 7,777 works formed a world of its own. It did not begin with a fully formed world that was later translated into images. The scope of the world and the number of works grew together through ongoing conversations between Sean Woong and Haz Haus about numbers, music, drawing, and characters.",
           "The number 7,777 did not emerge from a predetermined symbolic system. The playfulness of the number, its association with luck, and the experience of releasing Digi Engine—an earlier series of 88 works—provided a starting point. From there, Sean Woong and Haz Haus began imagining a world set in the year 7,777 and the figures who inhabited it.",
           "As the work accumulated, so did its visual vocabulary. Figures and equipment, bodies shifting between human and machine, tattooed skin, recurring motifs, patterns, and backgrounds emerged through drawing and image sampling. These elements took on different bodies, attitudes, and atmospheres within seven archetypes: Motorcycle, Dealer, Skull, Rockstar, Drag, Military, and Boxer.",
+          "The aim of this structure was not simply to fill a total of 7,777. Even as the same elements were recombined across thousands of works, each result had to read as a resolved character image rather than an anonymous variation. The seven archetypes provided a framework for extending those variations while preserving strong silhouettes, artificial light, and distinct bodies and styles.",
           "The world became a field in which images could repeat, mutate, and form relationships with one another. Rather than a world producing 7,777 images, it is more accurate to say that the act of making 7,777 works produced the world."
         ]
       },
@@ -308,9 +309,8 @@
       {
         label: "K.I.A. / TRANSITION",
         paragraphs: [
-          "MOTTO 7777 comprises 7,700 Originals and 77 motion works. The 77 consist of seventy looping Immortals and seven PROTOCOL-7 works animated from beginning to end. These seven works are also known as Legends.",
           "The drawings and visual elements accumulated while making these 77 motion works later became material for the 7,700 Originals. The image-generation process was carried out separately for each archetype, producing 1,100 Originals in each group.",
-          "After all Originals had been distributed and a set period had passed, half of them—3,850 works—transitioned into K.I.A. No work was burned or removed from the market. Nor was a glitch effect simply overlaid on the existing image. Each designated static Original was replaced by a separate animated artwork characterized by signal interruption and glitch. A released work assumed a different image, format, and state.",
+          "After all Originals had been distributed and a set period had passed, half of them—3,850 works—transitioned into K.I.A. Each designated static Original was replaced by a separate animated artwork structured around signal interruption and glitch, rather than modified with an overlaid effect. A released work thus assumed a different image, format, and state.",
           "The rule was proposed during the project and implemented following discussions about the proportion of works it would affect. Once enacted, the initial state of a released work was no longer necessarily its final state."
         ]
       },
@@ -335,6 +335,7 @@
           "MOTTO 7777은 7,777개의 작품을 만드는 과정이 하나의 세계를 형성한 오디오비주얼 프로젝트다. 먼저 완성된 세계관을 이미지로 옮긴 작업은 아니다. 숫자와 음악, 드로잉과 인물에 관한 Sean Woong과 Haz Haus의 대화가 이어지는 동안 세계의 범위와 작품의 수가 함께 커졌다.",
           "7,777이라는 숫자는 처음부터 고정된 상징 체계에서 나온 것이 아니었다. 숫자 자체가 주는 재미와 행운에 대한 연상, 그리고 앞서 88점으로 구성된 Digi Engine을 발매했던 경험이 하나의 출발점이 됐다. 두 사람은 이 숫자를 중심으로 서기 7,777년의 세계와 그 안의 인물들을 상상하기 시작했다.",
           "작업이 쌓이면서 시각적 어휘도 함께 축적됐다. 인물의 신체와 장비, 인간과 로봇 사이를 오가는 형태, 타투가 새겨진 피부, 반복되는 모티프, 패턴과 배경이 드로잉과 이미지 샘플링을 통해 만들어졌다. 이것들은 Motorcycle, Dealer, Skull, Rockstar, Drag, Military, Boxer라는 일곱 아키타입 안에서 각기 다른 신체와 태도, 분위기로 전개됐다.",
+          "이 구조의 목적은 7,777이라는 수를 채우는 데 있지 않았다. 같은 요소가 수천 번 다시 조합되더라도 각 결과가 익명의 변형이 아니라 하나의 완성된 캐릭터 이미지로 보이는 것이 중요했다. 일곱 아키타입은 강한 실루엣과 인공적인 빛, 서로 다른 신체와 스타일을 유지하며 변주를 확장하기 위한 프레임으로 작동했다.",
           "세계는 이미지가 반복되고 변형되며 서로 관계를 맺을 수 있는 장이 됐다. 하나의 세계가 7,777개의 이미지를 낳았다기보다, 7,777개의 작품을 만드는 행위가 하나의 세계를 만들었다고 보는 편이 더 가깝다."
         ]
       },
@@ -350,9 +351,8 @@
       {
         label: "K.I.A. / 전환",
         paragraphs: [
-          "MOTTO 7777은 7,700개의 Originals와 77개의 모션 작품으로 구성된다. 77개는 반복 재생되는 70개의 Immortals와, 처음부터 끝까지 애니메이션으로 전개되는 7개의 PROTOCOL-7 작품으로 이루어진다. 이 7개 작품은 Legends라고도 불린다.",
           "77개의 모션 작품을 제작하며 축적된 드로잉과 시각 요소들은 이후 7,700개의 Originals를 만드는 재료가 됐다. 이미지 생성 과정은 아키타입별로 독립적으로 진행됐고, 각 아키타입에서 1,100개의 Originals가 만들어졌다.",
-          "모든 Originals가 배포되고 일정 시간이 지난 뒤, 그중 절반인 3,850개가 K.I.A.로 전환됐다. 작품은 소각되거나 시장에서 제거되지 않았다. 이 전환은 기존 이미지 위에 글리치 효과를 단순히 덧입힌 것이 아니다. 정지 이미지는 신호 단절과 글리치의 성격을 가진 별도의 애니메이션 아트워크로 교체됐다. 발매된 하나의 작품이 다른 이미지와 형식, 상태를 갖게 된 것이다.",
+          "모든 Originals가 배포되고 일정 시간이 지난 뒤, 그중 절반인 3,850개가 K.I.A.로 전환됐다. 지정된 정지 이미지는 기존 이미지에 효과를 덧입힌 것이 아니라, 신호 단절과 글리치를 중심으로 구성한 별도의 애니메이션 아트워크로 교체됐다. 발매된 하나의 작품이 다른 이미지와 형식, 상태를 갖게 된 것이다.",
           "이 규칙은 프로젝트 진행 중에 제안되었고 비율에 관한 논의를 거쳐 실행됐다. 실행된 이후 발매된 작품은 더 이상 최초 상태에 고정되지 않았다."
         ]
       },
@@ -377,6 +377,7 @@
           "MOTTO 7777は、7,777点の作品を制作する過程そのものが一つの世界を形成したオーディオビジュアル・プロジェクトである。完成した世界観を後からイメージへ移した作品ではない。数字、音楽、ドローイング、人物をめぐるSean WoongとHaz Hausの対話が続くなかで、世界の範囲と作品数はともに拡張していった。",
           "7,777という数字は、あらかじめ定められた象徴体系から生まれたものではない。数字そのものが持つ遊び心と幸運のイメージ、そして先行する88点のシリーズDigi Engineをリリースした経験が出発点となった。二人はこの数字を軸に、西暦7,777年の世界とそこに生きる人物たちを想像し始めた。",
           "制作が積み重なるにつれ、視覚的な語彙も蓄積された。人物の身体と装備、人間と機械のあいだを移行する形態、タトゥーを刻んだ皮膚、反復するモチーフ、パターン、背景が、ドローイングとイメージ・サンプリングを通して生まれた。それらはMotorcycle、Dealer、Skull、Rockstar、Drag、Military、Boxerという7つのアーキタイプのなかで、それぞれ異なる身体、態度、空気を帯びて展開された。",
+          "この構造の目的は、7,777という数を埋めることではなかった。同じ要素が数千回組み替えられても、それぞれの結果が匿名的なバリエーションではなく、一つの完成したキャラクター・イメージとして見えることが重要だった。7つのアーキタイプは、強いシルエット、人工的な光、異なる身体とスタイルを保ちながら、変奏を拡張するための枠組みとして機能した。",
           "世界は、イメージが反復し、変形し、互いに関係を結ぶための場となった。一つの世界が7,777点のイメージを生んだというより、7,777点の作品をつくる行為そのものが一つの世界を形成したと捉えるほうが近い。"
         ]
       },
@@ -392,9 +393,8 @@
       {
         label: "K.I.A. / 転換",
         paragraphs: [
-          "MOTTO 7777は、7,700点のOriginalsと77点のモーション作品で構成される。77点は、ループ再生される70点のImmortalsと、最初から最後までアニメーションとして展開する7点のPROTOCOL-7から成る。この7点はLegendsとも呼ばれる。",
           "77点のモーション作品を制作するなかで蓄積されたドローイングと視覚要素は、その後7,700点のOriginalsを生み出す素材となった。イメージ生成はアーキタイプごとに独立して行われ、各アーキタイプから1,100点のOriginalsが制作された。",
-          "すべてのOriginalsが配布され、一定期間が経過した後、その半数にあたる3,850点がK.I.A.へ転換した。作品が焼却されたり、市場から取り除かれたりしたわけではない。また、既存のイメージにグリッチ効果を単純に重ねたものでもない。指定された静止画のOriginalは、信号の断絶とグリッチを特徴とする別個のアニメーション作品へ置き換えられた。リリース済みの一作品が、異なるイメージ、形式、状態を持つようになったのである。",
+          "すべてのOriginalsが配布され、一定期間が経過した後、その半数にあたる3,850点がK.I.A.へ転換した。指定された静止画のOriginalは、既存のイメージに効果を重ねたものではなく、信号の断絶とグリッチを軸に構成した別個のアニメーション作品へ置き換えられた。リリース済みの一作品が、異なるイメージ、形式、状態を持つようになったのである。",
           "このルールはプロジェクトの進行中に提案され、適用比率についての議論を経て実行された。実行後、リリースされた作品の初期状態は、必ずしも最終状態ではなくなった。"
         ]
       },
@@ -546,6 +546,7 @@
     "SURVIVED / 3,850": "생존 / 3,850",
     "LEGENDS / 7": "LEGENDS / 7",
     "UT02 — SEVEN SEAL and other protocol rewards are documented separately and are not included in the core total of 7,777 works.": "UT02 — SEVEN SEAL을 포함한 프로토콜 리워드는 별도로 기록하며, 핵심 작품 7,777점에는 포함하지 않는다.",
+    "The 70 Immortals loop; the seven Legends / PROTOCOL-7 unfold as complete animations.": "70개의 Immortals는 반복 재생되며, 7개의 Legends / PROTOCOL-7은 처음부터 끝까지 이어지는 애니메이션으로 전개된다.",
     "RELEASE HISTORY": "발매 기록",
     "CHRONOLOGY": "연대기",
     "AROUND JAN 2024": "2024년 1월경",
@@ -561,12 +562,12 @@
     "AUTHORSHIP": "제작자와 기여자",
     "WORLD BUILDING / VISUAL DIRECTION": "월드 빌딩 / 비주얼 디렉션",
     "VOICE CREDIT — OO.SEAN": "보이스 크레딧 — OO.SEAN",
-    "Co-developed the world of MOTTO 7777 and directed its complete visual system: the 7,777 works, animation, pack and release imagery, K.I.A. visual and motion, UT02, project objects, teaser film and edit, and this website.": "Haz Haus와 MOTTO 7777의 세계를 공동 개발하고 전체 시각 시스템을 디렉팅했다. 7,777개의 작품, 애니메이션, 팩과 발매 이미지, K.I.A. 비주얼과 모션, UT02, 프로젝트 오브젝트, 티저 영상과 편집, 이 웹사이트를 제작했다.",
+    "Co-developed the world of MOTTO 7777 with Haz Haus and directed and produced the project's visual system across the 7,777 works, animation, pack and release imagery, K.I.A. visual and motion, UT02, project objects, the teaser film and edit, and this website.": "Haz Haus와 MOTTO 7777의 세계를 공동 개발하고 프로젝트의 시각 시스템을 디렉팅하고 제작했다. 그 범위는 7,777개의 작품과 애니메이션, 팩과 발매 이미지, K.I.A. 비주얼과 모션, UT02, 프로젝트 오브젝트, 티저 영상과 편집, 이 웹사이트를 포함한다.",
     "Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web. His practice moves between authored image systems, performance identities, and physical extensions.": "Sean Woong은 서울을 기반으로 디지털 일러스트레이션, 애니메이션, 무빙 이미지, 오브젝트 디자인, 웹을 넘나드는 멀티미디어 아티스트이자 타투이스트다. 그의 작업은 작가가 구축한 이미지 시스템, 퍼포먼스 정체성, 물리적 확장 사이를 이동한다.",
     "WORLD BUILDING / SOUND DIRECTION": "월드 빌딩 / 사운드 디렉션",
     "Co-developed the world of MOTTO 7777 and led its sound system: the album, overall sound direction and production, seven 8-bit versions, K.I.A. sound, and project teaser sound.": "Sean Woong과 MOTTO 7777의 세계를 공동 개발하고 사운드 시스템을 이끌었다. 앨범과 전체 사운드 디렉션 및 프로덕션, 일곱 개의 8-bit 버전, K.I.A. 사운드, 프로젝트 티저 사운드를 제작했다.",
     "Haz Haus is an electronic music producer working across K-pop and electronic music. His practice centers on production, sound design, and genre-crossing collaborative work.": "Haz Haus는 K-pop과 전자음악을 오가며 활동하는 전자음악 프로듀서다. 프로덕션과 사운드 디자인, 장르를 가로지르는 협업을 중심으로 작업한다.",
-    "CONTRIBUTED VISUAL": "비주얼 기여",
+    "VISUAL CONTRIBUTIONS": "비주얼 기여",
     "3D motorcycle footage used near the opening of the MOTTO Project Teaser; visualizer for 7777 (GET LO).": "MOTTO 프로젝트 티저 초반에 사용한 3D 모터사이클 푸티지와 7777 (GET LO) 비주얼라이저를 제작했다.",
     "EXHIBITION": "전시",
     "COLLABORATION / COMMISSION": "협업 / 커미션",
@@ -593,7 +594,6 @@
     "Each track is paired with one archetype; its 8-bit version appears in the corresponding works in IMMORTALS 77.": "각 트랙은 하나의 아키타입과 짝을 이루며, 해당 8-bit 버전은 IMMORTALS 77의 작품에 결합됐다.",
     "STUDIO": "스튜디오",
     "HAZ HAUS STUDIO": "HAZ HAUS 스튜디오",
-    "ARTIST NOTE": "작가 서문",
     "06 / PROJECT": "06 / 프로젝트",
     "INQUIRIES": "문의",
     "Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web.": "Sean Woong은 서울을 기반으로 디지털 일러스트레이션, 애니메이션, 무빙 이미지, 오브젝트 디자인, 웹을 넘나드는 멀티미디어 아티스트이자 타투이스트다.",
@@ -743,6 +743,7 @@
     "SURVIVED / 3,850": "生存 / 3,850",
     "LEGENDS / 7": "LEGENDS / 7",
     "UT02 — SEVEN SEAL and other protocol rewards are documented separately and are not included in the core total of 7,777 works.": "UT02 — SEVEN SEALを含むプロトコル報酬は別途記録され、主要作品7,777点には含まれない。",
+    "The 70 Immortals loop; the seven Legends / PROTOCOL-7 unfold as complete animations.": "70点のImmortalsはループ再生され、7点のLegends / PROTOCOL-7は最初から最後まで続くアニメーションとして展開する。",
     "RELEASE HISTORY": "リリース履歴",
     "CHRONOLOGY": "年表",
     "AROUND JAN 2024": "2024年1月頃",
@@ -758,12 +759,12 @@
     "AUTHORSHIP": "作者と参加者",
     "WORLD BUILDING / VISUAL DIRECTION": "ワールド・ビルディング / ビジュアル・ディレクション",
     "VOICE CREDIT — OO.SEAN": "ボイス・クレジット — OO.SEAN",
-    "Co-developed the world of MOTTO 7777 and directed its complete visual system: the 7,777 works, animation, pack and release imagery, K.I.A. visual and motion, UT02, project objects, teaser film and edit, and this website.": "Haz HausとMOTTO 7777の世界を共同構築し、7,777点の作品、アニメーション、パックとリリースのイメージ、K.I.A.のビジュアルとモーション、UT02、プロジェクト・オブジェクト、ティザー映像と編集、本ウェブサイトを含む視覚システム全体をディレクションした。",
+    "Co-developed the world of MOTTO 7777 with Haz Haus and directed and produced the project's visual system across the 7,777 works, animation, pack and release imagery, K.I.A. visual and motion, UT02, project objects, the teaser film and edit, and this website.": "Haz HausとMOTTO 7777の世界を共同構築し、プロジェクトの視覚システムをディレクション、制作した。その範囲には、7,777点の作品、アニメーション、パックとリリースのイメージ、K.I.A.のビジュアルとモーション、UT02、プロジェクト・オブジェクト、ティザー映像と編集、本ウェブサイトが含まれる。",
     "Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web. His practice moves between authored image systems, performance identities, and physical extensions.": "Sean Woongはソウルを拠点に、デジタル・イラストレーション、アニメーション、映像、オブジェクト・デザイン、ウェブを横断して活動するマルチメディア・アーティスト／タトゥーイストである。自ら構築するイメージ・システム、パフォーマンス上のアイデンティティ、物理的な拡張のあいだを行き来しながら制作している。",
     "WORLD BUILDING / SOUND DIRECTION": "ワールド・ビルディング / サウンド・ディレクション",
     "Co-developed the world of MOTTO 7777 and led its sound system: the album, overall sound direction and production, seven 8-bit versions, K.I.A. sound, and project teaser sound.": "Sean WoongとMOTTO 7777の世界を共同構築し、アルバム、全体のサウンド・ディレクションとプロダクション、7つの8-bit版、K.I.A.サウンド、プロジェクト・ティザーのサウンドを含む音響システムを主導した。",
     "Haz Haus is an electronic music producer working across K-pop and electronic music. His practice centers on production, sound design, and genre-crossing collaborative work.": "Haz HausはK-popと電子音楽を横断して活動する電子音楽プロデューサーである。プロダクション、サウンド・デザイン、ジャンルを越える共同制作を中心に活動している。",
-    "CONTRIBUTED VISUAL": "ビジュアル協力",
+    "VISUAL CONTRIBUTIONS": "ビジュアル協力",
     "3D motorcycle footage used near the opening of the MOTTO Project Teaser; visualizer for 7777 (GET LO).": "MOTTOプロジェクト・ティザー冒頭付近で使用した3Dモーターサイクル映像、および7777 (GET LO)のビジュアライザー。",
     "EXHIBITION": "展示",
     "COLLABORATION / COMMISSION": "コラボレーション / コミッション",
@@ -790,7 +791,6 @@
     "Each track is paired with one archetype; its 8-bit version appears in the corresponding works in IMMORTALS 77.": "各トラックは一つのアーキタイプと組になり、その8-bit版がIMMORTALS 77の対応作品に組み込まれている。",
     "STUDIO": "スタジオ",
     "HAZ HAUS STUDIO": "HAZ HAUSスタジオ",
-    "ARTIST NOTE": "アーティスト・ノート",
     "06 / PROJECT": "06 / プロジェクト",
     "INQUIRIES": "問い合わせ",
     "Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web.": "Sean Woongはソウルを拠点に、デジタル・イラストレーション、アニメーション、映像、オブジェクト・デザイン、ウェブを横断して活動するマルチメディア・アーティスト／タトゥーイストである。",
@@ -2908,7 +2908,7 @@
     return `
       <div class="project-note" id="project-note">
         <aside class="project-note__rail">
-          <span class="eyebrow">ARTIST NOTE</span>
+          <span class="eyebrow">PROJECT NOTE</span>
           <strong>A WORLD FORMED THROUGH 7,777 WORKS.</strong>
         </aside>
         <div class="project-note__body">${groups}</div>
@@ -2958,6 +2958,7 @@
               </div>
             </div>
           </div>
+          <p class="system-note">The 70 Immortals loop; the seven Legends / PROTOCOL-7 unfold as complete animations.</p>
           <p class="system-note">UT02 — SEVEN SEAL and other protocol rewards are documented separately and are not included in the core total of 7,777 works.</p>
         </section>
 
@@ -2987,7 +2988,7 @@
                 <span class="author-record__alias">VOICE CREDIT — OO.SEAN</span>
               </div>
               <div class="author-record__body">
-                <p class="author-record__contribution">Co-developed the world of MOTTO 7777 and directed its complete visual system: the 7,777 works, animation, pack and release imagery, K.I.A. visual and motion, UT02, project objects, teaser film and edit, and this website.</p>
+                <p class="author-record__contribution">Co-developed the world of MOTTO 7777 with Haz Haus and directed and produced the project's visual system across the 7,777 works, animation, pack and release imagery, K.I.A. visual and motion, UT02, project objects, the teaser film and edit, and this website.</p>
                 <p class="author-record__bio">Sean Woong is a Seoul-based multimedia artist and tattooist working across digital illustration, animation, moving image, object design, and the web.</p>
                 <div class="artist-record__links" aria-label="Sean Woong links">
                   <a href="https://www.instagram.com/sean_woong/" target="_blank" rel="noreferrer">ART / @SEAN_WOONG ↗</a>
@@ -3013,7 +3014,7 @@
             </article>
             <article class="contributor-record">
               <div>
-                <span class="eyebrow">CONTRIBUTED VISUAL</span>
+                <span class="eyebrow">VISUAL CONTRIBUTIONS</span>
                 <h3>@CHEESEPIZZA</h3>
               </div>
               <p>3D motorcycle footage used near the opening of the MOTTO Project Teaser; visualizer for 7777 (GET LO).</p>
