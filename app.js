@@ -252,7 +252,7 @@
     en: {
       homeLine: "AN AUDIOVISUAL ARCHIVE OF 7,777 WORKS",
       homeClass: "SELECTED FROM IMMORTALS 77",
-      immortalsIntro: "The 77 motion works at the core of MOTTO 7777: seventy Immortals and seven Legends, each integrating the 8-bit track paired with its archetype.",
+      immortalsIntro: "The 77 motion works at the core of MOTTO 7777.",
       originalsIntro: "The complete pre-K.I.A. image state of 7,700 works, preserved through seven archetype packs.",
       vaultIntro: "Selected release images, studies, process records, objects, and wordmark work from MOTTO 7777.",
       soundIntro: "The official album, early demos, seven 8-bit versions, and studio material.",
@@ -263,7 +263,7 @@
     ko: {
       homeLine: "7,777점으로 이루어진 오디오비주얼 아카이브",
       homeClass: "IMMORTALS 77에서 선택",
-      immortalsIntro: "MOTTO 7777의 중심을 이루는 77개의 모션 작품. 70개의 Immortals와 7개의 Legends 모두 해당 아키타입과 짝을 이루는 8-bit 트랙을 결합한다.",
+      immortalsIntro: "MOTTO 7777의 중심을 이루는 77개의 모션 작품.",
       originalsIntro: "일곱 아키타입 팩으로 보존한 7,700개 작품의 완전한 K.I.A. 이전 이미지 상태.",
       vaultIntro: "MOTTO 7777에서 선별한 발매 이미지, 스터디, 제작 기록, 오브젝트와 워드마크 작업.",
       soundIntro: "정식 앨범과 초기 데모, 일곱 개의 8-bit 버전, 스튜디오 자료.",
@@ -274,7 +274,7 @@
     ja: {
       homeLine: "7,777作品によるオーディオビジュアル・アーカイブ",
       homeClass: "IMMORTALS 77より選出",
-      immortalsIntro: "MOTTO 7777の核をなす77点のモーション作品。70点のImmortalsと7点のLegendsはいずれも、各アーキタイプと組をなす8-bitトラックを統合している。",
+      immortalsIntro: "MOTTO 7777の核をなす77点のモーション作品。",
       originalsIntro: "7つのアーキタイプ・パックとして保存された、7,700点の作品による完全なK.I.A.以前のイメージ状態。",
       vaultIntro: "MOTTO 7777から選出したリリース・イメージ、スタディ、制作記録、オブジェクト、ワードマーク作品。",
       soundIntro: "公式アルバム、初期デモ、7つの8-bit版、スタジオ資料。",
@@ -578,7 +578,7 @@
     "NO WORKS MATCH THE CURRENT FILTER.": "현재 조건과 일치하는 작품이 없습니다.",
     "NUMBER / TITLE / ARCHETYPE": "번호 / 작품명 / 아키타입",
     "8-BIT TRACK": "8-BIT 트랙",
-    "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork. No work was burned or removed.": "발매 이후 3,850개 Original 이미지가 별도의 K.I.A. 모션 아트워크로 교체됐다. 작품은 소각되거나 제거되지 않았다.",
+    "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork.": "발매 이후 3,850개 Original 이미지가 별도의 K.I.A. 모션 아트워크로 교체됐다.",
     "7,700 STATIC IMAGES BEFORE THE SPLIT": "분기 이전 정지 이미지 7,700점",
     "3,850 REPLACED BY MOTION": "3,850점이 모션으로 교체",
     "EXCLUDED": "제외",
@@ -775,7 +775,7 @@
     "NO WORKS MATCH THE CURRENT FILTER.": "現在の条件に一致する作品はありません。",
     "NUMBER / TITLE / ARCHETYPE": "番号 / 作品名 / アーキタイプ",
     "8-BIT TRACK": "8-BITトラック",
-    "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork. No work was burned or removed.": "ドロップ後、3,850点のOriginalイメージは別個のK.I.A.モーション作品へ置き換えられた。作品が焼却または削除されたわけではない。",
+    "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork.": "ドロップ後、3,850点のOriginalイメージは別個のK.I.A.モーション作品へ置き換えられた。",
     "7,700 STATIC IMAGES BEFORE THE SPLIT": "分岐前の静止画像7,700点",
     "3,850 REPLACED BY MOTION": "3,850点をモーションへ置換",
     "EXCLUDED": "対象外",
@@ -2347,7 +2347,7 @@
   function renderKia() {
     return `
       <section class="page">
-        ${pageMast("03 / SPECIAL EXHIBITION", "K.I.A.", "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork. No work was burned or removed.", "3,850 SURVIVED / 3,850 K.I.A.", "kia-mast")}
+        ${pageMast("03 / SPECIAL EXHIBITION", "K.I.A.", "After the drop, 3,850 Original images were replaced by a separate K.I.A. motion artwork.", "3,850 SURVIVED / 3,850 K.I.A.", "kia-mast")}
 
         <section class="section">
           <div class="kia-field">
