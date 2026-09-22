@@ -1,72 +1,108 @@
 (() => {
   'use strict';
   const word = document.querySelector('.word');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (!word || new URLSearchParams(location.search).get('motion') === 'off') return;
+  const image = word?.querySelector('img');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  if (!image || new URLSearchParams(location.search).get('motion') === 'off') return;
 
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('width', '0');
-  svg.setAttribute('height', '0');
-  svg.setAttribute('aria-hidden', 'true');
-  svg.style.cssText = 'position:absolute;pointer-events:none';
-  svg.innerHTML = `<defs><filter id="title-wave" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB"><feImage result="wave" preserveAspectRatio="none"/><feDisplacementMap in="SourceGraphic" in2="wave" scale="30" xChannelSelector="R" yChannelSelector="G"/></filter></defs>`;
-  document.body.append(svg);
-  const map = svg.querySelector('feImage');
-  const displacement = svg.querySelector('feDisplacementMap');
+  // Render the wave directly: avoids dynamically refreshed SVG feImage filters
+  // on Safari. Keep the original accessible image as the failure/reduced-motion fallback.
   const canvas = document.createElement('canvas');
-  canvas.width = 128;
-  canvas.height = 64;
-  const ctx = canvas.getContext('2d');
-  const pixels = ctx.createImageData(128, 64);
+  canvas.setAttribute('aria-hidden', 'true');
+  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:none';
+  const gl = canvas.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: false });
+  if (!gl) return;
+  function shader(type, source) {
+    const result = gl.createShader(type);
+    gl.shaderSource(result, source);
+    gl.compileShader(result);
+    if (!gl.getShaderParameter(result, gl.COMPILE_STATUS)) throw new Error('Wave shader unavailable');
+    return result;
+  }
+  let program;
+  try {
+    program = gl.createProgram();
+    gl.attachShader(program, shader(gl.VERTEX_SHADER, `attribute vec2 position; varying vec2 uv;
+      void main(){uv=vec2((position.x+1.0)*0.5,(1.0-position.y)*0.5);gl_Position=vec4(position,0.0,1.0);}`));
+    gl.attachShader(program, shader(gl.FRAGMENT_SHADER, `precision highp float;
+      varying vec2 uv; uniform sampler2D artwork; uniform vec2 size;
+      uniform vec4 crop; uniform float phase; uniform float amplitude;
+      void main(){
+        float ex=clamp(min(uv.x,1.0-uv.x)/0.0472,0.0,1.0);
+        float ey=clamp(min(uv.y,1.0-uv.y)/0.0635,0.0,1.0);
+        vec2 wave=vec2(sin(uv.y*12.5663706+phase)*0.5*ex,
+                       sin(uv.x*18.8495559-phase)*0.298*ey);
+        vec2 at=uv+wave*amplitude/size;
+        if(at.x<0.0||at.x>1.0||at.y<0.0||at.y>1.0){gl_FragColor=vec4(0.0);return;}
+        gl_FragColor=texture2D(artwork,crop.xy+at*crop.zw);
+      }`));
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+  } catch { return; }
+  gl.useProgram(program);
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
+  const position = gl.getAttribLocation(program, 'position');
+  gl.enableVertexAttribArray(position);
+  gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  const uniforms = Object.fromEntries(['size','crop','phase','amplitude'].map(name => [name, gl.getUniformLocation(program,name)]));
+  let ready = false;
   let visible = false;
   let frame = 0;
-  let phase = 0;
-  let lastY = window.scrollY;
+  let lost = false;
+  word.append(canvas);
 
+  function fallback() {
+    canvas.style.display = 'none';
+    image.style.removeProperty('opacity');
+  }
   function render() {
     frame = 0;
-    // Scroll position advances the wave. No time-based movement or settling.
-    for (let y = 0; y < 64; y++) {
-      for (let x = 0; x < 128; x++) {
-        const edgeX = Math.min(1, x / 6, (127 - x) / 6);
-        const edgeY = Math.min(1, y / 4, (63 - y) / 4);
-        const i = (y * 128 + x) * 4;
-        pixels.data[i] = Math.round(127.5 + Math.sin(y / 63 * Math.PI * 4 + phase) * 127.5 * edgeX);
-        pixels.data[i + 1] = Math.round(127.5 + Math.sin(x / 127 * Math.PI * 6 - phase) * 76 * edgeY);
-        pixels.data[i + 2] = 128;
-        pixels.data[i + 3] = 255;
-      }
-    }
-    ctx.putImageData(pixels, 0, 0);
-    map.setAttribute('href', canvas.toDataURL());
-    displacement.setAttribute('scale', window.innerWidth <= 650 ? '16' : '30');
-    word.style.filter = 'url(#title-wave)';
+    if (!ready || lost || reduced.matches || document.hidden) { fallback(); return; }
+    if (!visible) return;
+    const box = word.getBoundingClientRect();
+    const img = image.getBoundingClientRect();
+    if (!box.width || !img.width) return;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const width = Math.round(box.width*dpr), height = Math.round(box.height*dpr);
+    if (canvas.width !== width || canvas.height !== height) {canvas.width=width;canvas.height=height;}
+    gl.viewport(0,0,width,height);
+    gl.uniform2f(uniforms.size,box.width,box.height);
+    gl.uniform4f(uniforms.crop,(box.left-img.left)/img.width,(box.top-img.top)/img.height,box.width/img.width,box.height/img.height);
+    gl.uniform1f(uniforms.phase,window.scrollY*Math.PI*2/600);
+    gl.uniform1f(uniforms.amplitude,innerWidth<=650?16:30);
+    gl.drawArrays(gl.TRIANGLES,0,6);
+    canvas.style.display='block';
+    image.style.opacity='0';
   }
-
-  function sync() {
-    cancelAnimationFrame(frame);
-    frame = 0;
-    lastY = window.scrollY;
-    if (reduced.matches) {
-      word.style.removeProperty('filter');
-    } else if (visible && !document.hidden) {
-      frame = requestAnimationFrame(render);
-    }
+  function schedule() { if (!frame) frame=requestAnimationFrame(render); }
+  function upload() {
+    if (!image.naturalWidth || lost) return;
+    try {
+      gl.bindTexture(gl.TEXTURE_2D,texture);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,image);
+      ready=true;
+      schedule();
+    } catch { fallback(); }
   }
-  window.addEventListener('scroll', () => {
-    const nextY = window.scrollY;
-    const delta = nextY - lastY;
-    lastY = nextY;
-    if (reduced.matches || document.hidden) return;
-    // Scrolling back reverses the wave by exactly the same amount.
-    phase += delta * (Math.PI * 2 / 600);
-    if (visible && !frame) frame = requestAnimationFrame(render);
-  }, { passive: true });
-  window.addEventListener('resize', sync);
-  new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    sync();
-  }).observe(word);
-  reduced.addEventListener('change', sync);
-  document.addEventListener('visibilitychange', sync);
+  canvas.addEventListener('webglcontextlost', event => {
+    event.preventDefault();lost=true;cancelAnimationFrame(frame);frame=0;fallback();
+  });
+  // Restore gracefully as a static image if the browser discards the graphics context.
+  new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)schedule();}).observe(word);
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',schedule);
+  window.visualViewport?.addEventListener('scroll',schedule,{passive:true});
+  window.visualViewport?.addEventListener('resize',schedule);
+  reduced.addEventListener('change',schedule);
+  document.addEventListener('visibilitychange',schedule);
+  image.addEventListener('load',upload,{once:true});
+  if(image.complete) upload();
 })();
