@@ -47,7 +47,8 @@ The public experience should prioritize:
 - Use warm off-white text, neutral gray metadata, one restrained cyan interaction accent, and magenta only inside K.I.A.
 - Use space and thin rules instead of rounded cards, glass panels, glow borders, or shadows.
 - Use a clean grotesk for statements and a restrained mono face for labels and data.
-- No forced intro, continuous glitch, autoplay, persistent global player, marketplace emphasis, prices, downloads, or floating close button.
+- The artist approved a dismissible, approximately 3-second archive introduction on first visit only (2026-09-30), localized to EN/KO/JA. Remember dismissal/first viewing for later visits.
+- No other forced intro, continuous glitch, autoplay, persistent global player, marketplace emphasis, prices, downloads, or floating close button.
 - Finished artworks and pack designs use `object-fit: contain`; documentary footage may use `cover` only when the crop is harmless.
 - Detail views use a visible in-flow Back action, browser Back, and Escape.
 - The custom cursor must remain small, precise, optional, and above overlays; native cursor remains on touch devices.

@@ -7,7 +7,7 @@ Sean Woong과 Haz Haus의 오디오비주얼 전시·아카이브. 7,777개 작�
 - `index.html` → **최신 발매/프로젝트 메인**. 현재는 「난 모르겠어」 싱글입니다. 앞으로도 새로운 프로젝트를 먼저 보여줍니다.
 - `archive.html` → **MOTTO 7777 아카이브**. `/archive.html?view=vault`처럼 섹션을 엽니다.
 - `app.js` → 아카이브 편집용 소스. HTML이 직접 읽는 파일은 별도의 릴리스 사본입니다.
-- `archive.html`의 마지막 `<script src>` → 실제 사용되는 릴리스 파일. 이번 로컬 수정본은 `app.20260930.js`입니다. 이전 공개 파일은 `app.20260815d.js`였습니다.
+- `archive.html`의 마지막 `<script src>` → 실제 사용되는 릴리스 파일. 이번 로컬 수정본은 `app.20260930-entry.js`입니다. 이전 공개 파일은 `app.20260815d.js`였습니다.
 - `styles.css`, `media/`, `assets/` → 아카이브 스타일과 미디어·데이터.
 - `v2/` → 과거 개발 프리뷰. 현재 배포본의 수정 대상으로 사용하지 않습니다.
 - `js/app.js`, `css/style.css`, `music.html` → 이전 인터페이스/호환 파일. 현재 아카이브가 읽는 파일과 구분합니다.

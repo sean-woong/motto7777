@@ -8,7 +8,7 @@
 
 1. Inspect `git status`; preserve unrelated work.
 2. Edit archive behavior in root `app.js`, styles in `styles.css`, shell in `archive.html`.
-3. Copy `app.js` and `styles.css` to new versioned release files; update the archive shell script reference. The current local revision uses `app.20260930.js` and `styles.20260930.css`. It includes the prior motion fixes.
+3. Copy `app.js` and `styles.css` to new versioned release files; update the archive shell script reference. The current local revision uses `app.20260930-entry.js` and `styles.20260930-entry.css`. It includes the prior motion fixes.
 4. Verify `app.js` and the referenced release snapshot are byte-identical. Historical release files are retained unchanged. Changing only `app.js` does not update the served app.
 5. Preview through a local HTTP server. Check 1440px, 768px, 390px, keyboard and touch, first-click playback, pause/resume, media failure/retry, reduced motion and route changes.
 6. Publish only the reviewed archive changes and required media using the established deployment workflow. Deployment authorized by the artist on 2026-09-30. No credentials belong in the repository.
@@ -35,3 +35,7 @@ Public email and EN/KO/JA are already visible. Japanese editorial sign-off and e
 ## Release scope — 2026-09-30
 
 Publish the reviewed archive source, fingerprinted JS/CSS, archive shell, static route metadata, sitemap and web media under `media/controlled-motion/` and `media/vault-objects/`. Keep the latest-project `index.html` unchanged. Raw object sources in `source-media/objects/` remain locally preserved and are not required for public delivery. Earlier unshipped snapshots and unrelated worktree changes are excluded.
+
+## First-visit introduction — 2026-09-30
+
+Artist-approved exception to the no-intro rule: a localized dialog remains for approximately three visible seconds on first archive visit only. Click/tap anywhere, Enter on the entry button, or Escape dismisses it immediately. `motto-archive-entry-seen` in localStorage skips it on subsequent visits in that browser. If browser storage is unavailable, persistence cannot be guaranteed. No animation is required, including under reduced motion. The main app loads concurrently; a neutral loading status covers slow data after dismissal. The latest-project root is unaffected. Test with `python3 scripts/qa_archive_entry.py`; use a fresh browser profile/private window to review first-visit behavior.
