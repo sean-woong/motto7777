@@ -1,2 +1,5 @@
 .DS_Store
 **/.DS_Store
+
+# Locally preserved originals; publish only reviewed web derivatives.
+/source-media/
