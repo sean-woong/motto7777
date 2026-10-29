@@ -13,8 +13,9 @@ The public experience should prioritize:
 
 ## Production structure
 
-- `/` presents the newest release/project. Preserve this editorial priority.
-- `/archive.html` is the MOTTO 7777 archive home and canonical; archive maintenance must not replace the newest-project landing page.
+- `/` is the artist-approved two-project entrance (2026-10-29): equal cover links to the current single and 7777 ARCHIVE on white. Preserve this temporary editorial direction until the artist changes it.
+- `/single.html` presents the current release, 「난 모르겠어」.
+- `/archive.html` is the MOTTO 7777 archive home and canonical; archive maintenance must not replace the entrance or single page.
 - Edit `app.js` as the archive source, then create the release snapshot referenced by `archive.html`. See `docs/production-maintenance.md`.
 
 ## V2 boundary
@@ -44,6 +45,7 @@ The public experience should prioritize:
 ## Design system
 
 - The artwork supplies almost all color. The interface is a quiet black editorial frame.
+- The approved two-project entrance and single page use white backgrounds; the black frame applies to the archive.
 - Use warm off-white text, neutral gray metadata, one restrained cyan interaction accent, and magenta only inside K.I.A.
 - Use space and thin rules instead of rounded cards, glass panels, glow borders, or shadows.
 - Use a clean grotesk for statements and a restrained mono face for labels and data.

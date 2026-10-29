@@ -2,7 +2,9 @@
 
 ## Ownership and URL policy
 
-`/` is the newest release/project landing page, not the archive home. Do not replace it during archive maintenance. `/archive.html` is the archive home. Clean section/work entry pages provide static social metadata and redirect directly to `archive.html` with query parameters. The sitemap includes both the latest-project root and the archive.
+As approved on 2026-10-29, `/` temporarily presents equal cover links to 「난 모르겠어」 and 7777 ARCHIVE on a white background. The existing single page now lives at `/single.html`; `/archive.html` remains the canonical archive home. Do not replace either project or the entrance during archive maintenance. Legacy root archive queries still redirect to `archive.html` with their query parameters and hash preserved. Clean section/work entry pages continue to provide static social metadata and archive redirects. The sitemap includes the entrance, single page, and archive.
+
+GitHub Pages publishes the root of `main` in `sean-woong/motto7777`, using the custom domain `motto7777.com`. Commit and push only the reviewed files; do not include unrelated dirty worktree changes or historical V2 files. Confirm the Pages build and the custom-domain response after deployment.
 
 ## Source and release
 
@@ -39,3 +41,9 @@ Publish the reviewed archive source, fingerprinted JS/CSS, archive shell, static
 ## First-visit introduction — 2026-09-30
 
 Artist-approved exception to the no-intro rule: a localized dialog remains for approximately three visible seconds on first archive visit only. Click/tap anywhere, Enter on the entry button, or Escape dismisses it immediately. `motto-archive-entry-seen` in localStorage skips it on subsequent visits in that browser. If browser storage is unavailable, persistence cannot be guaranteed. No animation is required, including under reduced motion. The main app loads concurrently; a neutral loading status covers slow data after dismissal. The latest-project root is unaffected. Test with `python3 scripts/qa_archive_entry.py`; use a fresh browser profile/private window to review first-visit behavior.
+
+## Two-project entrance — 2026-10-29
+
+The artist approved the connected `/v2/entry-preview/` preview and explicitly authorized public deployment. Publish `index.html`, `single.html`, `entry.20261029.css`, and the updated sitemap. Reuse the existing logo and static cover assets. The entrance has no animation, media autoplay, or extra introduction. Desktop/tablet show the covers side by side; portrait mobile shows them vertically with both entries in the first viewport. The single's logo and footer provide links back to the entrance. Archive content, release snapshots, and canonical URLs remain unchanged.
+
+Check 1440px, 768px, and 390px layouts, the relocated single's images and music links, keyboard/touch navigation, browser Back, and legacy root archive queries. After the Pages build, verify the public entrance, single, CSS, assets, and archive connection. The earlier release sections above are historical and describe the root before this approval.

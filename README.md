@@ -4,7 +4,9 @@ Sean Woong과 Haz Haus의 오디오비주얼 전시·아카이브. 7,777개 작�
 
 ## 현재 사이트 구조
 
-- `index.html` → **최신 발매/프로젝트 메인**. 현재는 「난 모르겠어」 싱글입니다. 앞으로도 새로운 프로젝트를 먼저 보여줍니다.
+- `index.html` → **두 프로젝트 선택 메인**. 2026-10-29 승인: 흰 배경에서 「난 모르겠어」와 7777 ARCHIVE 커버를 동등하게 보여줍니다.
+- `single.html` → 기존 **「난 모르겠어」 싱글 페이지**. 음원 링크와 타이틀 아트를 유지합니다.
+- `entry.20261029.css` → 선택 메인의 스타일. 아카이브 스타일과 분리합니다.
 - `archive.html` → **MOTTO 7777 아카이브**. `/archive.html?view=vault`처럼 섹션을 엽니다.
 - `app.js` → 아카이브 편집용 소스. HTML이 직접 읽는 파일은 별도의 릴리스 사본입니다.
 - `archive.html`의 마지막 `<script src>` → 실제 사용되는 릴리스 파일. 이번 로컬 수정본은 `app.20260930-entry.js`입니다. 이전 공개 파일은 `app.20260815d.js`였습니다.
@@ -20,7 +22,8 @@ Sean Woong과 Haz Haus의 오디오비주얼 전시·아카이브. 7,777개 작�
 python3 -m http.server 8000
 ```
 
-- 최신 프로젝트: `http://localhost:8000/`
+- 프로젝트 선택: `http://localhost:8000/`
+- 최신 싱글: `http://localhost:8000/single.html`
 - 아카이브: `http://localhost:8000/archive.html`
 - 섹션: `?view=home`, `immortals`, `originals`, `vault`, `sound`, `project`, `kia`
 - Immortal 상세: `/archive.html?view=immortals&work=legend-boxer`
